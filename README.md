@@ -65,7 +65,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 
 - The almanac section will output:
 	- local date and time
-	- Current week of the year
+	- current week of the year
 	- current quarter
 	- days from and to the end of the year
 	- days from and to the special day
