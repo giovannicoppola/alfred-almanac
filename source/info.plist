@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>giovanni-almanac</string>
+	<key>category</key>
+	<string>Productivity</string>
+	<key>connections</key>
+	<dict>
+		<key>3B9C56F6-92CA-4E97-92EF-20C22F571619</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>AD98303D-D3C7-49B5-9333-ED86BD1D6FDF</string>
+				<key>modifiers</key>
+				<integer>262144</integer>
+				<key>modifiersubtext</key>
+				<string>Large Text</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>9FAAF43A-64B2-4222-9BC4-476F44DB774E</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>F1D04340-4DE0-42CE-9668-77B9EC45BAB5</string>
+				<key>modifiers</key>
+				<integer>131072</integer>
+				<key>modifiersubtext</key>
+				<string>Open in browser</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>9FAAF43A-64B2-4222-9BC4-476F44DB774E</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>5108E2BB-255E-495B-8724-D08BE7428EE4</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>AD98303D-D3C7-49B5-9333-ED86BD1D6FDF</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>14649548-782E-42CF-BFB1-2F4A8F051301</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>F1D04340-4DE0-42CE-9668-77B9EC45BAB5</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>3ACFA87D-7C7F-4FD2-B2BA-44B82E70C8BB</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>giovanni</string>
+	<key>description</key>
+	<string>weather etc.</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>alfred almanac</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alignment</key>
+				<integer>0</integer>
+				<key>backgroundcolor</key>
+				<string></string>
+				<key>fadespeed</key>
+				<integer>0</integer>
+				<key>fillmode</key>
+				<integer>0</integer>
+				<key>font</key>
+				<string></string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>largetypetext</key>
+				<string>{var:split1}</string>
+				<key>textcolor</key>
+				<string></string>
+				<key>wrapat</key>
+				<integer>50</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.largetype</string>
+			<key>uid</key>
+			<string>14649548-782E-42CF-BFB1-2F4A8F051301</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>delimiter</key>
+				<string>;;;</string>
+				<key>trimarguments</key>
+				<true/>
+				<key>variableprefix</key>
+				<string>split</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.split</string>
+			<key>uid</key>
+			<string>AD98303D-D3C7-49B5-9333-ED86BD1D6FDF</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>!w</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<false/>
+				<key>queuedelaymode</key>
+				<integer>1</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>one moment while I retrieve the weather from wttr.in</string>
+				<key>script</key>
+				<string>export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
+python3 almanac.py $1 "${LOCATION}"</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>weather etc.</string>
+				<key>title</key>
+				<string>🌞today's almanac🌝</string>
+				<key>type</key>
+				<integer>5</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>3B9C56F6-92CA-4E97-92EF-20C22F571619</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<true/>
+				<key>clipboardtext</key>
+				<string>{var:split1}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>5108E2BB-255E-495B-8724-D08BE7428EE4</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>delimiter</key>
+				<string>;;;</string>
+				<key>trimarguments</key>
+				<true/>
+				<key>variableprefix</key>
+				<string>split</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.split</string>
+			<key>uid</key>
+			<string>9FAAF43A-64B2-4222-9BC4-476F44DB774E</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>delimiter</key>
+				<string>;;;</string>
+				<key>trimarguments</key>
+				<true/>
+				<key>variableprefix</key>
+				<string>split</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.split</string>
+			<key>uid</key>
+			<string>F1D04340-4DE0-42CE-9668-77B9EC45BAB5</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{var:split2}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>3ACFA87D-7C7F-4FD2-B2BA-44B82E70C8BB</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ... 
+- ... or enter a location/ZIP code directly
+- The default weather string will output:
+		- `%C` weather condition text
+		- `%c` weather condition 
+		- 🌡️`%t` actual temperature
+		- `%f`  'feels like' temperature
+		- `%h` humidity
+		- 🌬️`%w` wind
+		- `%m` moon phase	
+- The almanac section will output:
+	- local date and time
+	- Current week of the year
+	- current quarter
+	- days from and to the end of the year
+	- days from and to the special day
+
+- Enter (↩️) will copy to the clipboard and past to the frontmost application
+- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in` 
+- CTRL-enter (⌃↩️) will show the almanac string in large font</string>
+	<key>uidata</key>
+	<dict>
+		<key>14649548-782E-42CF-BFB1-2F4A8F051301</key>
+		<dict>
+			<key>xpos</key>
+			<integer>565</integer>
+			<key>ypos</key>
+			<integer>90</integer>
+		</dict>
+		<key>3ACFA87D-7C7F-4FD2-B2BA-44B82E70C8BB</key>
+		<dict>
+			<key>xpos</key>
+			<integer>565</integer>
+			<key>ypos</key>
+			<integer>520</integer>
+		</dict>
+		<key>3B9C56F6-92CA-4E97-92EF-20C22F571619</key>
+		<dict>
+			<key>xpos</key>
+			<integer>125</integer>
+			<key>ypos</key>
+			<integer>305</integer>
+		</dict>
+		<key>5108E2BB-255E-495B-8724-D08BE7428EE4</key>
+		<dict>
+			<key>xpos</key>
+			<integer>565</integer>
+			<key>ypos</key>
+			<integer>305</integer>
+		</dict>
+		<key>9FAAF43A-64B2-4222-9BC4-476F44DB774E</key>
+		<dict>
+			<key>xpos</key>
+			<integer>350</integer>
+			<key>ypos</key>
+			<integer>335</integer>
+		</dict>
+		<key>AD98303D-D3C7-49B5-9333-ED86BD1D6FDF</key>
+		<dict>
+			<key>xpos</key>
+			<integer>350</integer>
+			<key>ypos</key>
+			<integer>225</integer>
+		</dict>
+		<key>F1D04340-4DE0-42CE-9668-77B9EC45BAB5</key>
+		<dict>
+			<key>xpos</key>
+			<integer>350</integer>
+			<key>ypos</key>
+			<integer>445</integer>
+		</dict>
+	</dict>
+	<key>variables</key>
+	<dict>
+		<key>FORMATSTRING</key>
+		<string>%C %c 🌡️%t (feels %f, %h) 🌬️%w %m</string>
+		<key>LOCATION</key>
+		<string>10282,Malibu, Naples</string>
+		<key>SPECIAL_DAY</key>
+		<string>03-14</string>
+	</dict>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string>1.0</string>
+	<key>webaddress</key>
+	<string>https://github.com/giovannicoppola/alfred-almanac</string>
+</dict>
+</plist>
