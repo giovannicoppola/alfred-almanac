@@ -3,7 +3,7 @@
 ### Start your day with weather from [wttr.in](http://wttr.in/) and a daily almanac
 
 
-![](images/complice-almanac.gif)
+![](images/alfred-almanac.gif)
 
 <a href="https://github.com/giovannicoppola/alfred-almanac/releases/latest/">
 <img alt="Downloads"
