@@ -55,13 +55,13 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 - ... or enter a location/ZIP code directly
 
 - The default weather string from `wttr.in` will output:
-		- `%C` weather condition text
-		- `%c` weather condition 
-		- 🌡️`%t` actual temperature
-		- `%f`  'feels like' temperature
-		- `%h` humidity
-		- 🌬️`%w` wind
-		- `%m` moon phase
+	- `%C` weather condition text
+	- `%c` weather condition 
+	- 🌡️`%t` actual temperature
+	- `%f`  'feels like' temperature
+	- `%h` humidity
+	- 🌬️`%w` wind
+	- `%m` moon phase
 
 - The almanac section will output:
 	- local date and time
