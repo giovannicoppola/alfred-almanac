@@ -1,0 +1,2 @@
+# alfred-almanac
+ weather etc. 
