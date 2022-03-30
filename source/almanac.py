@@ -7,17 +7,15 @@
 #import requests
 import json
 import sys
-import urllib.request 
-import urllib.parse 
+import requests
 from datetime import datetime
 import datetime as date2
 import re, os, time
 
-
 from config import LOCATION, FORMATSTRING, SPECIAL_DAY
 
 FORMATSTRING = FORMATSTRING+"--%Z--" #adding local timezone
-FORMATSTRING = f'"{FORMATSTRING}"'  #enclosing in quotes
+#FORMATSTRING = f'"{FORMATSTRING}"'  #enclosing in quotes
 
 
 def log(s, *args):
@@ -31,26 +29,24 @@ def get_weather(location):
     
     
     myURL= "http://wttr.in/"
-    params ="format="+ urllib.parse.quote(FORMATSTRING,safe='%(),')
-    paramsJ = "format=j1"
+    
+    payload = {'format': FORMATSTRING}
+    payload_j = {'format': "j1"}
+    #paramsJ = "format=j1"
     location = location.strip()
     location=re.sub(" ", '+', location)
     
-    
-    myURL= "http://wttr.in/" + location + "?" + params
-
-    with urllib.request.urlopen(myURL) as response: 
-        myData = json.load(response)
+    resp = requests.get(f"http://wttr.in/{loc}", params=payload)
+    myData = resp.text.strip()
+    log (myData)
     
     #fetching also the JSON output for extra information
-    myURL= "http://wttr.in/" + location + "?" + paramsJ
-
-    with urllib.request.urlopen(myURL) as response: 
-            myDataJ = json.load(response)
-
+    resp_j = requests.get(f"http://wttr.in/{loc}", params=payload_j) 
     
-    myLocation = myDataJ['nearest_area'][0]['areaName'][0]['value'] #getting the location from the output
+    myResults =  (resp_j.json())
+    myLocation = myResults['nearest_area'][0]['areaName'][0]['value'] #getting the location from the output
     
+            
     # extracting timezone
     timeZonePattern="--(.*?)--"
     
