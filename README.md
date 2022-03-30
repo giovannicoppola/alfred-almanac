@@ -86,6 +86,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 <a name="changelog"></a>
 # Changelog
 
+- 03-30-2022: version 1.1 (switched to `requests` package for web request handling)
 - 03-22-2022: version 1.0
 
 <a name="feedback"></a>
