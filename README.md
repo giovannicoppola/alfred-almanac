@@ -33,12 +33,12 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 ### Setup
   
 1. Download the most recent release of `alfred-almanac` from Github and double-click to install
-2. In Alfred, open the 'Configure Workflow and Variables' window in `alfred-almanac` preferences
-	<img src='images/alfred_prefs.png' width="500">
+2. In Alfred, open the 'Prepare workflow configuration and variables' window in `alfred-almanac` preferences
+	<img src='images/alfred5_prefs.png' width="500">
 			
-	- set the `LOCATION` variable to indicate the default locations as comma-separated city/town names, ZIP codes etc. 
-	- _Optional:_ edit the `FORMATSTRING` variable to customize the oneliner from `wttr.in`. Options and instructions available at the `wttr.in` [github page](https://github.com/chubin/wttr.in#one-line-output). 
-	- _Optional:_ set the `SPECIAL_DAY` variable (in the mm-dd format) to count days from and toward a special date. Default: `03-14` 
+	- in the 'User Configuration' tab, set the 'Default Value' for the `LOCATION` variable to indicate the default locations as comma-separated city/town names, ZIP codes etc. 
+	- _Optional:_ in the 'User Configuration' tab, edit the 'Default Value' for the `FORMATSTRING` variable to customize the oneliner from `wttr.in`. Options and instructions available at the `wttr.in` [github page](https://github.com/chubin/wttr.in#one-line-output). 
+	- _Optional:_ in the 'User Configuration' tab, set the 'Default Value' for the `SPECIAL_DAY` variable (in the mm-dd format) to count days from and toward a special date. Default: `03-14` 
 	
 3. _Optional:_ Setup a hotkey to launch alfred-almanac
 4. _Optional:_ Change the keyword to launch alfred-almanac
@@ -86,6 +86,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 <a name="changelog"></a>
 # Changelog
 
+- 08-07-2022: version 1.2 merging @vitorgalvao's changes to update Workflow Environment Variables to User Configuration
 - 03-30-2022: version 1.1 (switched to `requests` package for web request handling)
 - 03-22-2022: version 1.0
 
