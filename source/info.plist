@@ -125,8 +125,6 @@
 			<dict>
 				<key>delimiter</key>
 				<string>;;;</string>
-				<key>outputas</key>
-				<integer>0</integer>
 				<key>trimarguments</key>
 				<true/>
 				<key>variableprefix</key>
@@ -214,8 +212,6 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<dict>
 				<key>delimiter</key>
 				<string>;;;</string>
-				<key>outputas</key>
-				<integer>0</integer>
 				<key>trimarguments</key>
 				<true/>
 				<key>variableprefix</key>
@@ -233,8 +229,6 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<dict>
 				<key>delimiter</key>
 				<string>;;;</string>
-				<key>outputas</key>
-				<integer>0</integer>
 				<key>trimarguments</key>
 				<true/>
 				<key>variableprefix</key>
@@ -256,6 +250,8 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<string></string>
 				<key>url</key>
 				<string>{var:split2}</string>
+				<key>utf8</key>
+				<true/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.openurl</string>
@@ -291,64 +287,64 @@ python3 almanac.py $1 "${LOCATION}"</string>
 		<key>14649548-782E-42CF-BFB1-2F4A8F051301</key>
 		<dict>
 			<key>xpos</key>
-			<real>565</real>
+			<integer>565</integer>
 			<key>ypos</key>
-			<real>90</real>
+			<integer>90</integer>
 		</dict>
 		<key>3ACFA87D-7C7F-4FD2-B2BA-44B82E70C8BB</key>
 		<dict>
 			<key>xpos</key>
-			<real>565</real>
+			<integer>565</integer>
 			<key>ypos</key>
-			<real>520</real>
+			<integer>520</integer>
 		</dict>
 		<key>3B9C56F6-92CA-4E97-92EF-20C22F571619</key>
 		<dict>
 			<key>xpos</key>
-			<real>125</real>
+			<integer>125</integer>
 			<key>ypos</key>
-			<real>305</real>
+			<integer>305</integer>
 		</dict>
 		<key>5108E2BB-255E-495B-8724-D08BE7428EE4</key>
 		<dict>
 			<key>xpos</key>
-			<real>565</real>
+			<integer>565</integer>
 			<key>ypos</key>
-			<real>305</real>
+			<integer>305</integer>
 		</dict>
 		<key>9FAAF43A-64B2-4222-9BC4-476F44DB774E</key>
 		<dict>
 			<key>xpos</key>
-			<real>350</real>
+			<integer>350</integer>
 			<key>ypos</key>
-			<real>335</real>
+			<integer>335</integer>
 		</dict>
 		<key>AD98303D-D3C7-49B5-9333-ED86BD1D6FDF</key>
 		<dict>
 			<key>xpos</key>
-			<real>350</real>
+			<integer>350</integer>
 			<key>ypos</key>
-			<real>225</real>
+			<integer>225</integer>
 		</dict>
 		<key>F1D04340-4DE0-42CE-9668-77B9EC45BAB5</key>
 		<dict>
 			<key>xpos</key>
-			<real>350</real>
+			<integer>350</integer>
 			<key>ypos</key>
-			<real>445</real>
+			<integer>445</integer>
 		</dict>
 	</dict>
-	<key>userconfigurationconfig</key>
-	<array/>
 	<key>variables</key>
 	<dict>
 		<key>FORMATSTRING</key>
 		<string>%C %c 🌡️%t (feels %f, %h) 🌬️%w %m</string>
 		<key>LOCATION</key>
-		<string>Chappaqua,Malibu, Naples</string>
+		<string>10282,Malibu, Naples</string>
 		<key>SPECIAL_DAY</key>
 		<string>03-14</string>
 	</dict>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
 	<string>1.1</string>
 	<key>webaddress</key>
