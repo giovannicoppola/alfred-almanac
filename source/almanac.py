@@ -131,6 +131,7 @@ for loc in locations:
             "icon": {
                 "path": myIcon
             },
+            'quicklookurl': f"https://wttr.in/{loc}",
             'arg': (myFinalString + ";;;" + f"http://wttr.in/{loc}")
                 })    
 
