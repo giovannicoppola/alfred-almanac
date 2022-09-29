@@ -4,8 +4,8 @@
 <dict>
 	<key>bundleid</key>
 	<string>giovanni-almanac</string>
-	<key>category</key>
-	<string>Productivity</string>
+        <key>category</key>
+        <string>Productivity</string>
 	<key>connections</key>
 	<dict>
 		<key>3B9C56F6-92CA-4E97-92EF-20C22F571619</key>
@@ -157,7 +157,7 @@
 				<key>escaping</key>
 				<integer>102</integer>
 				<key>keyword</key>
-				<string>!w</string>
+				<string>{var:mainkeyword}</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -276,16 +276,16 @@ python3 almanac.py $1 "${LOCATION}"</string>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ... 
+	<string>- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
 - ... or enter a location/ZIP code directly
 - The default weather string will output:
 	- `%C` weather condition text
-	- `%c` weather condition 
+	- `%c` weather condition
 	- 🌡️`%t` actual temperature
 	- `%f`  'feels like' temperature
 	- `%h` humidity
 	- 🌬️`%w` wind
-	- `%m` moon phase	
+	- `%m` moon phase
 - The almanac section will output:
 	- local date and time
 	- Current week of the year
@@ -294,7 +294,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 	- days from and to the special day
 
 - Enter (↩️) will copy to the clipboard and past to the frontmost application
-- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in` 
+- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in`
 - CTRL-enter (⌃↩️) will show the almanac string in large font</string>
 	<key>uidata</key>
 	<dict>
@@ -350,6 +350,27 @@ python3 almanac.py $1 "${LOCATION}"</string>
 	</dict>
 	<key>userconfigurationconfig</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>!w</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>mainkeyword</string>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
