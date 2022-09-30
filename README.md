@@ -71,11 +71,13 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 <a name="acknowledgments"></a>
 # Acknowledgments
 - [Igor Chubin](https://twitter.com/igor_chubin) for developing the amazing `wttr.in`
+- [@vitorgalvao](https://github.com/vitorgalvao) for suggestions and great additions
 - The [Alfred forum](https://www.alfredforum.com) community.
 
 <a name="changelog"></a>
 # Changelog
 
+- 09-29-2022: version 1.3 added autoupdate, quicklookurl preview, keyword configurable (thanks @vitorgalvao!)
 - 08-07-2022: version 1.2 merging @vitorgalvao's changes to update Workflow Environment Variables to User Configuration
 - 03-30-2022: version 1.1 (switched to `requests` package for web request handling)
 - 03-22-2022: version 1.0
