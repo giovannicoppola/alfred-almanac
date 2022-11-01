@@ -402,7 +402,8 @@ fi</string>
 
 - Enter (↩️) will copy to the clipboard and past to the frontmost application
 - Shift-enter (⇧↩️) will open the corresponding page on `wttr.in`
-- CTRL-enter (⌃↩️) will show the almanac string in large font</string>
+- CTRL-enter (⌃↩️) will show the almanac string in large font
+- Option (⌥) will show the local date/time and timezone</string>
 	<key>uidata</key>
 	<dict>
 		<key>14649548-782E-42CF-BFB1-2F4A8F051301</key>
@@ -556,7 +557,7 @@ fi</string>
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>1.3</string>
+	<string>1.4</string>
 	<key>webaddress</key>
 	<string>https://github.com/giovannicoppola/alfred-almanac</string>
 </dict>

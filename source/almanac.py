@@ -52,7 +52,7 @@ def get_weather(location):
     
     myTimeZone = re.search(timeZonePattern, myData).group(1)
 
-    #print (myTimeZone)
+    log (myTimeZone)
     myData=re.sub(timeZonePattern, '', myData)
 
     myWeatherString = myLocation + \
@@ -65,7 +65,7 @@ def get_weather(location):
     log (myLocalTime)
 
 
-    return (myWeatherString,myLocalTime)
+    return (myWeatherString,myLocalTime, myTimeZone)
     
 
 def almanac ():
@@ -122,14 +122,24 @@ myAlmanac,myIcon = almanac()
 
 locations = mylocation.split(",")
 for loc in locations:
-    myOutput,myLocalTime= get_weather(loc)
+    myOutput,myLocalTime, myTimeZone= get_weather(loc)
     myFinalString = myOutput + " " + myLocalTime + myAlmanac
+    myTZstring = f"Current date/time: {myLocalTime} ({myTimeZone})"
     result["items"].append({
             "title": myFinalString,
-            'subtitle': "↩️ copy to clipboard, ^↩️ large text, ⇧↩️ open in browser",
+            'subtitle': "↩️ copy to clipboard, ^↩️ large text, ⇧↩️ open in browser, ⌥ timezone",
                         
             "icon": {
                 "path": myIcon
+            },
+            "mods": {
+                "option": {
+                    "valid": 'true',
+                    "arg": myTZstring,
+                    
+                    "subtitle": myTZstring
+                    
+                }
             },
             'quicklookurl': f"https://wttr.in/{loc}",
             'arg': (myFinalString + ";;;" + f"http://wttr.in/{loc}")
