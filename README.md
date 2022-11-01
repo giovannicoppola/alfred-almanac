@@ -62,6 +62,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 - Enter (↩️) will copy to the clipboard and past to the frontmost application
 - Shift-enter (⇧↩️) will open the corresponding page on `wttr.in`
 - CTRL-enter (⌃↩️) will show the almanac string in large font
+- Option (⌥) will show the local date/time and timezone
 
 
 <a name="known-issues"></a>
