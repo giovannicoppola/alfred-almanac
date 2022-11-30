@@ -13,7 +13,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 <!-- MarkdownTOC autolink="true" bracket="round" depth="3" autoanchor="true" -->
 
 - [Setting up](#setting-up)
-- [Basic Usage](#usage)
+- [Basic Usage](#basic-usage)
 - [Known Issues](#known-issues)
 - [Acknowledgments](#acknowledgments)
 - [Changelog](#changelog)
@@ -22,8 +22,8 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 <!-- /MarkdownTOC -->
 
 
-<a name="setting-up"></a>
-# Setting up
+<h1 id="setting-up">Setting up</h1>
+
 
 ### Needed
 
@@ -36,8 +36,8 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 2. _Optional:_ Click `Configure Workflow` in `alfred-almanac` preferences to change settings
 3. _Optional:_ Setup a hotkey to launch alfred-almanac
 
-<a name="usage"></a>
-# Basic Usage
+
+<h1 id="basic-usage">Basic Usage</h1>
 ![](images/complice-almanac.png)
 
 - Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
@@ -65,26 +65,25 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 - Option (⌥) will show the local date/time and timezone
 
 
-<a name="known-issues"></a>
-# Known issues
+<h1 id="known-issues">Known issues</h1>
 - Not tested extensively for international locations
 
-<a name="acknowledgments"></a>
-# Acknowledgments
+
+<h1 id="acknowledgments">Acknowledgments </h1>
 - [Igor Chubin](https://twitter.com/igor_chubin) for developing the amazing `wttr.in`
 - [@vitorgalvao](https://github.com/vitorgalvao) for suggestions and great additions
 - The [Alfred forum](https://www.alfredforum.com) community.
 
-<a name="changelog"></a>
-# Changelog
+<h1 id="changelog">Changelog </h1>
 
+
+- 11-30-2022: version 1.5 removed OneUpdater (for Alfred Gallery) 
+- 11-01-2022: version 1.4 added timezones
 - 09-29-2022: version 1.3 added OneUpdater, quicklookurl preview, keyword configurable (thanks @vitorgalvao!)
 - 08-07-2022: version 1.2 merging @vitorgalvao's changes to update Workflow Environment Variables to User Configuration
 - 03-30-2022: version 1.1 (switched to `requests` package for web request handling)
 - 03-22-2022: version 1.0
 
-<a name="feedback"></a>
-# Feedback
-
+<h1 id="feedback">Feedback</h1>
 Feedback welcome! If you notice a bug, or have ideas for new features, please feel free to get in touch either here, or on the [Alfred](https://www.alfredforum.com) forum.
 
