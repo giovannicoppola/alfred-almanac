@@ -12,6 +12,7 @@ from datetime import datetime
 import datetime as date2
 import re, os, time
 
+
 from config import LOCATION, FORMATSTRING, SPECIAL_DAY
 
 FORMATSTRING = FORMATSTRING+"--%Z--" #adding local timezone
@@ -37,6 +38,7 @@ def get_weather(location):
     location=re.sub(" ", '+', location)
     
     resp = requests.get(f"http://wttr.in/{loc}", params=payload)
+    log (f"----={resp.url}")
     myData = resp.text.strip()
     log (myData)
     
