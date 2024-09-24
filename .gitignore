@@ -1,4 +1,5 @@
 .DS_Store
 *.pyc
 __pycache__
-/source/lib
+lib
+prefs.plist

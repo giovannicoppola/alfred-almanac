@@ -4,7 +4,11 @@
 <dict>
 	<key>FORMATSTRING</key>
 	<string>%C %c 🌡️%t (feels %f, %h) 🌬️%w %m&amp;m</string>
+	<key>LOCATION</key>
+	<string>tarrytown, chappaqua, malibu</string>
 	<key>SPECIAL_DAY</key>
 	<string>05-11</string>
+	<key>WEEKLY</key>
+	<true/>
 </dict>
 </plist>

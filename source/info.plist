@@ -435,11 +435,28 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<key>variable</key>
 			<string>SPECIAL_DAY</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<false/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Add weekly plan</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>WEEKLY</string>
+		</dict>
 	</array>
-	<key>variablesdontexport</key>
-	<array/>
 	<key>version</key>
-	<string>1.5</string>
+	<string>1.6</string>
 	<key>webaddress</key>
 	<string>https://github.com/giovannicoppola/alfred-almanac</string>
 </dict>

@@ -8,12 +8,12 @@
 import json
 import sys
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 import datetime as date2
 import re, os, time
 
 
-from config import LOCATION, FORMATSTRING, SPECIAL_DAY
+from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEEKLY
 
 FORMATSTRING = FORMATSTRING+"--%Z--" #adding local timezone
 #FORMATSTRING = f'"{FORMATSTRING}"'  #enclosing in quotes
@@ -24,6 +24,22 @@ def log(s, *args):
         s = s % args
     print(s, file=sys.stderr)
 
+def createWeeklyPlan():
+    # Get today's date
+    today = datetime.today()
+    
+    # Calculate the previous Monday
+    previous_monday = today - timedelta(days=today.weekday())
+    
+    # Calculate the following Friday
+    following_friday = previous_monday + timedelta(days=4)
+    
+    # Format the dates as strings
+    previous_monday_str = previous_monday.strftime('%Y-%m-%d')
+    following_friday_str = following_friday.strftime('%Y-%m-%d')
+    year_week = date2.date.today().isocalendar()[1]
+    finalString = f"[[Weekly plan ({year_week}) {previous_monday_str} to {following_friday_str}]]" 
+    return finalString
 
 
 def get_weather(location):
@@ -120,12 +136,16 @@ if sys.argv[1] == '':
 else:
     mylocation = sys.argv[1]
 
-myAlmanac,myIcon = almanac()
+myAlmanac,myIcon= almanac()
+if WEEKLY == '1':
+    weeklyPlan = "\n" + createWeeklyPlan()
+else:
+    weeklyPlan = ""
 
 locations = mylocation.split(",")
 for loc in locations:
     myOutput,myLocalTime, myTimeZone= get_weather(loc)
-    myFinalString = myOutput + " " + myLocalTime + myAlmanac
+    myFinalString = myOutput + " " + myLocalTime + myAlmanac + weeklyPlan 
     myTZstring = f"Current date/time: {myLocalTime} ({myTimeZone})"
     result["items"].append({
             "title": myFinalString,
