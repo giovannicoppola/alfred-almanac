@@ -16,3 +16,5 @@ SPECIAL_DAY = os.path.expanduser(os.getenv('SPECIAL_DAY', ''))
 WEEKLY = os.path.expanduser(os.getenv('WEEKLY', ''))
 
 	
+LINEADAY_FILE = os.path.expanduser(os.getenv('LINEADAYFILE', ''))
+LINEADAY = os.path.expanduser(os.getenv('LINEADAY', ''))

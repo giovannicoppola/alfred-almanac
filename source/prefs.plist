@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>FORMATSTRING</key>
-	<string>%C %c 🌡️%t (feels %f, %h) 🌬️%w %m&amp;m</string>
+	<key>LINEADAY</key>
+	<true/>
+	<key>LINEADAYFILE</key>
+	<string>~/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/GiovanniNotes/line-a-day.md</string>
 	<key>LOCATION</key>
 	<string>tarrytown, chappaqua, malibu</string>
 	<key>SPECIAL_DAY</key>

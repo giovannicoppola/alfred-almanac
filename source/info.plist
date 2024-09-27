@@ -276,7 +276,8 @@ python3 almanac.py $1 "${LOCATION}"</string>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
+	<string># Almanac 🌞
+- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
 - ... or enter a location/ZIP code directly
 - The default weather string will output:
 	- `%C` weather condition text
@@ -296,7 +297,11 @@ python3 almanac.py $1 "${LOCATION}"</string>
 - Enter (↩️) will copy to the clipboard and past to the frontmost application
 - Shift-enter (⇧↩️) will open the corresponding page on `wttr.in`
 - CTRL-enter (⌃↩️) will show the almanac string in large font
-- Option (⌥) will show the local date/time and timezone</string>
+- Option (⌥) will show the local date/time and timezone
+
+## Additional settings:
+- `Add weekly plan` will add an Obsidian link to the current week's todo list. On Fridays, also to the following week's plan
+- `line-a-day?`: for users of the [line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow: will quote previous line-a-day items (from 1 or more years earlier)</string>
 	<key>uidata</key>
 	<dict>
 		<key>14649548-782E-42CF-BFB1-2F4A8F051301</key>
@@ -453,6 +458,46 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<string>checkbox</string>
 			<key>variable</key>
 			<string>WEEKLY</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<false/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Quote previous line-a-day items?</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>LINEADAY</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>filtermode</key>
+				<integer>2</integer>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+			</dict>
+			<key>description</key>
+			<string>Only needed if line-a-day above is checked</string>
+			<key>label</key>
+			<string>line-a-day file</string>
+			<key>type</key>
+			<string>filepicker</string>
+			<key>variable</key>
+			<string>LINEADAYFILE</string>
 		</dict>
 	</array>
 	<key>version</key>
