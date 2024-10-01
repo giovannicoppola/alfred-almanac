@@ -67,7 +67,7 @@ def createNextWeeklyPlan():
         
         return finalString
     else:
-        return None
+        return ""
     
     
     
