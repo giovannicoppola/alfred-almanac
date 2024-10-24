@@ -499,6 +499,27 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<key>variable</key>
 			<string>LINEADAYFILE</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>filtermode</key>
+				<integer>2</integer>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+			</dict>
+			<key>description</key>
+			<string>Path to folder with daily and weekly files</string>
+			<key>label</key>
+			<string>Obsidian Vault</string>
+			<key>type</key>
+			<string>filepicker</string>
+			<key>variable</key>
+			<string>OBSIDIAN_VAULT</string>
+		</dict>
 	</array>
 	<key>version</key>
 	<string>1.6</string>

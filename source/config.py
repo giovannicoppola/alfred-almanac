@@ -18,3 +18,4 @@ WEEKLY = os.path.expanduser(os.getenv('WEEKLY', ''))
 	
 LINEADAY_FILE = os.path.expanduser(os.getenv('LINEADAYFILE', ''))
 LINEADAY = os.path.expanduser(os.getenv('LINEADAY', ''))
+VAULT_PATH = os.path.expanduser(os.getenv('OBSIDIAN_VAULT', ''))

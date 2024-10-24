@@ -13,7 +13,7 @@ import datetime as date2
 import re, os, time
 
 
-from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEEKLY, LINEADAY_FILE, LINEADAY
+from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEEKLY, LINEADAY_FILE, LINEADAY, VAULT_PATH
 
 FORMATSTRING = FORMATSTRING+"--%Z--" #adding local timezone
 #FORMATSTRING = f'"{FORMATSTRING}"'  #enclosing in quotes
@@ -43,7 +43,7 @@ def createWeeklyPlan():
 
 
 
-def createNextWeeklyPlan():
+def createNextWeeklyPlan(thisWeeksPlan):
     # Get today's date
     today = datetime.today()
     
@@ -64,10 +64,32 @@ def createNextWeeklyPlan():
         
         # Create the final string
         finalString = f"\n![[Weekly plan ({year_week}) {next_monday_str} to {following_friday_str}]]"
+
+        FILE_PATH_NEXT = f"{VAULT_PATH}/{finalString[4:-2]}.md"
+        FILE_PATH_THIS = f"{VAULT_PATH}/{thisWeeksPlan[4:-2]}.md"
+
+        """Create a file if it does not exist."""
+        if not os.path.exists(FILE_PATH_NEXT):
+            with open(FILE_PATH_NEXT, 'w') as file:
+                pass  # Just create the file
+
+        """Append undone tasks from source_file to target_file."""
+        undone_tasks = []
         
+        # Read the source file and collect undone tasks
+        with open(FILE_PATH_THIS, 'r') as src:
+            for line in src:
+                if line.startswith('- [ ]'):
+                    undone_tasks.append(line)
+        
+        # Append the undone tasks to the target file
+        with open(FILE_PATH_NEXT, 'a') as tgt:
+            for task in undone_tasks:
+                tgt.write(task)
         return finalString
     else:
         return ""
+
     
     
     
@@ -222,7 +244,7 @@ def main():
     myAlmanac,myIcon= almanac()
     if WEEKLY == '1':
         weeklyPlan = "\n" + createWeeklyPlan()
-        nextWeeklyPlan = "\n" + createNextWeeklyPlan()
+        nextWeeklyPlan = "\n" + createNextWeeklyPlan(weeklyPlan)
     else:
         weeklyPlan = ""
         nextWeeklyPlan = ""
