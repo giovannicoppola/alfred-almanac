@@ -14,7 +14,6 @@ import re, os, time
 
 
 from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEEKLY, LINEADAY_FILE, LINEADAY, VAULT_PATH
-
 FORMATSTRING = FORMATSTRING+"--%Z--" #adding local timezone
 #FORMATSTRING = f'"{FORMATSTRING}"'  #enclosing in quotes
 
@@ -280,6 +279,7 @@ def main():
                 'arg': (myFinalString + ";;;" + f"http://wttr.in/{loc}")
                     })    
 
+    
     print (json.dumps(result))
 
 
