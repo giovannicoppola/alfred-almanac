@@ -12,8 +12,12 @@
 	<true/>
 	<key>OBSIDIAN_VAULT</key>
 	<string>~/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/GiovanniNotes/</string>
+	<key>OPENWEATHER_KEY</key>
+	<string>5fffcb5fe33f50a3c1512d72db96dd95</string>
 	<key>SPECIAL_DAY</key>
 	<string>05-11</string>
+	<key>WEATHER_SOURCE</key>
+	<string>openweather</string>
 	<key>WEEKLY</key>
 	<true/>
 </dict>

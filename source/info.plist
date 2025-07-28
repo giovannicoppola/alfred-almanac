@@ -475,6 +475,58 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<key>config</key>
 			<dict>
 				<key>default</key>
+				<string>wttr</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>wttr.in</string>
+						<string>wttr</string>
+					</array>
+					<array>
+						<string>Open Weather</string>
+						<string>openweather</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>Choose your preferred weather service</string>
+			<key>label</key>
+			<string>Weather Info Source</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>WEATHER_SOURCE</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>fahrenheit</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>°F</string>
+						<string>fahrenheit</string>
+					</array>
+					<array>
+						<string>°C</string>
+						<string>celsius</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Temperature unit</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>TEMPERATURE_UNIT</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
 				<string>%C %c 🌡️%t (feels %f, %h) 🌬️%w %m</string>
 				<key>placeholder</key>
 				<string></string>
@@ -484,13 +536,34 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Valid if wttr.in is selected as weather source</string>
 			<key>label</key>
-			<string>Format</string>
+			<string>wttr.in format</string>
 			<key>type</key>
 			<string>textfield</string>
 			<key>variable</key>
 			<string>FORMATSTRING</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Valid if OpenWeather is selected as weather source</string>
+			<key>label</key>
+			<string>Open Weather API Key</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>OPENWEATHER_KEY</string>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -545,13 +618,55 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>📋 Weekly planning and task management</string>
 			<key>label</key>
 			<string>Add weekly plan</string>
 			<key>type</key>
 			<string>checkbox</string>
 			<key>variable</key>
 			<string>WEEKLY</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>format1</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>Weekly plan (31) 2025-07-28 to 2025-08-01</string>
+						<string>format1</string>
+					</array>
+					<array>
+						<string>Week 31 - July 28-August 1, 2025</string>
+						<string>format2</string>
+					</array>
+					<array>
+						<string>W31 2025-07-28 to 2025-08-01</string>
+						<string>format3</string>
+					</array>
+					<array>
+						<string>Weekly Plan Week 31 (Jul 28 - Aug 1)</string>
+						<string>format4</string>
+					</array>
+					<array>
+						<string>2025 Week 31 (28-01 Jul-Aug)</string>
+						<string>format5</string>
+					</array>
+					<array>
+						<string>Week 31 - 07-28 to 08-01</string>
+						<string>format6</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>Choose the filename format for weekly plan files</string>
+			<key>label</key>
+			<string>Weekly Plan Format</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>WEEKLY_PLAN_FORMAT</string>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -564,7 +679,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>📖 Historical daily entries and reflections</string>
 			<key>label</key>
 			<string>Quote previous line-a-day items?</string>
 			<key>type</key>
@@ -596,6 +711,31 @@ python3 almanac.py $1 "${LOCATION}"</string>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>defaultvalue</key>
+				<integer>0</integer>
+				<key>markercount</key>
+				<integer>2</integer>
+				<key>maxvalue</key>
+				<integer>1</integer>
+				<key>minvalue</key>
+				<integer>0</integer>
+				<key>onlystoponmarkers</key>
+				<false/>
+				<key>showmarkers</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>-----------------------------SECTION A</string>
+			<key>type</key>
+			<string>slider</string>
+			<key>variable</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>default</key>
 				<string></string>
 				<key>filtermode</key>
@@ -606,7 +746,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<false/>
 			</dict>
 			<key>description</key>
-			<string>Path to folder with daily and weekly files</string>
+			<string></string>
 			<key>label</key>
 			<string>Obsidian Vault</string>
 			<key>type</key>
@@ -653,6 +793,27 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<string>textfield</string>
 			<key>variable</key>
 			<string>DAILY_FORMAT</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>⭕️⭕️⭕️TESTING⭕️⭕️⭕️</string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+				<key>verticalsize</key>
+				<integer>3</integer>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>------------⭕️⭕️⭕️---------------SECTION B</string>
+			<key>type</key>
+			<string>textarea</string>
+			<key>variable</key>
+			<string></string>
 		</dict>
 	</array>
 	<key>version</key>
