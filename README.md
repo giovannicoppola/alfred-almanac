@@ -2,7 +2,6 @@
 
 ### Start your day with weather from [wttr.in](http://wttr.in/) and a daily almanac
 
-
 ![](images/alfred-almanac.gif)
 
 <a href="https://github.com/giovannicoppola/alfred-almanac/releases/latest/">
@@ -21,9 +20,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 
 <!-- /MarkdownTOC -->
 
-
 <h1 id="setting-up">Setting up</h1>
-
 
 ### Needed
 
@@ -36,7 +33,6 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 2. _Optional:_ Click `Configure Workflow` in `alfred-almanac` preferences to change settings
 3. _Optional:_ Setup a hotkey to launch alfred-almanac
 
-
 <h1 id="basic-usage">Basic Usage</h1>
 ![](images/complice-almanac.png)
 
@@ -44,30 +40,30 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 - ... or enter a location/ZIP code directly
 
 - The default weather string from `wttr.in` will output:
-	- `%C` weather condition text
-	- `%c` weather condition
-	- 🌡️`%t` actual temperature
-	- `%f`  'feels like' temperature
-	- `%h` humidity
-	- 🌬️`%w` wind
-	- `%m` moon phase
+
+  - `%C` weather condition text
+  - `%c` weather condition
+  - 🌡️`%t` actual temperature
+  - `%f` 'feels like' temperature
+  - `%h` humidity
+  - 🌬️`%w` wind
+  - `%m` moon phase
 
 - The almanac section will output:
-	- local date and time
-	- current week of the year
-	- current quarter
-	- days from and to the end of the year
-	- days from and to the special day
+
+  - local date and time
+  - current week of the year
+  - current quarter
+  - days from and to the end of the year
+  - days from and to the special day
 
 - Enter (↩️) will copy to the clipboard and past to the frontmost application
 - Shift-enter (⇧↩️) will open the corresponding page on `wttr.in`
 - CTRL-enter (⌃↩️) will show the almanac string in large font
 - Option (⌥) will show the local date/time and timezone
 
-
 <h1 id="known-issues">Known issues</h1>
 - Not tested extensively for international locations
-
 
 <h1 id="acknowledgments">Acknowledgments </h1>
 - [Igor Chubin](https://twitter.com/igor_chubin) for developing the amazing `wttr.in`
@@ -76,8 +72,8 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 
 <h1 id="changelog">Changelog </h1>
 
-
-- 11-30-2022: version 1.5 removed OneUpdater (for Alfred Gallery) 
+- version 1.6: integration with Obsidian Daily Notes, and Weekly plan files, integration with line-a-day workflow, added OpenWeather API support.
+- 11-30-2022: version 1.5 removed OneUpdater (for Alfred Gallery)
 - 11-01-2022: version 1.4 added timezones
 - 09-29-2022: version 1.3 added OneUpdater, quicklookurl preview, keyword configurable (thanks @vitorgalvao!)
 - 08-07-2022: version 1.2 merging @vitorgalvao's changes to update Workflow Environment Variables to User Configuration
@@ -87,3 +83,8 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 <h1 id="feedback">Feedback</h1>
 Feedback welcome! If you notice a bug, or have ideas for new features, please feel free to get in touch either here, or on the [Alfred](https://www.alfredforum.com) forum.
 
+# To add:
+- support for OpenWeather API key (wttr.in is blocked in some corporate networks)
+- support for Obsidian Daily Notes and Weekly Plan files
+- support for line-a-day workflow
+- support for Outlook calendar events

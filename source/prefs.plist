@@ -8,6 +8,8 @@
 	<string>~/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/GiovanniNotes/line-a-day.md</string>
 	<key>LOCATION</key>
 	<string>tarrytown, chappaqua, malibu</string>
+	<key>OBSIDIAN_AGENDA</key>
+	<true/>
 	<key>OBSIDIAN_CHECK</key>
 	<true/>
 	<key>OBSIDIAN_VAULT</key>

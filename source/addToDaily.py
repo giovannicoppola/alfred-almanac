@@ -5,15 +5,11 @@
 
 
 #import requests
-import json
 import sys
-import requests
-from datetime import datetime, timedelta
-import datetime as date2
-import re, os, time
+import time
 
-
-from config import VAULT_PATH, OBSIDIAN_DAILY
+from config import OBSIDIAN_AGENDA, OBSIDIAN_DAILY, VAULT_PATH
+from fetchAgenda import fetch_today_agenda
 
 myAlmanacString = sys.argv[1]
 
@@ -37,8 +33,29 @@ def fetchDailyNoteName():
 
 def main():
     myDailyNote = fetchDailyNoteName()
-    with open(f"{VAULT_PATH}/{myDailyNote}.md", "a") as file:
+    daily_note_path = f"{VAULT_PATH}/{myDailyNote}.md"
+    
+    # First, append the original content (one-line-a-day, weekly agenda, etc.)
+    with open(daily_note_path, "a") as file:
         file.write(f"{myAlmanacString}")
+    
+    # Check if OBSIDIAN_AGENDA is set to "1" (checked in Alfred)
+    if OBSIDIAN_AGENDA == "1":
+        log("OBSIDIAN_AGENDA = '1'")
+        try:
+            # Fetch today's agenda
+            agenda_markdown = fetch_today_agenda()
+            
+            # Append the agenda to the daily note with 2 blank lines before it
+            with open(daily_note_path, "a") as file:
+                file.write(f"\n\n{agenda_markdown}")
+            
+            log("Successfully appended today's agenda to daily note")
+            
+        except Exception as e:
+            log(f"Error fetching or appending agenda: {str(e)}")
+    else:
+        log("OBSIDIAN_AGENDA <> '1', skipping agenda fetch")
         
 
 

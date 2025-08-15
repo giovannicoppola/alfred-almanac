@@ -217,9 +217,8 @@
 				<key>runningsubtext</key>
 				<string>one moment while I retrieve the weather from wttr.in</string>
 				<key>script</key>
-				<string>export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
-export PYTHONPATH="$PWD/lib"
-python3 almanac.py $1 "${LOCATION}"</string>
+				<string>export PYTHONPATH="$PWD/lib"
+/usr/bin/python3 almanac.py $1 "${LOCATION}"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -746,7 +745,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<false/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>'</string>
 			<key>label</key>
 			<string>Obsidian Vault</string>
 			<key>type</key>
@@ -814,6 +813,25 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<string>textarea</string>
 			<key>variable</key>
 			<string></string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<false/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Add today's agenda to Obsidian daily page?</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>OBSIDIAN_AGENDA</string>
 		</dict>
 	</array>
 	<key>version</key>
