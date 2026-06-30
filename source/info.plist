@@ -508,6 +508,118 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<key>variable</key>
 			<string>SPECIAL_DAY</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<false/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string>📋 Append a link to this week's plan and carry over unchecked tasks on Fridays</string>
+			<key>label</key>
+			<string>Add weekly plan</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>WEEKLY</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>filtermode</key>
+				<integer>2</integer>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+			</dict>
+			<key>description</key>
+			<string>Folder of markdown (.md) files where weekly plans live (any editor)</string>
+			<key>label</key>
+			<string>Notes folder</string>
+			<key>type</key>
+			<string>filepicker</string>
+			<key>variable</key>
+			<string>NOTES_FOLDER</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>format1</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>Weekly plan (31) 2025-07-28 to 2025-08-01</string>
+						<string>format1</string>
+					</array>
+					<array>
+						<string>Week 31 - July 28-August 1, 2025</string>
+						<string>format2</string>
+					</array>
+					<array>
+						<string>W31 2025-07-28 to 2025-08-01</string>
+						<string>format3</string>
+					</array>
+					<array>
+						<string>Weekly Plan Week 31 (Jul 28 - Aug 1)</string>
+						<string>format4</string>
+					</array>
+					<array>
+						<string>2025 Week 31 (28-01 Jul-Aug)</string>
+						<string>format5</string>
+					</array>
+					<array>
+						<string>Week 31 - 07-28 to 08-01</string>
+						<string>format6</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>Choose the filename format for weekly plan files</string>
+			<key>label</key>
+			<string>Weekly Plan Format</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>WEEKLY_PLAN_FORMAT</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>markdown</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>Markdown link [name](name.md)</string>
+						<string>markdown</string>
+					</array>
+					<array>
+						<string>Wikilink ![[name]] (Obsidian / Logseq)</string>
+						<string>wikilink</string>
+					</array>
+					<array>
+						<string>Plain filename</string>
+						<string>plain</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>How the link to the weekly plan is written in the output</string>
+			<key>label</key>
+			<string>Weekly Plan Link Style</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>LINK_STYLE</string>
+		</dict>
 	</array>
 	<key>variablesdontexport</key>
 	<array/>

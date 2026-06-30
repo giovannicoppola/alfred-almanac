@@ -4,6 +4,10 @@
 <dict>
 	<key>FORMATSTRING</key>
 	<string>%C %c 🌡️%t (feels %f, %h) 🌬️%w %m&amp;m</string>
+	<key>LINK_STYLE</key>
+	<string>markdown</string>
+	<key>NOTES_FOLDER</key>
+	<string></string>
 	<key>OPENWEATHER_KEY</key>
 	<string></string>
 	<key>SPECIAL_DAY</key>
@@ -12,5 +16,9 @@
 	<string>fahrenheit</string>
 	<key>WEATHER_SOURCE</key>
 	<string>wttr</string>
+	<key>WEEKLY</key>
+	<false/>
+	<key>WEEKLY_PLAN_FORMAT</key>
+	<string>format1</string>
 </dict>
 </plist>

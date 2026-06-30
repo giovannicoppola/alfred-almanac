@@ -16,5 +16,9 @@ SPECIAL_DAY = os.path.expanduser(os.getenv('SPECIAL_DAY', ''))
 WEATHER_SOURCE = os.path.expanduser(os.getenv('WEATHER_SOURCE', 'wttr'))
 OPENWEATHER_KEY = os.path.expanduser(os.getenv('OPENWEATHER_KEY', ''))
 TEMPERATURE_UNIT = os.path.expanduser(os.getenv('TEMPERATURE_UNIT', 'fahrenheit'))
+WEEKLY = os.path.expanduser(os.getenv('WEEKLY', ''))
+NOTES_FOLDER = os.path.expanduser(os.getenv('NOTES_FOLDER', ''))
+WEEKLY_PLAN_FORMAT = os.path.expanduser(os.getenv('WEEKLY_PLAN_FORMAT', 'format1'))
+LINK_STYLE = os.path.expanduser(os.getenv('LINK_STYLE', 'markdown'))
 
 	

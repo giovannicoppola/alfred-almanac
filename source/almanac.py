@@ -13,7 +13,7 @@ import datetime as date2
 import re, os, time
 
 
-from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEATHER_SOURCE, OPENWEATHER_KEY, TEMPERATURE_UNIT
+from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEATHER_SOURCE, OPENWEATHER_KEY, TEMPERATURE_UNIT, WEEKLY, NOTES_FOLDER, WEEKLY_PLAN_FORMAT, LINK_STYLE
 
 FORMATSTRING = FORMATSTRING+"--%Z--" #adding local timezone
 #FORMATSTRING = f'"{FORMATSTRING}"'  #enclosing in quotes
@@ -199,6 +199,117 @@ def get_weather_data(location):
         return get_weather(location)
 
 
+def get_weekly_plan_filename(today, previous_monday, following_friday, year_week):
+    """Generate weekly plan filename based on the selected format"""
+
+    # Format the dates as strings
+    previous_monday_str = previous_monday.strftime('%Y-%m-%d')
+    following_friday_str = following_friday.strftime('%Y-%m-%d')
+    monday_short = previous_monday.strftime('%m-%d')
+    friday_short = following_friday.strftime('%m-%d')
+    monday_day = previous_monday.strftime('%d')
+    friday_day = following_friday.strftime('%d')
+    month_name = previous_monday.strftime('%B')
+    month_short = previous_monday.strftime('%b')
+    year = previous_monday.year
+
+    format_type = WEEKLY_PLAN_FORMAT.lower()
+
+    if format_type == 'format1':
+        # Original format: Weekly plan (31) 2025-07-28 to 2025-08-01
+        return f"Weekly plan ({year_week}) {previous_monday_str} to {following_friday_str}"
+    elif format_type == 'format2':
+        # Week 31 - July 28-August 1, 2025
+        return f"Week {year_week} - {month_name} {monday_day}-{following_friday.strftime('%B')} {friday_day}, {year}"
+    elif format_type == 'format3':
+        # W31 2025-07-28 to 2025-08-01
+        return f"W{year_week} {previous_monday_str} to {following_friday_str}"
+    elif format_type == 'format4':
+        # Weekly Plan Week 31 (Jul 28 - Aug 1)
+        return f"Weekly Plan Week {year_week} ({month_short} {monday_day} - {following_friday.strftime('%b')} {friday_day})"
+    elif format_type == 'format5':
+        # 2025 Week 31 (28-01 Jul-Aug)
+        return f"{year} Week {year_week} ({monday_day}-{friday_day} {month_short}-{following_friday.strftime('%b')})"
+    elif format_type == 'format6':
+        # Week 31 - 07-28 to 08-01
+        return f"Week {year_week} - {monday_short} to {friday_short}"
+    else:
+        # Default to format1 if unknown format
+        return f"Weekly plan ({year_week}) {previous_monday_str} to {following_friday_str}"
+
+
+def format_plan_link(filename):
+    """Render a link to a plan file according to the configured LINK_STYLE.
+
+    wikilink -> ![[name]]   (Obsidian / Logseq embed)
+    plain    -> name        (bare filename, no extension)
+    markdown -> [name](name.md)   (standard Markdown, default)
+    """
+    style = LINK_STYLE.lower()
+    if style == 'wikilink':
+        return f"![[{filename}]]"
+    elif style == 'plain':
+        return filename
+    else:
+        return f"[{filename}]({filename}.md)"
+
+
+def createWeeklyPlan():
+    """Return the filename (no extension) of the current week's plan."""
+    today = datetime.today()
+
+    # Calculate the previous Monday
+    previous_monday = today - timedelta(days=today.weekday())
+
+    # Calculate the following Friday
+    following_friday = previous_monday + timedelta(days=4)
+
+    # Get the ISO calendar week number
+    year_week = date2.date.today().isocalendar()[1]
+
+    return get_weekly_plan_filename(today, previous_monday, following_friday, year_week)
+
+
+def createNextWeeklyPlan(this_week_filename):
+    """On Fridays, create next week's plan file and carry over unchecked
+    tasks from this week. Returns next week's filename, or '' on other days."""
+    today = datetime.today()
+
+    # Only roll over on Friday (weekday() returns 4 for Friday)
+    if today.weekday() != 4:
+        return ""
+
+    # Calculate next Monday and its following Friday
+    next_monday = today + timedelta(days=(7 - today.weekday()))
+    following_friday = next_monday + timedelta(days=4)
+    year_week = next_monday.isocalendar()[1]
+
+    next_week_filename = get_weekly_plan_filename(next_monday, next_monday, following_friday, year_week)
+
+    file_path_next = f"{NOTES_FOLDER}/{next_week_filename}.md"
+    file_path_this = f"{NOTES_FOLDER}/{this_week_filename}.md"
+
+    # Create next week's file if it does not exist yet
+    if not os.path.exists(file_path_next):
+        with open(file_path_next, 'w') as file:
+            pass  # Just create the file
+
+    # Collect unchecked tasks ("- [ ]") from this week's file, if it exists
+    undone_tasks = []
+    if os.path.exists(file_path_this):
+        with open(file_path_this, 'r') as src:
+            for line in src:
+                if line.startswith('- [ ]'):
+                    undone_tasks.append(line)
+
+    # Carry them over into next week's file
+    with open(file_path_next, 'a') as tgt:
+        for task in undone_tasks:
+            tgt.write(task)
+
+    return next_week_filename
+
+
 def almanac ():
     today = datetime.now()
     todayStandard = today.strftime("%Y-%m-%d %a %-I:%M%p")
@@ -251,10 +362,20 @@ else:
 
 myAlmanac,myIcon = almanac()
 
+# Optional weekly plan + Friday task carryover
+if WEEKLY == '1':
+    this_week_filename = createWeeklyPlan()
+    weeklyPlan = "\n" + format_plan_link(this_week_filename)
+    next_week_filename = createNextWeeklyPlan(this_week_filename)
+    nextWeeklyPlan = ("\n" + format_plan_link(next_week_filename)) if next_week_filename else ""
+else:
+    weeklyPlan = ""
+    nextWeeklyPlan = ""
+
 locations = mylocation.split(",")
 for loc in locations:
     myOutput,myLocalTime, myTimeZone= get_weather_data(loc)
-    myFinalString = myOutput + " " + myLocalTime + myAlmanac
+    myFinalString = myOutput + " " + myLocalTime + myAlmanac + weeklyPlan + nextWeeklyPlan
     myTZstring = f"Current date/time: {myLocalTime} ({myTimeZone})"
 
     # Set quicklook URL based on weather source
