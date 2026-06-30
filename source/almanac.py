@@ -13,7 +13,7 @@ import datetime as date2
 import re, os, time
 
 
-from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEATHER_SOURCE, OPENWEATHER_KEY, TEMPERATURE_UNIT, WEEKLY, NOTES_FOLDER, WEEKLY_PLAN_FORMAT, LINK_STYLE
+from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEATHER_SOURCE, OPENWEATHER_KEY, TEMPERATURE_UNIT, WEEKLY, NOTES_FOLDER, WEEKLY_PLAN_FORMAT, LINK_STYLE, AGENDA
 
 FORMATSTRING = FORMATSTRING+"--%Z--" #adding local timezone
 #FORMATSTRING = f'"{FORMATSTRING}"'  #enclosing in quotes
@@ -372,10 +372,17 @@ else:
     weeklyPlan = ""
     nextWeeklyPlan = ""
 
+# Optional daily agenda from the calendar (opt-in; can be slow)
+if AGENDA == '1':
+    from fetchAgenda import fetch_today_agenda
+    agendaString = "\n" + fetch_today_agenda()
+else:
+    agendaString = ""
+
 locations = mylocation.split(",")
 for loc in locations:
     myOutput,myLocalTime, myTimeZone= get_weather_data(loc)
-    myFinalString = myOutput + " " + myLocalTime + myAlmanac + weeklyPlan + nextWeeklyPlan
+    myFinalString = myOutput + " " + myLocalTime + myAlmanac + weeklyPlan + nextWeeklyPlan + agendaString
     myTZstring = f"Current date/time: {myLocalTime} ({myTimeZone})"
 
     # Set quicklook URL based on weather source

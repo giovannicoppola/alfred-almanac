@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AGENDA</key>
+	<false/>
+	<key>CALENDAR_SOURCE</key>
+	<string>apple</string>
 	<key>FORMATSTRING</key>
 	<string>%C %c 🌡️%t (feels %f, %h) 🌬️%w %m&amp;m</string>
 	<key>LINK_STYLE</key>
