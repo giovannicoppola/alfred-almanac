@@ -13,7 +13,7 @@ import datetime as date2
 import re, os, time
 
 
-from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEATHER_SOURCE, OPENWEATHER_KEY, TEMPERATURE_UNIT, WEEKLY, NOTES_FOLDER, WEEKLY_PLAN_FORMAT, LINK_STYLE, AGENDA
+from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEATHER_SOURCE, OPENWEATHER_KEY, TEMPERATURE_UNIT, WEEKLY, NOTES_FOLDER, WEEKLY_PLAN_FORMAT, LINK_STYLE, AGENDA, LINEADAY, LINEADAY_FILE
 
 FORMATSTRING = FORMATSTRING+"--%Z--" #adding local timezone
 #FORMATSTRING = f'"{FORMATSTRING}"'  #enclosing in quotes
@@ -310,6 +310,63 @@ def createNextWeeklyPlan(this_week_filename):
     return next_week_filename
 
 
+# Read a markdown file and return its lines (empty list if missing)
+def read_markdown_file(file_path):
+    if not file_path or not os.path.exists(file_path):
+        return []
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    return lines
+
+
+# Extract (date, line) pairs from "- **YYYY-MM-DD** ..." entries
+def extract_dates_and_lines(lines):
+    date_lines = []
+    for line in lines:
+        if line.startswith('- **'):
+            try:
+                date_str = line.split('**')[1].split(' ')[0]
+                date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+            except (IndexError, ValueError):
+                continue  # skip malformed entries
+            date_lines.append((date_obj, line.strip()))
+    return date_lines
+
+
+# Find the entry whose date is closest to target_date
+def find_closest_dates(date_lines, target_date):
+    return min(date_lines, key=lambda x: abs(x[0] - target_date))
+
+
+def fetchLineADay(file_path):
+    # Read the markdown file
+    lines = read_markdown_file(file_path)
+
+    # Extract dates and lines
+    date_lines = extract_dates_and_lines(lines)
+
+    # Nothing usable -> contribute nothing to the output
+    if not date_lines:
+        return ""
+
+    # Calculate today's date
+    today = datetime.now()
+
+    # Determine the earliest entry to know how many years back we can go
+    earliest_date = min(date_lines, key=lambda x: x[0])[0]
+    date_range_years = (today - earliest_date).days / 365.25
+    complete_years = int(date_range_years)
+
+    # For each complete year ago, quote the entry closest to that day
+    result_string = "\n\n📅 **One-line-a-days**\n"
+    for year in range(1, complete_years + 1):
+        target_date = today - timedelta(days=365 * year)
+        closestLine = find_closest_dates(date_lines, target_date)
+        result_string += "\t" + closestLine[1] + "\n"
+
+    return result_string
+
+
 def almanac ():
     today = datetime.now()
     todayStandard = today.strftime("%Y-%m-%d %a %-I:%M%p")
@@ -362,6 +419,12 @@ else:
 
 myAlmanac,myIcon = almanac()
 
+# Optional "on this day" quotes from a line-a-day journal file
+if LINEADAY == '1':
+    previousLines = fetchLineADay(LINEADAY_FILE)
+else:
+    previousLines = ""
+
 # Optional weekly plan + Friday task carryover
 if WEEKLY == '1':
     this_week_filename = createWeeklyPlan()
@@ -382,7 +445,7 @@ else:
 locations = mylocation.split(",")
 for loc in locations:
     myOutput,myLocalTime, myTimeZone= get_weather_data(loc)
-    myFinalString = myOutput + " " + myLocalTime + myAlmanac + weeklyPlan + nextWeeklyPlan + agendaString
+    myFinalString = myOutput + " " + myLocalTime + myAlmanac + previousLines + weeklyPlan + nextWeeklyPlan + agendaString
     myTZstring = f"Current date/time: {myLocalTime} ({myTimeZone})"
 
     # Set quicklook URL based on weather source

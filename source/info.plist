@@ -665,6 +665,46 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<key>variable</key>
 			<string>CALENDAR_SOURCE</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<false/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string>📖 Quote entries from this day in previous years (line-a-day journal)</string>
+			<key>label</key>
+			<string>Quote previous line-a-day items?</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>LINEADAY</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>filtermode</key>
+				<integer>2</integer>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+			</dict>
+			<key>description</key>
+			<string>Markdown file with "- **YYYY-MM-DD** ..." entries (only needed if line-a-day above is checked)</string>
+			<key>label</key>
+			<string>line-a-day file</string>
+			<key>type</key>
+			<string>filepicker</string>
+			<key>variable</key>
+			<string>LINEADAYFILE</string>
+		</dict>
 	</array>
 	<key>variablesdontexport</key>
 	<array/>

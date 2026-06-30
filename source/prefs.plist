@@ -8,6 +8,10 @@
 	<string>apple</string>
 	<key>FORMATSTRING</key>
 	<string>%C %c 🌡️%t (feels %f, %h) 🌬️%w %m&amp;m</string>
+	<key>LINEADAY</key>
+	<false/>
+	<key>LINEADAYFILE</key>
+	<string></string>
 	<key>LINK_STYLE</key>
 	<string>markdown</string>
 	<key>NOTES_FOLDER</key>
