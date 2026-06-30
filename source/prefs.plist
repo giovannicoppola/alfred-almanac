@@ -4,7 +4,13 @@
 <dict>
 	<key>FORMATSTRING</key>
 	<string>%C %c 🌡️%t (feels %f, %h) 🌬️%w %m&amp;m</string>
+	<key>OPENWEATHER_KEY</key>
+	<string></string>
 	<key>SPECIAL_DAY</key>
 	<string>05-11</string>
+	<key>TEMPERATURE_UNIT</key>
+	<string>fahrenheit</string>
+	<key>WEATHER_SOURCE</key>
+	<string>wttr</string>
 </dict>
 </plist>

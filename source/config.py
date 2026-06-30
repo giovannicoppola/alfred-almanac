@@ -13,5 +13,8 @@ import os
 LOCATION = os.path.expanduser(os.getenv('LOCATION', ''))
 FORMATSTRING = os.path.expanduser(os.getenv('FORMATSTRING', ''))
 SPECIAL_DAY = os.path.expanduser(os.getenv('SPECIAL_DAY', ''))
+WEATHER_SOURCE = os.path.expanduser(os.getenv('WEATHER_SOURCE', 'wttr'))
+OPENWEATHER_KEY = os.path.expanduser(os.getenv('OPENWEATHER_KEY', ''))
+TEMPERATURE_UNIT = os.path.expanduser(os.getenv('TEMPERATURE_UNIT', 'fahrenheit'))
 
 	
