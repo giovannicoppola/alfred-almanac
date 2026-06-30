@@ -1,6 +1,6 @@
 # alfred-almanac
 
-### Start your day with weather from [wttr.in](http://wttr.in/) and a daily almanac
+### Start your day with weather and a daily almanac — plus optional weekly planning, a calendar agenda, and a journal lookback
 
 
 ![](images/alfred-almanac.gif)
@@ -14,6 +14,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 
 - [Setting up](#setting-up)
 - [Basic Usage](#basic-usage)
+- [Optional features](#optional-features)
 - [Known Issues](#known-issues)
 - [Acknowledgments](#acknowledgments)
 - [Changelog](#changelog)
@@ -51,6 +52,8 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 	- `%h` humidity
 	- 🌬️`%w` wind
 	- `%m` moon phase
+- Temperature can be shown in °F or °C (set **Temperature unit** in the configuration)
+- The weather source can be switched from `wttr.in` to [OpenWeather](https://openweathermap.org) (set **Weather Info Source** and provide your own API key)
 
 - The almanac section will output:
 	- local date and time
@@ -65,6 +68,33 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 - Option (⌥) will show the local date/time and timezone
 
 
+<h1 id="optional-features">Optional features</h1>
+
+All of these are **off by default** and can be enabled in `Configure Workflow`. They append extra lines to the almanac output (which you can copy with ↩️ or view in large text with ⌃↩️).
+
+### Weather source & units
+- **Weather Info Source:** `wttr.in` (default, no setup) or **OpenWeather**. For OpenWeather, get a free API key at [openweathermap.org](https://openweathermap.org/api) and paste it into **Open Weather API Key**.
+- **Temperature unit:** `°F` (default) or `°C`. Applies to both sources.
+
+### Weekly plan + task carryover
+Enable **Add weekly plan** to append a link to the current week's plan file. On **Fridays** it also creates next week's plan file and carries over any unchecked tasks (`- [ ]` lines) from this week.
+
+- **Notes folder:** any folder of Markdown (`.md`) files where the plans live — works with Obsidian, Logseq, VS Code, plain text, etc.
+- **Weekly Plan Format:** pick the filename pattern (e.g. `Weekly plan (31) 2025-07-28 to 2025-08-01`).
+- **Weekly Plan Link Style:** how the link is written — standard Markdown `[name](name.md)` (default), Obsidian/Logseq wikilink `![[name]]`, or plain filename.
+
+See [`source/WEEKLY_PLAN_FORMATS.md`](source/WEEKLY_PLAN_FORMATS.md) for the full list of formats.
+
+### Daily agenda
+Enable **Add today's agenda** to append today's calendar events (time, title, location), sorted chronologically.
+
+- **Calendar source:** **Apple Calendar** (default — also covers iCloud/Google/Exchange accounts synced into Calendar) or **Microsoft Outlook**.
+- On first use, macOS will ask for permission to control the chosen app. Reading Apple Calendar can be slow, which is why this feature is opt-in.
+
+### Line-a-day lookback
+Enable **Quote previous line-a-day items?** to append, for each past year, the journal entry closest to *this day* in that year (a "on this day" lookback). Point **line-a-day file** at a Markdown file whose entries look like `- **YYYY-MM-DD** ...`. Pairs nicely with the companion [alfred-line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow.
+
+
 <h1 id="known-issues">Known issues</h1>
 - Not tested extensively for international locations
 
@@ -77,6 +107,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 <h1 id="changelog">Changelog </h1>
 
 
+- 06-30-2026: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, daily agenda (Apple Calendar / Outlook), and line-a-day lookback
 - 11-30-2022: version 1.5 removed OneUpdater (for Alfred Gallery) 
 - 11-01-2022: version 1.4 added timezones
 - 09-29-2022: version 1.3 added OneUpdater, quicklookurl preview, keyword configurable (thanks @vitorgalvao!)
