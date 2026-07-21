@@ -86,7 +86,7 @@
 	<key>description</key>
 	<string>weather etc.</string>
 	<key>disabled</key>
-	<false/>
+	<true/>
 	<key>name</key>
 	<string>alfred almanac</string>
 	<key>objects</key>
