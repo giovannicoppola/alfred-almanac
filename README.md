@@ -66,6 +66,118 @@ src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubuserc
 - CTRL-enter (⌃↩️) will show the almanac string in large font
 - Option (⌥) will show the local date/time and timezone
 
+## Outlook Calendar Integration
+
+The almanac can fetch today's meeting agenda from Microsoft Outlook and append it to your Obsidian daily note.
+
+### Setup
+
+This feature requires a Microsoft Entra (Azure AD) app registration for Graph API access:
+
+1. Create an app registration at [https://portal.azure.com](https://portal.azure.com) (or use an existing one)
+2. Create a `config.json` file in the `source/` directory:
+   ```json
+   {
+     "client_id": "YOUR_CLIENT_ID",
+     "tenant_id": "YOUR_TENANT_ID",
+     "client_secret": "YOUR_CLIENT_SECRET",
+     "scopes": ["Calendars.Read", "Mail.Read"]
+   }
+   ```
+3. Set the `OBSIDIAN_AGENDA` workflow variable to `1`
+4. On first run, a browser window will open for Microsoft login. Subsequent runs use cached tokens (`token_cache.json`, auto-generated).
+
+Alternatively, set the `GRAPH_CONFIG_DIR` workflow environment variable to point to a directory containing `config.json` and `token_cache.json` (e.g., to share credentials with other workflows).
+
+### One-on-One Meeting Integration
+
+For one-on-one meetings (exactly 2 attendees), the almanac can automatically fetch "to discuss" items from person notes and include them in the daily agenda.
+
+#### Quick Setup (3 Steps)
+
+**1. Configure Workflow Variables** (Alfred Preferences → Workflows → alfred-almanac → Configure Workflow):
+
+Required:
+- **`PEOPLE_FOLDER`**: Full path to your Obsidian people folder
+  - Example: `/Users/yourname/Documents/Vault/_People`
+  - Click the folder icon to browse and select
+
+Optional (sensible defaults provided):
+- **`DISCUSS_SECTION`**: Section header in person notes (default: `# Active Items`)
+- **`ONE_ON_ONE_TAG`**: Frontmatter tag to identify notes (default: `one-on-one`)
+
+**2. Tag Person Notes**
+
+Add the tag to person notes for people you have regular one-on-ones with:
+```yaml
+---
+tags: [one-on-one]
+---
+```
+
+**3. Create Discussion Sections**
+
+Maintain a section in those person notes with items to discuss:
+```markdown
+# Active Items
+- [ ] Discuss project timeline
+- [ ] Review Q4 goals
+- [ ] Follow up on last week's action items
+```
+
+#### How It Works
+
+When the almanac detects a one-on-one meeting (exactly 2 attendees), it will:
+1. Match the attendee name to a file in your `PEOPLE_FOLDER` (case-insensitive, partial matching)
+2. Check if that note has the `ONE_ON_ONE_TAG` in frontmatter
+3. Extract all content from the `DISCUSS_SECTION` header
+4. Insert the items in your daily note under the meeting header as: `**To Discuss with [[PersonName]]:**`
+
+#### Name Matching
+
+The workflow matches calendar attendee names to person note filenames flexibly:
+- **Exact match**: "Julie Horowitz" → `Julie Horowitz.md`
+- **Partial match**: "Julie Horowitz" → `Julie H.md` or `J. Horowitz.md`
+- **Case-insensitive**: Works with any capitalization
+
+Tip: Use the full name in your person note filename that matches how it appears in your calendar.
+
+#### Example Output
+
+In your daily note:
+```markdown
+# Weekly sync with Product Team
+**Time:** 10:00:00 AM - 10:30:00 AM
+**Attendees:** Julie Horowitz, Giovanni Coppola
+**To Discuss with [[Julie Horowitz]]:**
+- [ ] Discuss project timeline
+- [ ] Review Q4 goals
+- [ ] Follow up on last week's action items
+
+**Agenda:** Product roadmap review...
+```
+
+### How it works
+
+- Tries the **Graph API** first (works with new Outlook)
+- Falls back to **AppleScript** if Graph API is unavailable (legacy Outlook)
+- Returns all accepted events for today, including recurring and overlapping ones
+- Skips cancelled and declined events
+- Cleans up meeting body text:
+  - Converts Office file icon links to proper markdown links
+  - Removes Microsoft Teams join/dial-in boilerplate
+  - Removes inline image references (`[cid:...]`)
+
+### Dependencies
+
+Graph API packages are bundled in `source/lib/`:
+- `msal`, `requests`, `jwt` (PyJWT), `cryptography`, `cffi`, `pycparser`, `certifi`, `urllib3`, `idna`, `charset_normalizer`
+
+Install/update with:
+```bash
+pip install --target=source/lib msal requests
+```
+
 <h1 id="known-issues">Known issues</h1>
 - Not tested extensively for international locations
 
@@ -76,6 +188,8 @@ src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubuserc
 
 <h1 id="changelog">Changelog </h1>
 
+- version 1.8: One-on-one meeting integration - automatically fetch "to discuss" items from person notes and include them in daily agenda. Detects one-on-one meetings (2 attendees), matches attendee names to person notes, extracts discussion items from configurable sections. Supports flexible name matching and frontmatter tag filtering.
+- version 1.7: Outlook calendar agenda via Graph API (new Outlook support), with AppleScript fallback. Meeting body cleanup (markdown links, Teams boilerplate removal).
 - version 1.6: integration with Obsidian Daily Notes, and Weekly plan files, integration with line-a-day workflow, added OpenWeather API support.
 - 11-30-2022: version 1.5 removed OneUpdater (for Alfred Gallery)
 - 11-01-2022: version 1.4 added timezones
@@ -87,8 +201,3 @@ src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubuserc
 <h1 id="feedback">Feedback</h1>
 Feedback welcome! If you notice a bug, or have ideas for new features, please feel free to get in touch either here, or on the [Alfred](https://www.alfredforum.com) forum.
 
-# To add:
-- support for OpenWeather API key (wttr.in is blocked in some corporate networks)
-- support for Obsidian Daily Notes and Weekly Plan files
-- support for line-a-day workflow
-- support for Outlook calendar events

@@ -27,6 +27,10 @@ WEATHER_SOURCE = os.path.expanduser(os.getenv('WEATHER_SOURCE', 'wttr'))
 OPENWEATHER_KEY = os.path.expanduser(os.getenv('OPENWEATHER_KEY', ''))
 TEMPERATURE_UNIT = os.path.expanduser(os.getenv('TEMPERATURE_UNIT', 'fahrenheit'))
 WEEKLY_PLAN_FORMAT = os.path.expanduser(os.getenv('WEEKLY_PLAN_FORMAT', 'format1'))
+EMAILSTROM_SCRIPT = os.path.expanduser(os.getenv('EMAILSTROM_SCRIPT', ''))
+PEOPLE_FOLDER = os.path.expanduser(os.getenv('PEOPLE_FOLDER', ''))
+DISCUSS_SECTION = os.path.expanduser(os.getenv('DISCUSS_SECTION', '# Active Items'))
+ONE_ON_ONE_TAG = os.path.expanduser(os.getenv('ONE_ON_ONE_TAG', 'one-on-one'))
 
 def log(s, *args):
     if args:

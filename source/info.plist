@@ -5,7 +5,7 @@
 	<key>bundleid</key>
 	<string>giovanni-almanac</string>
 	<key>category</key>
-	<string>myWorkflows</string>
+	<string>WIP</string>
 	<key>connections</key>
 	<dict>
 		<key>08E34930-04EB-4AE1-9FC5-85F2E8003448</key>
@@ -215,7 +215,7 @@
 				<key>queuemode</key>
 				<integer>1</integer>
 				<key>runningsubtext</key>
-				<string>one moment while I retrieve the weather from wttr.in</string>
+				<string>one moment while I retrieve the weather from {var:WEATHER_SOURCE}</string>
 				<key>script</key>
 				<string>export PYTHONPATH="$PWD/lib"
 /usr/bin/python3 almanac.py $1 "${LOCATION}"</string>
@@ -833,11 +833,91 @@
 			<key>variable</key>
 			<string>OBSIDIAN_AGENDA</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>filtermode</key>
+				<integer>2</integer>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Emailstrom script</string>
+			<key>type</key>
+			<string>filepicker</string>
+			<key>variable</key>
+			<string>EMAILSTROM_SCRIPT</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string></string>
+				<key>filtermode</key>
+				<integer>2</integer>
+				<key>placeholder</key>
+				<string>/Users/giovanni.coppola/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/GiovanniNotes/_People</string>
+				<key>required</key>
+				<false/>
+			</dict>
+			<key>description</key>
+			<string>Folder containing person notes for one-on-one meetings</string>
+			<key>label</key>
+			<string>People Folder Path</string>
+			<key>type</key>
+			<string>filepicker</string>
+			<key>variable</key>
+			<string>PEOPLE_FOLDER</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string># Active Items</string>
+				<key>placeholder</key>
+				<string># Active Items</string>
+				<key>required</key>
+				<false/>
+			</dict>
+			<key>description</key>
+			<string>Section header containing items to discuss in person notes</string>
+			<key>label</key>
+			<string>To Discuss Section Header</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>DISCUSS_SECTION</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>one-on-one</string>
+				<key>placeholder</key>
+				<string>one-on-one</string>
+				<key>required</key>
+				<false/>
+			</dict>
+			<key>description</key>
+			<string>Frontmatter tag to identify person notes with regular one-on-one meetings</string>
+			<key>label</key>
+			<string>One-on-One Tag</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>ONE_ON_ONE_TAG</string>
+		</dict>
 	</array>
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>1.6</string>
+	<string>1.8</string>
 	<key>webaddress</key>
 	<string>https://github.com/giovannicoppola/alfred-almanac</string>
 </dict>
