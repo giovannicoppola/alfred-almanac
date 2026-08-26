@@ -18,13 +18,13 @@
 	<string>~/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/GiovanniNotes/</string>
 	<key>OPENWEATHER_KEY</key>
 	<string>5fffcb5fe33f50a3c1512d72db96dd95</string>
+	<key>PEOPLE_FOLDER</key>
+	<string>~/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/GiovanniNotes/_People</string>
 	<key>SPECIAL_DAY</key>
 	<string>05-11</string>
 	<key>WEATHER_SOURCE</key>
 	<string>openweather</string>
 	<key>WEEKLY</key>
 	<true/>
-	<key>PEOPLE_FOLDER</key>
-	<string>~/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/GiovanniNotes/_People</string>
 </dict>
 </plist>
