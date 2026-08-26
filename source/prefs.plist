@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>EMAILSTROM_SCRIPT</key>
+	<string>~/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/MyScripts/myGitHubRepos/email-sweeper/source/alfred-mailstrom.sh</string>
 	<key>LINEADAY</key>
 	<true/>
 	<key>LINEADAYFILE</key>
@@ -22,5 +24,7 @@
 	<string>openweather</string>
 	<key>WEEKLY</key>
 	<true/>
+	<key>PEOPLE_FOLDER</key>
+	<string>~/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/GiovanniNotes/_People</string>
 </dict>
 </plist>

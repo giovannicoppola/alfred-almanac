@@ -208,8 +208,12 @@ def _get_to_discuss_items(attendees_str):
     # Parse attendees
     attendees = [a.strip() for a in attendees_str.split(',') if a.strip()]
 
-    # Check if it's a one-to-one (exactly 2 attendees)
-    if len(attendees) != 2:
+    # Check if it's a one-to-one
+    # Graph API doesn't include organizer in attendees, so:
+    # - 1 attendee = organizer + 1 other (one-on-one)
+    # - 2 attendees = could be organizer explicitly listed + 1 other, or 3-person meeting
+    # For safety, accept 1 or 2 attendees
+    if len(attendees) == 0 or len(attendees) > 2:
         return ""
 
     # Try to match each attendee to a person note
