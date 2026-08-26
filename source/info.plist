@@ -109,9 +109,9 @@
 	<key>createdby</key>
 	<string>giovanni</string>
 	<key>description</key>
-	<string>weather etc.</string>
+	<string>Daily almanac with weather, Outlook calendar, and one-on-one meeting integration for Obsidian</string>
 	<key>disabled</key>
-	<true/>
+	<false/>
 	<key>name</key>
 	<string>alfred almanac</string>
 	<key>objects</key>
