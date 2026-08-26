@@ -302,51 +302,51 @@ python3 almanac.py $1 "${LOCATION}"</string>
 		<key>14649548-782E-42CF-BFB1-2F4A8F051301</key>
 		<dict>
 			<key>xpos</key>
-			<real>565</real>
+			<real>565.0</real>
 			<key>ypos</key>
-			<real>90</real>
+			<real>90.0</real>
 		</dict>
 		<key>3ACFA87D-7C7F-4FD2-B2BA-44B82E70C8BB</key>
 		<dict>
 			<key>xpos</key>
-			<real>565</real>
+			<real>565.0</real>
 			<key>ypos</key>
-			<real>520</real>
+			<real>520.0</real>
 		</dict>
 		<key>3B9C56F6-92CA-4E97-92EF-20C22F571619</key>
 		<dict>
 			<key>xpos</key>
-			<real>125</real>
+			<real>125.0</real>
 			<key>ypos</key>
-			<real>305</real>
+			<real>305.0</real>
 		</dict>
 		<key>5108E2BB-255E-495B-8724-D08BE7428EE4</key>
 		<dict>
 			<key>xpos</key>
-			<real>565</real>
+			<real>565.0</real>
 			<key>ypos</key>
-			<real>305</real>
+			<real>305.0</real>
 		</dict>
 		<key>9FAAF43A-64B2-4222-9BC4-476F44DB774E</key>
 		<dict>
 			<key>xpos</key>
-			<real>350</real>
+			<real>350.0</real>
 			<key>ypos</key>
-			<real>335</real>
+			<real>335.0</real>
 		</dict>
 		<key>AD98303D-D3C7-49B5-9333-ED86BD1D6FDF</key>
 		<dict>
 			<key>xpos</key>
-			<real>350</real>
+			<real>350.0</real>
 			<key>ypos</key>
-			<real>225</real>
+			<real>225.0</real>
 		</dict>
 		<key>F1D04340-4DE0-42CE-9668-77B9EC45BAB5</key>
 		<dict>
 			<key>xpos</key>
-			<real>350</real>
+			<real>350.0</real>
 			<key>ypos</key>
-			<real>445</real>
+			<real>445.0</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
@@ -705,11 +705,30 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<key>variable</key>
 			<string>LINEADAYFILE</string>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<false/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string>📔 Show 'on this day' links from journal-tagged notes (Obsidian notes with a 'journal' YAML tag). The index is built on launch and cached in the workflow data folder. Uses the Notes folder as the vault root.</string>
+			<key>label</key>
+			<string>Show journal 'on this day'?</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>JOURNAL</string>
+		</dict>
 	</array>
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>1.6</string>
+	<string>1.6.1</string>
 	<key>webaddress</key>
 	<string>https://github.com/giovannicoppola/alfred-almanac</string>
 </dict>

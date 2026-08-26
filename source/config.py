@@ -24,5 +24,6 @@ AGENDA = os.path.expanduser(os.getenv('AGENDA', ''))
 CALENDAR_SOURCE = os.path.expanduser(os.getenv('CALENDAR_SOURCE', 'apple'))
 LINEADAY = os.path.expanduser(os.getenv('LINEADAY', ''))
 LINEADAY_FILE = os.path.expanduser(os.getenv('LINEADAYFILE', ''))
+JOURNAL = os.path.expanduser(os.getenv('JOURNAL', ''))
 
 	

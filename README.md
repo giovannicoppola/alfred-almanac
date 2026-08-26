@@ -106,6 +106,7 @@ Enable **Quote previous line-a-day items?** to append, for each past year, the j
 
 <h1 id="changelog">Changelog </h1>
 
+- 2026-07-21: version 1.6.1, added an optional journal 'on this day' feature (index built on launch, cached in the workflow data folder)
 
 - 06-30-2026: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, daily agenda (Apple Calendar / Outlook), and line-a-day lookback
 - 11-30-2022: version 1.5 removed OneUpdater (for Alfred Gallery) 
