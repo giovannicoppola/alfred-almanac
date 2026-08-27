@@ -7,8 +7,9 @@
 
 
 from __future__ import unicode_literals
-import os
 
+import os
+import sys
 
 LOCATION = os.path.expanduser(os.getenv('LOCATION', ''))
 FORMATSTRING = os.path.expanduser(os.getenv('FORMATSTRING', ''))
@@ -26,4 +27,16 @@ LINEADAY = os.path.expanduser(os.getenv('LINEADAY', ''))
 LINEADAY_FILE = os.path.expanduser(os.getenv('LINEADAYFILE', ''))
 JOURNAL = os.path.expanduser(os.getenv('JOURNAL', ''))
 
-	
+VAULT_PATH = os.path.expanduser(os.getenv('OBSIDIAN_VAULT', ''))
+OBSIDIAN_CHECK = os.path.expanduser(os.getenv('OBSIDIAN_CHECK', ''))
+OBSIDIAN_DAILY = os.path.expanduser(os.getenv('DAILY_FORMAT', ''))
+OBSIDIAN_AGENDA = os.path.expanduser(os.getenv('OBSIDIAN_AGENDA', ''))
+EMAILSTROM_SCRIPT = os.path.expanduser(os.getenv('EMAILSTROM_SCRIPT', ''))
+PEOPLE_FOLDER = os.path.expanduser(os.getenv('PEOPLE_FOLDER', ''))
+DISCUSS_SECTION = os.path.expanduser(os.getenv('DISCUSS_SECTION', '# Active Items'))
+ONE_ON_ONE_TAG = os.path.expanduser(os.getenv('ONE_ON_ONE_TAG', 'one-on-one'))
+
+def log(s, *args):
+    if args:
+        s = s % args
+    print(s, file=sys.stderr)
