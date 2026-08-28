@@ -5,34 +5,9 @@
 	<key>bundleid</key>
 	<string>giovanni-almanac</string>
 	<key>category</key>
-	<string>WIP</string>
+	<string>myWorkflows</string>
 	<key>connections</key>
 	<dict>
-		<key>08E34930-04EB-4AE1-9FC5-85F2E8003448</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>8D825DB8-1ED8-46E8-906F-0AA9AF89E3B7</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>sourceoutputuid</key>
-				<string>D9274A49-C180-4C50-BB06-D87C582D3C1A</string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
-				<string>5108E2BB-255E-495B-8724-D08BE7428EE4</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-		</array>
 		<key>3B9C56F6-92CA-4E97-92EF-20C22F571619</key>
 		<array>
 			<dict>
@@ -70,7 +45,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>08E34930-04EB-4AE1-9FC5-85F2E8003448</string>
+				<string>5108E2BB-255E-495B-8724-D08BE7428EE4</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -109,9 +84,9 @@
 	<key>createdby</key>
 	<string>giovanni</string>
 	<key>description</key>
-	<string>Daily almanac with weather, Outlook calendar, and one-on-one meeting integration for Obsidian</string>
+	<string>weather etc.</string>
 	<key>disabled</key>
-	<true/>
+	<false/>
 	<key>name</key>
 	<string>alfred almanac</string>
 	<key>objects</key>
@@ -144,29 +119,6 @@
 			<string>14649548-782E-42CF-BFB1-2F4A8F051301</string>
 			<key>version</key>
 			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>/usr/bin/python3 addToDaily.py "$split1"</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>11</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>8D825DB8-1ED8-46E8-906F-0AA9AF89E3B7</string>
-			<key>version</key>
-			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -215,10 +167,11 @@
 				<key>queuemode</key>
 				<integer>1</integer>
 				<key>runningsubtext</key>
-				<string>one moment while I retrieve the weather from {var:WEATHER_SOURCE}</string>
+				<string>one moment while I retrieve the weather from wttr.in</string>
 				<key>script</key>
-				<string>export PYTHONPATH="$PWD/lib"
-/usr/bin/python3 almanac.py $1 "${LOCATION}"</string>
+				<string>export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
+export PYTHONPATH="$PWD/lib"
+python3 almanac.py $1 "${LOCATION}"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -242,34 +195,21 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>conditions</key>
-				<array>
-					<dict>
-						<key>inputstring</key>
-						<string>{var:OBSIDIAN_CHECK}</string>
-						<key>matchcasesensitive</key>
-						<false/>
-						<key>matchmode</key>
-						<integer>0</integer>
-						<key>matchstring</key>
-						<string>1</string>
-						<key>outputlabel</key>
-						<string>Add to Daily Note</string>
-						<key>uid</key>
-						<string>D9274A49-C180-4C50-BB06-D87C582D3C1A</string>
-					</dict>
-				</array>
-				<key>elselabel</key>
-				<string>else</string>
-				<key>hideelse</key>
+				<key>autopaste</key>
+				<true/>
+				<key>clipboardtext</key>
+				<string>{var:split1}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
 				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.utility.conditional</string>
+			<string>alfred.workflow.output.clipboard</string>
 			<key>uid</key>
-			<string>08E34930-04EB-4AE1-9FC5-85F2E8003448</string>
+			<string>5108E2BB-255E-495B-8724-D08BE7428EE4</string>
 			<key>version</key>
-			<integer>1</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -291,25 +231,6 @@
 			<string>9FAAF43A-64B2-4222-9BC4-476F44DB774E</string>
 			<key>version</key>
 			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>autopaste</key>
-				<true/>
-				<key>clipboardtext</key>
-				<string>{var:split1}</string>
-				<key>ignoredynamicplaceholders</key>
-				<false/>
-				<key>transient</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
-			<key>uid</key>
-			<string>5108E2BB-255E-495B-8724-D08BE7428EE4</string>
-			<key>version</key>
-			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -355,8 +276,7 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string># Almanac 🌞
-- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
+	<string>- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
 - ... or enter a location/ZIP code directly
 - The default weather string will output:
 	- `%C` weather condition text
@@ -376,75 +296,57 @@
 - Enter (↩️) will copy to the clipboard and past to the frontmost application
 - Shift-enter (⇧↩️) will open the corresponding page on `wttr.in`
 - CTRL-enter (⌃↩️) will show the almanac string in large font
-- Option (⌥) will show the local date/time and timezone
-
-## Additional settings:
-- `Add weekly plan` will add an Obsidian link to the current week's todo list. On Fridays, also to the following week's plan
-- `line-a-day?`: for users of the [line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow: will quote previous line-a-day items (from 1 or more years earlier)</string>
+- Option (⌥) will show the local date/time and timezone</string>
 	<key>uidata</key>
 	<dict>
-		<key>08E34930-04EB-4AE1-9FC5-85F2E8003448</key>
-		<dict>
-			<key>xpos</key>
-			<real>535</real>
-			<key>ypos</key>
-			<real>330</real>
-		</dict>
 		<key>14649548-782E-42CF-BFB1-2F4A8F051301</key>
 		<dict>
 			<key>xpos</key>
-			<real>565.0</real>
+			<real>565</real>
 			<key>ypos</key>
-			<real>90.0</real>
+			<real>90</real>
 		</dict>
 		<key>3ACFA87D-7C7F-4FD2-B2BA-44B82E70C8BB</key>
 		<dict>
 			<key>xpos</key>
-			<real>565.0</real>
+			<real>565</real>
 			<key>ypos</key>
-			<real>520.0</real>
+			<real>520</real>
 		</dict>
 		<key>3B9C56F6-92CA-4E97-92EF-20C22F571619</key>
 		<dict>
 			<key>xpos</key>
-			<real>125.0</real>
+			<real>125</real>
 			<key>ypos</key>
-			<real>305.0</real>
+			<real>305</real>
 		</dict>
 		<key>5108E2BB-255E-495B-8724-D08BE7428EE4</key>
 		<dict>
 			<key>xpos</key>
-			<real>830</real>
+			<real>565</real>
 			<key>ypos</key>
-			<real>370</real>
-		</dict>
-		<key>8D825DB8-1ED8-46E8-906F-0AA9AF89E3B7</key>
-		<dict>
-			<key>xpos</key>
-			<real>835</real>
-			<key>ypos</key>
-			<real>215</real>
+			<real>305</real>
 		</dict>
 		<key>9FAAF43A-64B2-4222-9BC4-476F44DB774E</key>
 		<dict>
 			<key>xpos</key>
-			<real>350.0</real>
+			<real>350</real>
 			<key>ypos</key>
-			<real>335.0</real>
+			<real>335</real>
 		</dict>
 		<key>AD98303D-D3C7-49B5-9333-ED86BD1D6FDF</key>
 		<dict>
 			<key>xpos</key>
-			<real>350.0</real>
+			<real>350</real>
 			<key>ypos</key>
-			<real>225.0</real>
+			<real>225</real>
 		</dict>
 		<key>F1D04340-4DE0-42CE-9668-77B9EC45BAB5</key>
 		<dict>
 			<key>xpos</key>
-			<real>350.0</real>
+			<real>350</real>
 			<key>ypos</key>
-			<real>445.0</real>
+			<real>445</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
@@ -474,58 +376,6 @@
 			<key>config</key>
 			<dict>
 				<key>default</key>
-				<string>wttr</string>
-				<key>pairs</key>
-				<array>
-					<array>
-						<string>wttr.in</string>
-						<string>wttr</string>
-					</array>
-					<array>
-						<string>Open Weather</string>
-						<string>openweather</string>
-					</array>
-				</array>
-			</dict>
-			<key>description</key>
-			<string>Choose your preferred weather service</string>
-			<key>label</key>
-			<string>Weather Info Source</string>
-			<key>type</key>
-			<string>popupbutton</string>
-			<key>variable</key>
-			<string>WEATHER_SOURCE</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string>fahrenheit</string>
-				<key>pairs</key>
-				<array>
-					<array>
-						<string>°F</string>
-						<string>fahrenheit</string>
-					</array>
-					<array>
-						<string>°C</string>
-						<string>celsius</string>
-					</array>
-				</array>
-			</dict>
-			<key>description</key>
-			<string></string>
-			<key>label</key>
-			<string>Temperature unit</string>
-			<key>type</key>
-			<string>popupbutton</string>
-			<key>variable</key>
-			<string>TEMPERATURE_UNIT</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
 				<string>%C %c 🌡️%t (feels %f, %h) 🌬️%w %m</string>
 				<key>placeholder</key>
 				<string></string>
@@ -535,34 +385,13 @@
 				<true/>
 			</dict>
 			<key>description</key>
-			<string>Valid if wttr.in is selected as weather source</string>
+			<string></string>
 			<key>label</key>
-			<string>wttr.in format</string>
+			<string>Format</string>
 			<key>type</key>
 			<string>textfield</string>
 			<key>variable</key>
 			<string>FORMATSTRING</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string></string>
-				<key>placeholder</key>
-				<string></string>
-				<key>required</key>
-				<false/>
-				<key>trim</key>
-				<true/>
-			</dict>
-			<key>description</key>
-			<string>Valid if OpenWeather is selected as weather source</string>
-			<key>label</key>
-			<string>Open Weather API Key</string>
-			<key>type</key>
-			<string>textfield</string>
-			<key>variable</key>
-			<string>OPENWEATHER_KEY</string>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -606,437 +435,11 @@
 			<key>variable</key>
 			<string>SPECIAL_DAY</string>
 		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<false/>
-				<key>required</key>
-				<false/>
-				<key>text</key>
-				<string></string>
-			</dict>
-			<key>description</key>
-			<string>📋 Append a link to this week's plan and carry over unchecked tasks on Fridays</string>
-			<key>label</key>
-			<string>Add weekly plan</string>
-			<key>type</key>
-			<string>checkbox</string>
-			<key>variable</key>
-			<string>WEEKLY</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string></string>
-				<key>filtermode</key>
-				<integer>2</integer>
-				<key>placeholder</key>
-				<string></string>
-				<key>required</key>
-				<false/>
-			</dict>
-			<key>description</key>
-			<string>Folder of markdown (.md) files where weekly plans live (any editor)</string>
-			<key>label</key>
-			<string>Notes folder</string>
-			<key>type</key>
-			<string>filepicker</string>
-			<key>variable</key>
-			<string>NOTES_FOLDER</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string>format1</string>
-				<key>pairs</key>
-				<array>
-					<array>
-						<string>Weekly plan (31) 2025-07-28 to 2025-08-01</string>
-						<string>format1</string>
-					</array>
-					<array>
-						<string>Week 31 - July 28-August 1, 2025</string>
-						<string>format2</string>
-					</array>
-					<array>
-						<string>W31 2025-07-28 to 2025-08-01</string>
-						<string>format3</string>
-					</array>
-					<array>
-						<string>Weekly Plan Week 31 (Jul 28 - Aug 1)</string>
-						<string>format4</string>
-					</array>
-					<array>
-						<string>2025 Week 31 (28-01 Jul-Aug)</string>
-						<string>format5</string>
-					</array>
-					<array>
-						<string>Week 31 - 07-28 to 08-01</string>
-						<string>format6</string>
-					</array>
-				</array>
-			</dict>
-			<key>description</key>
-			<string>Choose the filename format for weekly plan files</string>
-			<key>label</key>
-			<string>Weekly Plan Format</string>
-			<key>type</key>
-			<string>popupbutton</string>
-			<key>variable</key>
-			<string>WEEKLY_PLAN_FORMAT</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string>markdown</string>
-				<key>pairs</key>
-				<array>
-					<array>
-						<string>Markdown link [name](name.md)</string>
-						<string>markdown</string>
-					</array>
-					<array>
-						<string>Wikilink ![[name]] (Obsidian / Logseq)</string>
-						<string>wikilink</string>
-					</array>
-					<array>
-						<string>Plain filename</string>
-						<string>plain</string>
-					</array>
-				</array>
-			</dict>
-			<key>description</key>
-			<string>How the link to the weekly plan is written in the output</string>
-			<key>label</key>
-			<string>Weekly Plan Link Style</string>
-			<key>type</key>
-			<string>popupbutton</string>
-			<key>variable</key>
-			<string>LINK_STYLE</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<false/>
-				<key>required</key>
-				<false/>
-				<key>text</key>
-				<string></string>
-			</dict>
-			<key>description</key>
-			<string>🗓️ Append today's calendar events to the output (may be slow on first run)</string>
-			<key>label</key>
-			<string>Add today's agenda</string>
-			<key>type</key>
-			<string>checkbox</string>
-			<key>variable</key>
-			<string>AGENDA</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string>apple</string>
-				<key>pairs</key>
-				<array>
-					<array>
-						<string>Apple Calendar</string>
-						<string>apple</string>
-					</array>
-					<array>
-						<string>Microsoft Outlook</string>
-						<string>outlook</string>
-					</array>
-				</array>
-			</dict>
-			<key>description</key>
-			<string>Which app to read today's events from</string>
-			<key>label</key>
-			<string>Calendar source</string>
-			<key>type</key>
-			<string>popupbutton</string>
-			<key>variable</key>
-			<string>CALENDAR_SOURCE</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<false/>
-				<key>required</key>
-				<false/>
-				<key>text</key>
-				<string></string>
-			</dict>
-			<key>description</key>
-			<string>📖 Quote entries from this day in previous years (line-a-day journal)</string>
-			<key>label</key>
-			<string>Quote previous line-a-day items?</string>
-			<key>type</key>
-			<string>checkbox</string>
-			<key>variable</key>
-			<string>LINEADAY</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string></string>
-				<key>filtermode</key>
-				<integer>2</integer>
-				<key>placeholder</key>
-				<string></string>
-				<key>required</key>
-				<false/>
-			</dict>
-			<key>description</key>
-			<string>Markdown file with "- **YYYY-MM-DD** ..." entries (only needed if line-a-day above is checked)</string>
-			<key>label</key>
-			<string>line-a-day file</string>
-			<key>type</key>
-			<string>filepicker</string>
-			<key>variable</key>
-			<string>LINEADAYFILE</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<false/>
-				<key>required</key>
-				<false/>
-				<key>text</key>
-				<string></string>
-			</dict>
-			<key>description</key>
-			<string>📔 Show 'on this day' links from journal-tagged notes (Obsidian notes with a 'journal' YAML tag). The index is built on launch and cached in the workflow data folder. Uses the Notes folder as the vault root.</string>
-			<key>label</key>
-			<string>Show journal 'on this day'?</string>
-			<key>type</key>
-			<string>checkbox</string>
-			<key>variable</key>
-			<string>JOURNAL</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>defaultvalue</key>
-				<integer>0</integer>
-				<key>markercount</key>
-				<integer>2</integer>
-				<key>maxvalue</key>
-				<integer>1</integer>
-				<key>minvalue</key>
-				<integer>0</integer>
-				<key>onlystoponmarkers</key>
-				<false/>
-				<key>showmarkers</key>
-				<true/>
-			</dict>
-			<key>description</key>
-			<string></string>
-			<key>label</key>
-			<string>Obsidian Daily Note Integration</string>
-			<key>type</key>
-			<string>slider</string>
-			<key>variable</key>
-			<string></string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string></string>
-				<key>filtermode</key>
-				<integer>2</integer>
-				<key>placeholder</key>
-				<string></string>
-				<key>required</key>
-				<false/>
-			</dict>
-			<key>description</key>
-			<string>Path to your Obsidian vault</string>
-			<key>label</key>
-			<string>Obsidian Vault</string>
-			<key>type</key>
-			<string>filepicker</string>
-			<key>variable</key>
-			<string>OBSIDIAN_VAULT</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<false/>
-				<key>required</key>
-				<false/>
-				<key>text</key>
-				<string></string>
-			</dict>
-			<key>description</key>
-			<string></string>
-			<key>label</key>
-			<string>Add report to Obsidian daily page?</string>
-			<key>type</key>
-			<string>checkbox</string>
-			<key>variable</key>
-			<string>OBSIDIAN_CHECK</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string>%Y-%m-%d-%a</string>
-				<key>placeholder</key>
-				<string></string>
-				<key>required</key>
-				<false/>
-				<key>trim</key>
-				<true/>
-			</dict>
-			<key>description</key>
-			<string></string>
-			<key>label</key>
-			<string>Title format for Obsidian daily note</string>
-			<key>type</key>
-			<string>textfield</string>
-			<key>variable</key>
-			<string>DAILY_FORMAT</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>defaultvalue</key>
-				<integer>0</integer>
-				<key>markercount</key>
-				<integer>2</integer>
-				<key>maxvalue</key>
-				<integer>1</integer>
-				<key>minvalue</key>
-				<integer>0</integer>
-				<key>onlystoponmarkers</key>
-				<false/>
-				<key>showmarkers</key>
-				<true/>
-			</dict>
-			<key>description</key>
-			<string></string>
-			<key>label</key>
-			<string>One-on-One Meeting Integration (Outlook)</string>
-			<key>type</key>
-			<string>slider</string>
-			<key>variable</key>
-			<string></string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<false/>
-				<key>required</key>
-				<false/>
-				<key>text</key>
-				<string></string>
-			</dict>
-			<key>description</key>
-			<string></string>
-			<key>label</key>
-			<string>Add today's agenda to Obsidian daily page?</string>
-			<key>type</key>
-			<string>checkbox</string>
-			<key>variable</key>
-			<string>OBSIDIAN_AGENDA</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string></string>
-				<key>filtermode</key>
-				<integer>2</integer>
-				<key>placeholder</key>
-				<string></string>
-				<key>required</key>
-				<false/>
-			</dict>
-			<key>description</key>
-			<string></string>
-			<key>label</key>
-			<string>Emailstrom script</string>
-			<key>type</key>
-			<string>filepicker</string>
-			<key>variable</key>
-			<string>EMAILSTROM_SCRIPT</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string></string>
-				<key>filtermode</key>
-				<integer>2</integer>
-				<key>placeholder</key>
-				<string>/Users/yourname/Documents/Vault/_People</string>
-				<key>required</key>
-				<false/>
-			</dict>
-			<key>description</key>
-			<string>Folder containing person notes for one-on-one meetings</string>
-			<key>label</key>
-			<string>People Folder Path</string>
-			<key>type</key>
-			<string>filepicker</string>
-			<key>variable</key>
-			<string>PEOPLE_FOLDER</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string># Active Items</string>
-				<key>placeholder</key>
-				<string># Active Items</string>
-				<key>required</key>
-				<false/>
-			</dict>
-			<key>description</key>
-			<string>Section header containing items to discuss in person notes</string>
-			<key>label</key>
-			<string>To Discuss Section Header</string>
-			<key>type</key>
-			<string>textfield</string>
-			<key>variable</key>
-			<string>DISCUSS_SECTION</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string>one-on-one</string>
-				<key>placeholder</key>
-				<string>one-on-one</string>
-				<key>required</key>
-				<false/>
-			</dict>
-			<key>description</key>
-			<string>Frontmatter tag to identify person notes with regular one-on-one meetings</string>
-			<key>label</key>
-			<string>One-on-One Tag</string>
-			<key>type</key>
-			<string>textfield</string>
-			<key>variable</key>
-			<string>ONE_ON_ONE_TAG</string>
-		</dict>
 	</array>
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>1.6.1</string>
+	<string>1.5</string>
 	<key>webaddress</key>
 	<string>https://github.com/giovannicoppola/alfred-almanac</string>
 </dict>
