@@ -280,7 +280,7 @@ def _fetch_via_graph():
     if "GRAPH_CONFIG_DIR" not in os.environ:
         os.environ["GRAPH_CONFIG_DIR"] = os.path.join(
             os.getenv('HOME'),
-            "Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/MyScripts/myGitHubRepos/_alfred-dev/outlook-shortcuts"
+            "Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/MyScripts/myGitHubRepos/alfred-outlook/src"
         )
 
     try:
