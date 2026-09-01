@@ -64,7 +64,7 @@ src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubuserc
   - days from and to the special day
 
 - Enter (↩️) will copy to the clipboard and past to the frontmost application
-- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in`
+- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in` or OpenWeather, depending on your selected weather source
 - CTRL-enter (⌃↩️) will show the almanac string in large font
 - Option (⌥) will show the local date/time and timezone
 
