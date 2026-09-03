@@ -462,7 +462,7 @@
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Alfred keyword to launch the workflow</string>
 			<key>label</key>
 			<string>Keyword</string>
 			<key>type</key>
@@ -514,7 +514,7 @@
 				</array>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Applies to both wttr.in and OpenWeather</string>
 			<key>label</key>
 			<string>Temperature unit</string>
 			<key>type</key>
@@ -577,7 +577,7 @@
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Default city names or ZIP codes, comma-separated</string>
 			<key>label</key>
 			<string>Location</string>
 			<key>type</key>
@@ -598,7 +598,7 @@
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>MM-DD to count days from and to (e.g. 03-14)</string>
 			<key>label</key>
 			<string>Special Day</string>
 			<key>type</key>
@@ -879,7 +879,7 @@
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Append the almanac report to today's daily note when you press Enter</string>
 			<key>label</key>
 			<string>Add report to Obsidian daily page?</string>
 			<key>type</key>
@@ -900,7 +900,7 @@
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Python strftime pattern for the daily note filename</string>
 			<key>label</key>
 			<string>Title format for Obsidian daily note</string>
 			<key>type</key>
@@ -944,7 +944,7 @@
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Also append today's calendar events to the Obsidian daily note (requires calendar agenda)</string>
 			<key>label</key>
 			<string>Add today's agenda to Obsidian daily page?</string>
 			<key>type</key>
@@ -965,7 +965,7 @@
 				<false/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Optional script that returns an email summary to append to the daily note</string>
 			<key>label</key>
 			<string>Emailstrom script</string>
 			<key>type</key>
