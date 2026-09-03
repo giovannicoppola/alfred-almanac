@@ -13,7 +13,7 @@ import datetime as date2
 import re, os, time
 
 
-from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEATHER_SOURCE, OPENWEATHER_KEY, TEMPERATURE_UNIT, WEEKLY, NOTES_FOLDER, WEEKLY_PLAN_FORMAT, LINK_STYLE, LINEADAY, LINEADAY_FILE, JOURNAL
+from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEATHER_SOURCE, OPENWEATHER_KEY, TEMPERATURE_UNIT, WEEKLY, NOTES_FOLDER, WEEKLY_PLAN_FORMAT, LINK_STYLE, LINEADAY, LINEADAY_FILE
 
 FORMATSTRING = FORMATSTRING+"--%Z--" #adding local timezone
 #FORMATSTRING = f'"{FORMATSTRING}"'  #enclosing in quotes
@@ -435,21 +435,10 @@ else:
     weeklyPlan = ""
     nextWeeklyPlan = ""
 
-# Optional "on this day" links from journal-tagged notes (opt-in).
-# The index is (re)built on launch and stored in the Alfred workflow data folder,
-# so it stays out of the repo and is never committed.
-if JOURNAL == '1':
-    from fetchJournal import ensure_database, get_journal_lines_for_today
-    _db = ensure_database(NOTES_FOLDER)
-    _journalLines = get_journal_lines_for_today(_db)
-    journalString = ("\n\n📔 **On this day (journal)**\n" + "\n".join("\t" + l for l in _journalLines)) if _journalLines else ""
-else:
-    journalString = ""
-
 locations = mylocation.split(",")
 for loc in locations:
     myOutput,myLocalTime, myTimeZone= get_weather_data(loc)
-    myFinalString = myOutput + " " + myLocalTime + myAlmanac + previousLines + weeklyPlan + nextWeeklyPlan + journalString
+    myFinalString = myOutput + " " + myLocalTime + myAlmanac + previousLines + weeklyPlan + nextWeeklyPlan
     myTZstring = f"Current date/time: {myLocalTime} ({myTimeZone})"
 
     # Set quicklook URL based on weather source

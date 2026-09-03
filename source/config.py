@@ -22,7 +22,6 @@ WEEKLY_PLAN_FORMAT = os.path.expanduser(os.getenv('WEEKLY_PLAN_FORMAT', 'format1
 LINK_STYLE = os.path.expanduser(os.getenv('LINK_STYLE', 'markdown'))
 LINEADAY = os.path.expanduser(os.getenv('LINEADAY', ''))
 LINEADAY_FILE = os.path.expanduser(os.getenv('LINEADAYFILE', ''))
-JOURNAL = os.path.expanduser(os.getenv('JOURNAL', ''))
 
 VAULT_PATH = os.path.expanduser(os.getenv('OBSIDIAN_VAULT', ''))
 OBSIDIAN_CHECK = os.path.expanduser(os.getenv('OBSIDIAN_CHECK', ''))

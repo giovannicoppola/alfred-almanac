@@ -1,6 +1,6 @@
 # alfred-almanac
 
-### Start your day with weather and a daily almanac — plus optional weekly planning and a journal lookback
+### Start your day with weather and a daily almanac — plus optional weekly planning
 
 
 ![](images/alfred-almanac.gif)
@@ -108,7 +108,6 @@ Enable **Add report to Obsidian daily page?** to append the almanac output to to
 <h1 id="changelog">Changelog </h1>
 
 - 2026-09-02: optional append of the almanac report to the Obsidian daily note (`OBSIDIAN_CHECK`)
-- 2026-07-21: version 1.6.1, added an optional journal 'on this day' feature (index built on launch, cached in the workflow data folder)
 
 - 06-30-2026: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, and line-a-day lookback
 - 11-30-2022: version 1.5 removed OneUpdater (for Alfred Gallery) 
