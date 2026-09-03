@@ -111,7 +111,7 @@
 	<key>description</key>
 	<string>weather etc.</string>
 	<key>disabled</key>
-	<true/>
+	<false/>
 	<key>name</key>
 	<string>almanac</string>
 	<key>objects</key>
