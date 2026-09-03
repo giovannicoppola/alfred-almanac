@@ -109,7 +109,7 @@
 	<key>createdby</key>
 	<string>giovanni</string>
 	<key>description</key>
-	<string>Daily almanac with weather (wttr.in or OpenWeather), calendar agenda, one-on-one meeting notes, and journal integration for Obsidian</string>
+	<string>Daily almanac with weather, Outlook calendar, and one-on-one meeting integration for Obsidian</string>
 	<key>disabled</key>
 	<true/>
 	<key>name</key>
