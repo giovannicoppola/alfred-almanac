@@ -560,7 +560,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string>Valid if OpenWeather is selected as weather source</string>
+			<string>Needed if OpenWeather is selected as weather source</string>
 			<key>label</key>
 			<string>Open Weather API Key</string>
 			<key>type</key>
@@ -621,9 +621,9 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string>📋 Append a link to this week's plan and carry over unchecked tasks on Fridays</string>
+			<string>📋 Append a link to this week's plan, carry over unchecked tasks on Fridays</string>
 			<key>label</key>
-			<string>Add weekly plan</string>
+			<string>🔰----- Add weekly plan?</string>
 			<key>type</key>
 			<string>checkbox</string>
 			<key>variable</key>
@@ -642,7 +642,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<false/>
 			</dict>
 			<key>description</key>
-			<string>Folder of markdown (.md) files where weekly plans live (any editor)</string>
+			<string>Folder where weekly plans live</string>
 			<key>label</key>
 			<string>Notes folder</string>
 			<key>type</key>
@@ -684,7 +684,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				</array>
 			</dict>
 			<key>description</key>
-			<string>Choose the filename format for weekly plan files</string>
+			<string>File name format for weekly plan files</string>
 			<key>label</key>
 			<string>Weekly Plan Format</string>
 			<key>type</key>
@@ -735,7 +735,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<key>description</key>
 			<string>📖 Quote entries from this day in previous years (line-a-day journal)</string>
 			<key>label</key>
-			<string>Quote previous line-a-day items?</string>
+			<string>🔰----- Quote previous line-a-day items?</string>
 			<key>type</key>
 			<string>checkbox</string>
 			<key>variable</key>
@@ -754,7 +754,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<false/>
 			</dict>
 			<key>description</key>
-			<string>Markdown file with "- **YYYY-MM-DD** ..." entries (only needed if line-a-day above is checked)</string>
+			<string>Markdown file with "- **YYYY-MM-DD** ..." entries (needed if line-a-day is checked)</string>
 			<key>label</key>
 			<string>line-a-day file</string>
 			<key>type</key>
@@ -765,27 +765,21 @@ python3 almanac.py $1 "${LOCATION}"</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>defaultvalue</key>
-				<integer>0</integer>
-				<key>markercount</key>
-				<integer>2</integer>
-				<key>maxvalue</key>
-				<integer>1</integer>
-				<key>minvalue</key>
-				<integer>0</integer>
-				<key>onlystoponmarkers</key>
+				<key>default</key>
 				<false/>
-				<key>showmarkers</key>
-				<true/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Append the almanac report to today's daily note when you press Enter</string>
 			<key>label</key>
-			<string>Obsidian Daily Note Integration</string>
+			<string>🔰----- Add report to Obsidian daily page?</string>
 			<key>type</key>
-			<string>slider</string>
+			<string>checkbox</string>
 			<key>variable</key>
-			<string></string>
+			<string>OBSIDIAN_CHECK</string>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -812,25 +806,6 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<key>config</key>
 			<dict>
 				<key>default</key>
-				<false/>
-				<key>required</key>
-				<false/>
-				<key>text</key>
-				<string></string>
-			</dict>
-			<key>description</key>
-			<string>Append the almanac report to today's daily note when you press Enter</string>
-			<key>label</key>
-			<string>Add report to Obsidian daily page?</string>
-			<key>type</key>
-			<string>checkbox</string>
-			<key>variable</key>
-			<string>OBSIDIAN_CHECK</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
 				<string>%Y-%m-%d-%a</string>
 				<key>placeholder</key>
 				<string></string>
@@ -840,7 +815,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string>Python strftime pattern for the daily note filename</string>
+			<string>Python strftime pattern for the daily note filename (from Obsidian config)</string>
 			<key>label</key>
 			<string>Title format for Obsidian daily note</string>
 			<key>type</key>
@@ -849,8 +824,6 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<string>DAILY_FORMAT</string>
 		</dict>
 	</array>
-	<key>variablesdontexport</key>
-	<array/>
 	<key>version</key>
 	<string>1.6.1</string>
 	<key>webaddress</key>
