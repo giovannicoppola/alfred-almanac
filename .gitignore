@@ -4,6 +4,3 @@ __pycache__
 /source/lib
 journal_db.json
 journal_db_report.md
-prefs.plist
-config.json
-token_cache.json
