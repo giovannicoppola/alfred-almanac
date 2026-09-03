@@ -1,273 +1,225 @@
 #!/usr/bin/env python3
 
 """
-FETCH OUTLOOK MEETING DETAILS
-Fetches today's calendar events and returns a markdown formatted list.
+Daily agenda for alfred-almanac.
 
-Tries Graph API first (new Outlook), falls back to AppleScript (legacy).
+Reads today's calendar events and returns a compact Markdown list, suitable
+for appending to the almanac output (or an Obsidian daily note). The data
+source is selected with the CALENDAR_SOURCE setting:
+
+  apple    -> macOS Calendar.app (default; also surfaces iCloud / Google /
+              Exchange accounts that are synced into Calendar), read via
+              AppleScript.
+  outlook  -> Microsoft Outlook. Tries the Graph API first (new Outlook),
+              falling back to AppleScript (legacy Outlook) if Graph API
+              credentials aren't configured or the request fails. For
+              one-on-one meetings (exactly 1-2 attendees), also pulls
+              "to discuss" items from a matching person note (see
+              PEOPLE_FOLDER / ONE_ON_ONE_TAG / DISCUSS_SECTION).
+
+Calendar.app scripting can be slow, so the agenda is opt-in (the "Add
+today's agenda" checkbox in the workflow configuration); it is not run
+unless enabled.
 """
 
-import subprocess
-import json
-import sys
 import os
 import re
-from datetime import datetime, timedelta, timezone
+import subprocess
+import sys
+from datetime import datetime, timezone
 from pathlib import Path
+
 import config
 
-
-def _extract_section_from_file(file_path, section_header):
-    """Extract content from a specific section in a markdown file.
-
-    Similar to MDsuite's fetchSection.py - extracts all content between
-    the specified header and the next # header.
-
-    Args:
-        file_path: Path to the markdown file
-        section_header: Header to extract (e.g., "# Active Items")
-
-    Returns:
-        List of lines in that section, or empty list if not found
-    """
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-    except (IOError, OSError):
-        return []
-
-    sections = {}
-    current_section = "intro"
-    current_content = []
-
-    for line in lines:
-        # Check if line is a header (starts with # followed by space)
-        if re.match(r'^# +', line):
-            # Save previous section
-            sections[current_section] = current_content
-            # Start new section
-            current_section = line.strip()
-            current_content = []
-        else:
-            current_content.append(line.rstrip())
-
-    # Save last section
-    sections[current_section] = current_content
-
-    return sections.get(section_header, [])
+# Each Apple Calendar event is packed as "sortkey|||title|||start|||end|||location",
+# events are joined by EVENT_SEP. sortkey is seconds-since-midnight so the
+# events can be sorted chronologically regardless of locale time format.
+FIELD_SEP = "|||"
+EVENT_SEP = "[][][]"
 
 
-def _has_frontmatter_tag(file_path, tag):
-    """Check if a markdown file has a specific tag in its YAML frontmatter.
+# ---------------------------------------------------------------------------
+# Apple Calendar (AppleScript)
+# ---------------------------------------------------------------------------
 
-    Args:
-        file_path: Path to the markdown file
-        tag: Tag to look for (without #)
+def _apple_script_for_today():
+    """AppleScript that reads today's events from Calendar.app."""
+    return '''
+    set startDate to (current date)
+    set hours of startDate to 0
+    set minutes of startDate to 0
+    set seconds of startDate to 0
+    set endDate to startDate + (1 * days)
+    set output to ""
+    tell application "Calendar"
+        repeat with cal in calendars
+            set theEvents to (every event of cal whose start date ≥ startDate and start date < endDate)
+            repeat with ev in theEvents
+                set evTitle to summary of ev
+                set evStart to start date of ev
+                set evEnd to end date of ev
+                set evLoc to ""
+                try
+                    set evLoc to location of ev
+                end try
+                set output to output & (time of evStart as text) & "|||" & evTitle & "|||" & (time string of evStart) & "|||" & (time string of evEnd) & "|||" & evLoc & "[][][]"
+            end repeat
+        end repeat
+    end tell
+    return output
+    '''
 
-    Returns:
-        True if the tag is found in frontmatter, False otherwise
-    """
-    try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-    except (IOError, OSError):
-        return False
 
-    # Check if file starts with frontmatter delimiter
-    if not lines or lines[0].strip() != '---':
-        return False
+def _run_osascript(script):
+    """Run an AppleScript and return stdout, or None on error."""
+    process = subprocess.Popen(['osascript', '-e', script],
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE,
+                               text=True)
+    stdout, stderr = process.communicate()
+    if process.returncode != 0:
+        config.log(f"Agenda AppleScript error: {stderr.strip()}")
+        return None
+    return stdout
 
-    # Find the closing delimiter
-    in_frontmatter = False
-    for i, line in enumerate(lines[1:], 1):
-        if line.strip() == '---':
-            # End of frontmatter found
-            frontmatter_lines = lines[1:i]
-            break
-    else:
-        # No closing delimiter found
-        return False
 
-    # Search for the tag in frontmatter
-    # Tags can be in format:
-    #   tags: [tag1, tag2]
-    #   tags: tag1, tag2
-    #   tags:
-    #     - tag1
-    #     - tag2
-
-    # Remove # if present in tag
-    tag = tag.lstrip('#')
-
-    # Check inline formats first (join all lines)
-    frontmatter_text = ' '.join(line.strip() for line in frontmatter_lines)
-    patterns = [
-        rf'\btags:\s*\[.*\b{re.escape(tag)}\b.*\]',  # tags: [tag1, tag2]
-        rf'\btags:\s+.*\b{re.escape(tag)}\b',         # tags: tag1, tag2
-    ]
-
-    for pattern in patterns:
-        if re.search(pattern, frontmatter_text, re.IGNORECASE):
-            return True
-
-    # Check YAML list format (line by line)
-    in_tags_list = False
-    for line in frontmatter_lines:
-        line_stripped = line.strip()
-
-        # Check if we're entering a tags: section
-        if line_stripped.startswith('tags:'):
-            in_tags_list = True
-            # Check if tag is on the same line: "tags: tag1"
-            rest = line_stripped[5:].strip()
-            if rest and not rest.startswith('['):
-                # Single tag or comma-separated on same line
-                if re.search(rf'\b{re.escape(tag)}\b', rest, re.IGNORECASE):
-                    return True
+def _parse_apple_events(raw):
+    """Parse packed Calendar.app AppleScript output into a chronological list of events."""
+    events = []
+    if not raw or not raw.strip():
+        return events
+    for chunk in raw.strip().split(EVENT_SEP):
+        if not chunk.strip():
             continue
+        parts = chunk.split(FIELD_SEP)
+        if len(parts) < 5:
+            continue
+        try:
+            sort_key = int(parts[0].strip())
+        except ValueError:
+            sort_key = 0
+        events.append({
+            'sort': sort_key,
+            'title': parts[1].strip(),
+            'start': parts[2].strip(),
+            'end': parts[3].strip(),
+            'location': parts[4].strip(),
+        })
+    events.sort(key=lambda e: e['sort'])
+    return events
 
-        # If we're in tags list, check list items
-        if in_tags_list:
-            if line_stripped.startswith('-'):
-                # List item under tags:
-                item = line_stripped[1:].strip()
-                if item.lower() == tag.lower():
-                    return True
-            elif not line_stripped.startswith(' ') and not line_stripped.startswith('-'):
-                # New key, exit tags list
-                in_tags_list = False
 
-    return False
+def _format_apple_agenda(raw, weekday_name):
+    """Render parsed Calendar.app events as a compact Markdown agenda."""
+    events = _parse_apple_events(raw)
+    if not events:
+        return f"\U0001F4C5 No meetings today – enjoy your {weekday_name}! ☕️"
+    lines = [f"\U0001F4C5 {weekday_name}'s agenda"]
+    for e in events:
+        line = f"• {e['start']}–{e['end']} – {e['title']}"
+        if e['location']:
+            line += f" @ {e['location']}"
+        lines.append(line)
+    return "\n".join(lines)
 
 
-def _match_attendee_to_person_note(attendee_name, people_folder):
-    """Match an attendee name to a person note file.
+# ---------------------------------------------------------------------------
+# Outlook (Graph API + AppleScript fallback), with one-on-one "to discuss"
+# ---------------------------------------------------------------------------
 
-    Tries to find a markdown file in the people folder that matches the
-    attendee name. Handles various name formats.
+def _outlook_script_for_today(date_string):
+    """AppleScript that reads today's events from Microsoft Outlook (legacy).
+    Meetings with "Tentative" in the subject are skipped."""
+    return f'''
+    tell application "Microsoft Outlook"
+        try
+            set targetDate to date "{date_string}"
+            set startOfDay to targetDate
+            set endOfDay to targetDate + (24 * 60 * 60) - 1
 
-    Args:
-        attendee_name: Name of the attendee from calendar
-        people_folder: Path to the folder containing person notes
+            set finalList to ""
 
-    Returns:
-        Path to the matching person note, or None if not found
-    """
-    if not people_folder or not os.path.isdir(people_folder):
+            set todayEvents to (get every calendar event whose start time ≥ startOfDay and start time ≤ endOfDay)
+
+            repeat with CalEv in todayEvents
+                try
+                    tell CalEv
+                        set mySubject to (subject as text)
+                        set eventStart to start time
+                        set eventEnd to end time
+                        set startTimeFormat to time string of eventStart
+                        set endTimeFormat to time string of eventEnd
+
+                        set shouldSkip to false
+                        try
+                            if mySubject contains "Tentative" or mySubject contains "(Tentative)" then
+                                set shouldSkip to true
+                            end if
+                        end try
+
+                        if not shouldSkip then
+                            set eventLocation to ""
+                            try
+                                set eventLocation to location as text
+                            end try
+
+                            set nameList to ""
+                            try
+                                set emailList to get every email address of every attendee
+                                set ind to 0
+                                repeat with theName in emailList
+                                    set ind to (ind + 1)
+                                    if ind = 1 then
+                                        set nameList to name of theName
+                                    else
+                                        set nameList to nameList & ", " & name of theName
+                                    end if
+                                end repeat
+                            end try
+
+                            set eventAgenda to ""
+                            try
+                                set eventAgenda to plain text content as text
+                            end try
+
+                            set eventString to mySubject & "|||" & startTimeFormat & "|||" & endTimeFormat & "|||" & nameList & "|||" & eventLocation & "|||" & eventAgenda
+                            set finalList to (eventString & "[][][]" & finalList)
+                        end if
+                    end tell
+                end try
+            end repeat
+
+            return finalList
+        end try
+    end tell
+    '''
+
+
+def _fetch_via_outlook_applescript():
+    """Fetch today's events via AppleScript (legacy Outlook). Returns list of event dicts."""
+    today = datetime.now()
+    date_string = today.strftime("%A, %B %-d, %Y") + " 12:00:00 AM"
+
+    raw = _run_osascript(_outlook_script_for_today(date_string))
+    if raw is None:
         return None
 
-    # Clean up attendee name
-    name_clean = attendee_name.strip()
-
-    # Try exact match first (case-insensitive)
-    for filename in os.listdir(people_folder):
-        if not filename.endswith('.md'):
-            continue
-
-        file_stem = Path(filename).stem
-
-        # Exact match
-        if file_stem.lower() == name_clean.lower():
-            return os.path.join(people_folder, filename)
-
-    # Try partial match (attendee name is in filename or vice versa)
-    name_parts = name_clean.lower().split()
-    for filename in os.listdir(people_folder):
-        if not filename.endswith('.md'):
-            continue
-
-        file_stem = Path(filename).stem.lower()
-
-        # Check if all parts of attendee name are in filename
-        if all(part in file_stem for part in name_parts):
-            return os.path.join(people_folder, filename)
-
-        # Check if filename is in attendee name
-        file_parts = file_stem.split()
-        if all(part in name_clean.lower() for part in file_parts):
-            return os.path.join(people_folder, filename)
-
-    return None
-
-
-def _get_to_discuss_items(attendees_str):
-    """Get 'to discuss' items for one-on-one meetings.
-
-    If this is a one-to-one meeting (exactly 2 attendees) and the other
-    person has a note with the one-on-one tag, extract their Active Items.
-
-    Args:
-        attendees_str: Comma-separated string of attendee names
-
-    Returns:
-        Formatted string with to-discuss items, or empty string
-    """
-    if not config.PEOPLE_FOLDER or not os.path.isdir(config.PEOPLE_FOLDER):
-        return ""
-
-    # Parse attendees
-    attendees = [a.strip() for a in attendees_str.split(',') if a.strip()]
-
-    # Check if it's a one-to-one
-    # Graph API doesn't include organizer in attendees, so:
-    # - 1 attendee = organizer + 1 other (one-on-one)
-    # - 2 attendees = could be organizer explicitly listed + 1 other, or 3-person meeting
-    # For safety, accept 1 or 2 attendees
-    if len(attendees) == 0 or len(attendees) > 2:
-        return ""
-
-    # Try to match each attendee to a person note
-    for attendee in attendees:
-        person_file = _match_attendee_to_person_note(attendee, config.PEOPLE_FOLDER)
-
-        if not person_file:
-            continue
-
-        # Check if this person has the one-on-one tag
-        if not _has_frontmatter_tag(person_file, config.ONE_ON_ONE_TAG):
-            continue
-
-        # Extract the Active Items section
-        items = _extract_section_from_file(person_file, config.DISCUSS_SECTION)
-
-        if items:
-            # Filter out empty lines
-            items = [line for line in items if line.strip()]
-
-            if items:
-                # Format like MDsuite: "Meeting with [[PersonName]]" followed by items
-                person_name = Path(person_file).stem
-                result = f"**To Discuss with [[{person_name}]]:**\n"
-                result += "\n".join(items)
-                return result
-
-    return ""
-
-
-def _clean_body(body_text):
-    """Clean up event body text: fix links, remove Teams boilerplate."""
-    # Convert [​icon] filename<URL> to markdown [filename](URL)
-    body_text = re.sub(
-        r'\[\u200b\w+ icon\]\s*([^<\n]+)<(https?://[^>]+)>',
-        r'[\1](\2)',
-        body_text
-    )
-    # Convert [https://...icon.svg] filename<URL> to markdown [filename](URL)
-    body_text = re.sub(
-        r'\[https?://[^\]]+\]\s*([^<\n]+)<(https?://[^>]+)>',
-        r'[\1](\2)',
-        body_text
-    )
-    # Remove [cid:...] inline image references
-    body_text = re.sub(r'\[cid:[^\]]+\]', '', body_text)
-    # Remove Teams boilerplate (meeting join info, dial-in, etc.)
-    lines = body_text.split("\n")
-    filtered = []
-    for line in lines:
-        if "Microsoft Teams" in line and ("meeting" in line.lower() or "Need help" in line):
-            break
-        filtered.append(line)
-    return "\n".join(filtered).rstrip()
+    events = []
+    if raw.strip():
+        for event_string in raw.strip().split(EVENT_SEP):
+            if not event_string.strip():
+                continue
+            parts = event_string.split(FIELD_SEP)
+            if len(parts) >= 6:
+                events.append({
+                    'title': parts[0].strip(),
+                    'start_time': parts[1].strip(),
+                    'end_time': parts[2].strip(),
+                    'attendees': parts[3].strip(),
+                    'location': parts[4].strip(),
+                    'agenda': parts[5].strip(),
+                })
+    return events
 
 
 def _fetch_via_graph():
@@ -360,128 +312,220 @@ def _fetch_via_graph():
     return result
 
 
-def _fetch_via_applescript():
-    """Fetch today's events via AppleScript (legacy Outlook). Returns list of event dicts."""
-    today = datetime.now()
-    day_name = today.strftime("%A")
-    month_name = today.strftime("%B")
-    day = today.day
-    year = today.year
+def _extract_section_from_file(file_path, section_header):
+    """Extract content from a specific section in a markdown file.
 
-    date_string = f"{day_name}, {month_name} {day}, {year} 12:00:00 AM"
+    Extracts all content between the specified header and the next # header.
 
-    apple_script = f'''
-    tell application "Microsoft Outlook"
-        try
-            set targetDate to date "{date_string}"
-            set startOfDay to targetDate
-            set endOfDay to targetDate + (24 * 60 * 60) - 1
+    Args:
+        file_path: Path to the markdown file
+        section_header: Header to extract (e.g., "# Active Items")
 
-            set finalList to ""
+    Returns:
+        List of lines in that section, or empty list if not found
+    """
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+    except (IOError, OSError):
+        return []
 
-            set todayEvents to (get every calendar event whose start time ≥ startOfDay and start time ≤ endOfDay)
+    sections = {}
+    current_section = "intro"
+    current_content = []
 
-            repeat with CalEv in todayEvents
-                try
-                    tell CalEv
-                        set mySubject to (subject as text)
-                        set eventStart to start time
-                        set eventEnd to end time
-                        set startTimeFormat to time string of eventStart
-                        set endTimeFormat to time string of eventEnd
+    for line in lines:
+        if re.match(r'^# +', line):
+            sections[current_section] = current_content
+            current_section = line.strip()
+            current_content = []
+        else:
+            current_content.append(line.rstrip())
 
-                        set shouldSkip to false
-                        try
-                            if mySubject contains "Tentative" or mySubject contains "(Tentative)" then
-                                set shouldSkip to true
-                            end if
-                        end try
+    sections[current_section] = current_content
 
-                        if not shouldSkip then
-                            set eventLocation to ""
-                            try
-                                set eventLocation to location as text
-                            end try
+    return sections.get(section_header, [])
 
-                            set nameList to ""
-                            try
-                                set emailList to get every email address of every attendee
-                                set ind to 0
-                                repeat with theName in emailList
-                                    set ind to (ind + 1)
-                                    if ind = 1 then
-                                        set nameList to name of theName
-                                    else
-                                        set nameList to nameList & ", " & name of theName
-                                    end if
-                                end repeat
-                            end try
 
-                            set eventAgenda to ""
-                            try
-                                set eventAgenda to plain text content as text
-                            end try
+def _has_frontmatter_tag(file_path, tag):
+    """Check if a markdown file has a specific tag in its YAML frontmatter.
 
-                            set eventString to mySubject & "|||" & startTimeFormat & "|||" & endTimeFormat & "|||" & nameList & "|||" & eventLocation & "|||" & eventAgenda
-                            set finalList to (eventString & "[][][]" & finalList)
-                        end if
-                    end tell
-                end try
-            end repeat
+    Args:
+        file_path: Path to the markdown file
+        tag: Tag to look for (without #)
 
-            return finalList
-        end try
-    end tell
-    '''
+    Returns:
+        True if the tag is found in frontmatter, False otherwise
+    """
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+    except (IOError, OSError):
+        return False
 
-    process = subprocess.Popen(['osascript', '-e', apple_script],
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE,
-                               text=True)
-    stdout, stderr = process.communicate()
+    if not lines or lines[0].strip() != '---':
+        return False
 
-    if process.returncode != 0:
-        config.log(f"AppleScript error: {stderr}")
+    for i, line in enumerate(lines[1:], 1):
+        if line.strip() == '---':
+            frontmatter_lines = lines[1:i]
+            break
+    else:
+        return False
+
+    tag = tag.lstrip('#')
+
+    frontmatter_text = ' '.join(line.strip() for line in frontmatter_lines)
+    patterns = [
+        rf'\btags:\s*\[.*\b{re.escape(tag)}\b.*\]',  # tags: [tag1, tag2]
+        rf'\btags:\s+.*\b{re.escape(tag)}\b',         # tags: tag1, tag2
+    ]
+
+    for pattern in patterns:
+        if re.search(pattern, frontmatter_text, re.IGNORECASE):
+            return True
+
+    # Check YAML list format (line by line)
+    in_tags_list = False
+    for line in frontmatter_lines:
+        line_stripped = line.strip()
+
+        if line_stripped.startswith('tags:'):
+            in_tags_list = True
+            rest = line_stripped[5:].strip()
+            if rest and not rest.startswith('['):
+                if re.search(rf'\b{re.escape(tag)}\b', rest, re.IGNORECASE):
+                    return True
+            continue
+
+        if in_tags_list:
+            if line_stripped.startswith('-'):
+                item = line_stripped[1:].strip()
+                if item.lower() == tag.lower():
+                    return True
+            elif not line_stripped.startswith(' ') and not line_stripped.startswith('-'):
+                in_tags_list = False
+
+    return False
+
+
+def _match_attendee_to_person_note(attendee_name, people_folder):
+    """Match an attendee name to a person note file.
+
+    Args:
+        attendee_name: Name of the attendee from calendar
+        people_folder: Path to the folder containing person notes
+
+    Returns:
+        Path to the matching person note, or None if not found
+    """
+    if not people_folder or not os.path.isdir(people_folder):
         return None
 
-    events = []
-    if stdout.strip():
-        event_strings = stdout.strip().split('[][][]')
-        for event_string in event_strings:
-            if event_string.strip():
-                parts = event_string.split('|||')
-                if len(parts) >= 6:
-                    events.append({
-                        'title': parts[0].strip(),
-                        'start_time': parts[1].strip(),
-                        'end_time': parts[2].strip(),
-                        'attendees': parts[3].strip(),
-                        'location': parts[4].strip(),
-                        'agenda': parts[5].strip(),
-                    })
+    name_clean = attendee_name.strip()
 
-    return events
+    # Try exact match first (case-insensitive)
+    for filename in os.listdir(people_folder):
+        if not filename.endswith('.md'):
+            continue
+
+        file_stem = Path(filename).stem
+
+        if file_stem.lower() == name_clean.lower():
+            return os.path.join(people_folder, filename)
+
+    # Try partial match (attendee name is in filename or vice versa)
+    name_parts = name_clean.lower().split()
+    for filename in os.listdir(people_folder):
+        if not filename.endswith('.md'):
+            continue
+
+        file_stem = Path(filename).stem.lower()
+
+        if all(part in file_stem for part in name_parts):
+            return os.path.join(people_folder, filename)
+
+        file_parts = file_stem.split()
+        if all(part in name_clean.lower() for part in file_parts):
+            return os.path.join(people_folder, filename)
+
+    return None
 
 
-def fetch_today_agenda():
+def _get_to_discuss_items(attendees_str):
+    """Get 'to discuss' items for one-on-one meetings.
+
+    If this is a one-to-one meeting and the other person has a note with
+    the one-on-one tag, extract their discussion items.
+
+    Args:
+        attendees_str: Comma-separated string of attendee names
+
+    Returns:
+        Formatted string with to-discuss items, or empty string
     """
-    Fetch today's calendar events and format as markdown.
-    Tries Graph API first, falls back to AppleScript.
-    """
-    today = datetime.now()
-    day_name = today.strftime("%A")
-    month_name = today.strftime("%B")
-    day = today.day
-    year = today.year
+    if not config.PEOPLE_FOLDER or not os.path.isdir(config.PEOPLE_FOLDER):
+        return ""
 
-    # Try Graph API first
-    events = _fetch_via_graph()
-    if events is None:
-        config.log("Graph API unavailable, falling back to AppleScript")
-        events = _fetch_via_applescript()
+    attendees = [a.strip() for a in attendees_str.split(',') if a.strip()]
 
+    # Graph API doesn't include the organizer in attendees, so:
+    # - 1 attendee = organizer + 1 other (one-on-one)
+    # - 2 attendees = could be organizer explicitly listed + 1 other, or a 3-person meeting
+    # For safety, accept 1 or 2 attendees.
+    if len(attendees) == 0 or len(attendees) > 2:
+        return ""
+
+    for attendee in attendees:
+        person_file = _match_attendee_to_person_note(attendee, config.PEOPLE_FOLDER)
+
+        if not person_file:
+            continue
+
+        if not _has_frontmatter_tag(person_file, config.ONE_ON_ONE_TAG):
+            continue
+
+        items = _extract_section_from_file(person_file, config.DISCUSS_SECTION)
+
+        if items:
+            items = [line for line in items if line.strip()]
+
+            if items:
+                person_name = Path(person_file).stem
+                result = f"**To Discuss with [[{person_name}]]:**\n"
+                result += "\n".join(items)
+                return result
+
+    return ""
+
+
+def _clean_body(body_text):
+    """Clean up event body text: fix links, remove Teams boilerplate."""
+    body_text = re.sub(
+        r'\[​\w+ icon\]\s*([^<\n]+)<(https?://[^>]+)>',
+        r'[\1](\2)',
+        body_text
+    )
+    body_text = re.sub(
+        r'\[https?://[^\]]+\]\s*([^<\n]+)<(https?://[^>]+)>',
+        r'[\1](\2)',
+        body_text
+    )
+    body_text = re.sub(r'\[cid:[^\]]+\]', '', body_text)
+    lines = body_text.split("\n")
+    filtered = []
+    for line in lines:
+        if "Microsoft Teams" in line and ("meeting" in line.lower() or "Need help" in line):
+            break
+        filtered.append(line)
+    return "\n".join(filtered).rstrip()
+
+
+def _format_outlook_agenda(events, weekday_name):
+    """Render Outlook events (Graph or AppleScript) as a Markdown agenda,
+    including "to discuss" items for one-on-one meetings."""
     if not events:
-        return f"No meetings scheduled for {day_name}, {month_name} {day}, {year}. Enjoy your free time! ☕️\n\n"
+        return f"\U0001F4C5 No meetings scheduled for {weekday_name}. Enjoy your free time! ☕️"
 
     markdown_output = ""
     for event in events:
@@ -492,7 +536,6 @@ def fetch_today_agenda():
         if event['attendees']:
             markdown_output += f"**Attendees:** {event['attendees']}\n"
 
-        # Check for one-on-one and add "to discuss" items
         if event['attendees']:
             to_discuss = _get_to_discuss_items(event['attendees'])
             if to_discuss:
@@ -508,36 +551,33 @@ def fetch_today_agenda():
     return markdown_output.strip()
 
 
-def main():
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
+
+def fetch_today_agenda():
+    """Return today's agenda as a Markdown string, using CALENDAR_SOURCE."""
+    today = datetime.now()
+    weekday_name = today.strftime("%A")
+    source = config.CALENDAR_SOURCE.lower()
     try:
-        result = fetch_today_agenda()
-
-        alfred_output = {
-            "items": [
-                {
-                    "title": f"{datetime.now().strftime('%A')}'s Schedule",
-                    "subtitle": "Meetings found",
-                    "arg": result
-                }
-            ]
-        }
-
-        print(json.dumps(alfred_output))
-        config.log(f"Generated markdown output with {result.count('# ')} events")
-
+        if source == 'outlook':
+            events = _fetch_via_graph()
+            if events is None:
+                config.log("Graph API unavailable, falling back to AppleScript")
+                events = _fetch_via_outlook_applescript()
+            if events is None:
+                return "\U0001F4C5 Could not read your calendar (check Outlook automation permissions)."
+            return _format_outlook_agenda(events, weekday_name)
+        else:
+            raw = _run_osascript(_apple_script_for_today())
+            if raw is None:
+                return "\U0001F4C5 Could not read your calendar (check Automation permissions)."
+            return _format_apple_agenda(raw, weekday_name)
     except Exception as e:
-        error_output = {
-            "items": [
-                {
-                    "title": "Error fetching agenda",
-                    "subtitle": str(e),
-                    "arg": f"Error: {str(e)}"
-                }
-            ]
-        }
-        print(json.dumps(error_output))
-        config.log(f"Error in main: {str(e)}")
+        config.log(f"Error in fetch_today_agenda: {e}")
+        return f"\U0001F4C5 Error fetching agenda: {e}"
 
 
 if __name__ == "__main__":
-    main()
+    print(fetch_today_agenda())
