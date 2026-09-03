@@ -366,6 +366,8 @@
 	- `%h` humidity
 	- 🌬️`%w` wind
 	- `%m` moon phase
+- Temperature can be shown in °F or °C (set **Temperature unit**)
+- The weather source can be switched from `wttr.in` to OpenWeather (set **Weather Info Source** and provide an API key)
 - The almanac section will output:
 	- local date and time
 	- Current week of the year
@@ -374,13 +376,19 @@
 	- days from and to the special day
 
 - Enter (↩️) will copy to the clipboard and past to the frontmost application
-- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in`
+- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in` or OpenWeather, depending on your selected weather source
 - CTRL-enter (⌃↩️) will show the almanac string in large font
 - Option (⌥) will show the local date/time and timezone
 
 ## Additional settings:
-- `Add weekly plan` will add an Obsidian link to the current week's todo list. On Fridays, also to the following week's plan
-- `line-a-day?`: for users of the [line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow: will quote previous line-a-day items (from 1 or more years earlier)</string>
+- `Add weekly plan` will add a link to this week's plan file. On Fridays, also to next week's plan, carrying over unchecked tasks
+- `Add today's agenda` will append today's calendar events (Apple Calendar or Outlook)
+- `line-a-day?`: for users of the [line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow: will quote previous line-a-day items (from 1 or more years earlier)
+- `Show journal 'on this day'?` will append links to journal-tagged notes from this day in previous years
+- `Add report to Obsidian daily page?` will append the almanac output to today's Obsidian daily note when you press Enter
+- `Add today's agenda to Obsidian daily page?` will also append today's calendar events to that daily note
+- `Emailstrom script` will append an email summary to the daily note
+- `People Folder Path` (with the one-on-one tag) will pull "to discuss" items from person notes for Outlook one-on-ones</string>
 	<key>uidata</key>
 	<dict>
 		<key>08E34930-04EB-4AE1-9FC5-85F2E8003448</key>
@@ -488,7 +496,7 @@
 				</array>
 			</dict>
 			<key>description</key>
-			<string>Choose your preferred weather service</string>
+			<string>Choose wttr.in or OpenWeather</string>
 			<key>label</key>
 			<string>Weather Info Source</string>
 			<key>type</key>
@@ -535,7 +543,7 @@
 				<true/>
 			</dict>
 			<key>description</key>
-			<string>Valid if wttr.in is selected as weather source</string>
+			<string>Needed if wttr.in is selected as weather source</string>
 			<key>label</key>
 			<string>wttr.in format</string>
 			<key>type</key>
@@ -556,7 +564,7 @@
 				<true/>
 			</dict>
 			<key>description</key>
-			<string>Valid if OpenWeather is selected as weather source</string>
+			<string>Needed if OpenWeather is selected as weather source</string>
 			<key>label</key>
 			<string>Open Weather API Key</string>
 			<key>type</key>
@@ -617,7 +625,7 @@
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string>📋 Append a link to this week's plan and carry over unchecked tasks on Fridays</string>
+			<string>📋 Append a link to this week's plan, carry over unchecked tasks on Fridays</string>
 			<key>label</key>
 			<string>Add weekly plan</string>
 			<key>type</key>
@@ -638,7 +646,7 @@
 				<false/>
 			</dict>
 			<key>description</key>
-			<string>Folder of markdown (.md) files where weekly plans live (any editor)</string>
+			<string>Folder where weekly plans live</string>
 			<key>label</key>
 			<string>Notes folder</string>
 			<key>type</key>
@@ -680,7 +688,7 @@
 				</array>
 			</dict>
 			<key>description</key>
-			<string>Choose the filename format for weekly plan files</string>
+			<string>File name format for weekly plan files</string>
 			<key>label</key>
 			<string>Weekly Plan Format</string>
 			<key>type</key>
@@ -710,7 +718,7 @@
 				</array>
 			</dict>
 			<key>description</key>
-			<string>How the link to the weekly plan is written in the output</string>
+			<string>How the weekly plan link is written</string>
 			<key>label</key>
 			<string>Weekly Plan Link Style</string>
 			<key>type</key>
@@ -729,7 +737,7 @@
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string>🗓️ Append today's calendar events to the output (may be slow on first run)</string>
+			<string>🗓️ Append today's calendar events (may be slow on first run)</string>
 			<key>label</key>
 			<string>Add today's agenda</string>
 			<key>type</key>
@@ -755,7 +763,7 @@
 				</array>
 			</dict>
 			<key>description</key>
-			<string>Which app to read today's events from</string>
+			<string>Apple Calendar or Microsoft Outlook</string>
 			<key>label</key>
 			<string>Calendar source</string>
 			<key>type</key>
@@ -795,7 +803,7 @@
 				<false/>
 			</dict>
 			<key>description</key>
-			<string>Markdown file with "- **YYYY-MM-DD** ..." entries (only needed if line-a-day above is checked)</string>
+			<string>Markdown file with "- **YYYY-MM-DD** ..." entries (needed if line-a-day is checked)</string>
 			<key>label</key>
 			<string>line-a-day file</string>
 			<key>type</key>
@@ -814,7 +822,7 @@
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string>📔 Show 'on this day' links from journal-tagged notes (Obsidian notes with a 'journal' YAML tag). The index is built on launch and cached in the workflow data folder. Uses the Notes folder as the vault root.</string>
+			<string>On-this-day links from notes tagged journal (index cached in the workflow data folder)</string>
 			<key>label</key>
 			<string>Show journal 'on this day'?</string>
 			<key>type</key>
@@ -900,7 +908,7 @@
 				<true/>
 			</dict>
 			<key>description</key>
-			<string>Python strftime pattern for the daily note filename</string>
+			<string>Python strftime pattern for the daily note filename (from Obsidian config)</string>
 			<key>label</key>
 			<string>Title format for Obsidian daily note</string>
 			<key>type</key>
@@ -944,7 +952,7 @@
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string>Also append today's calendar events to the Obsidian daily note (requires calendar agenda)</string>
+			<string>Also append today's calendar events to the daily note</string>
 			<key>label</key>
 			<string>Add today's agenda to Obsidian daily page?</string>
 			<key>type</key>
@@ -965,7 +973,7 @@
 				<false/>
 			</dict>
 			<key>description</key>
-			<string>Optional script that returns an email summary to append to the daily note</string>
+			<string>Script that returns an email summary for the daily note</string>
 			<key>label</key>
 			<string>Emailstrom script</string>
 			<key>type</key>
@@ -986,7 +994,7 @@
 				<false/>
 			</dict>
 			<key>description</key>
-			<string>Folder containing person notes for one-on-one meetings</string>
+			<string>Folder of person notes for one-on-one meetings</string>
 			<key>label</key>
 			<string>People Folder Path</string>
 			<key>type</key>
@@ -1005,7 +1013,7 @@
 				<false/>
 			</dict>
 			<key>description</key>
-			<string>Section header containing items to discuss in person notes</string>
+			<string>Header in person notes with items to discuss</string>
 			<key>label</key>
 			<string>To Discuss Section Header</string>
 			<key>type</key>
@@ -1024,7 +1032,7 @@
 				<false/>
 			</dict>
 			<key>description</key>
-			<string>Frontmatter tag to identify person notes with regular one-on-one meetings</string>
+			<string>Frontmatter tag for people with regular one-on-ones</string>
 			<key>label</key>
 			<string>One-on-One Tag</string>
 			<key>type</key>
