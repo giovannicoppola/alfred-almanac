@@ -88,6 +88,13 @@ See [`source/WEEKLY_PLAN_FORMATS.md`](source/WEEKLY_PLAN_FORMATS.md) for the ful
 ### Line-a-day lookback
 Enable **Quote previous line-a-day items?** to append, for each past year, the journal entry closest to *this day* in that year (a "on this day" lookback). Point **line-a-day file** at a Markdown file whose entries look like `- **YYYY-MM-DD** ...`. Pairs nicely with the companion [alfred-line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow.
 
+### Obsidian daily note
+Enable **Add report to Obsidian daily page?** to append the almanac output to today's daily note when you press Enter. Off by default.
+
+- **Obsidian Vault:** path to your vault.
+- **Title format:** Python strftime pattern for the daily note filename (default `%Y-%m-%d-%a`).
+- The daily note file must already exist; this does not create it.
+
 
 <h1 id="known-issues">Known issues</h1>
 - Not tested extensively for international locations
@@ -100,6 +107,7 @@ Enable **Quote previous line-a-day items?** to append, for each past year, the j
 
 <h1 id="changelog">Changelog </h1>
 
+- 2026-09-02: optional append of the almanac report to the Obsidian daily note (`OBSIDIAN_CHECK`)
 - 2026-07-21: version 1.6.1, added an optional journal 'on this day' feature (index built on launch, cached in the workflow data folder)
 
 - 06-30-2026: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, and line-a-day lookback
