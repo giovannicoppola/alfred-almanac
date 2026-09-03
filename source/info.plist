@@ -109,7 +109,7 @@
 	<key>createdby</key>
 	<string>giovanni</string>
 	<key>description</key>
-	<string>weather etc.</string>
+	<string>Daily almanac with weather (wttr.in or OpenWeather), optional weekly plan, line-a-day, journal lookback, and Obsidian daily note</string>
 	<key>disabled</key>
 	<true/>
 	<key>name</key>
@@ -458,7 +458,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Alfred keyword to launch the workflow</string>
 			<key>label</key>
 			<string>Keyword</string>
 			<key>type</key>
@@ -510,7 +510,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				</array>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Applies to both wttr.in and OpenWeather</string>
 			<key>label</key>
 			<string>Temperature unit</string>
 			<key>type</key>
@@ -573,7 +573,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>Default city names or ZIP codes, comma-separated</string>
 			<key>label</key>
 			<string>Location</string>
 			<key>type</key>
@@ -594,7 +594,7 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<true/>
 			</dict>
 			<key>description</key>
-			<string></string>
+			<string>MM-DD to count days from and to (e.g. 03-14)</string>
 			<key>label</key>
 			<string>Special Day</string>
 			<key>type</key>
