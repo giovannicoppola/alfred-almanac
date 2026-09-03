@@ -356,7 +356,8 @@ python3 almanac.py $1 "${LOCATION}"</string>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
+	<string># Almanac 🌞
+- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
 - ... or enter a location/ZIP code directly
 - The default weather string will output:
 	- `%C` weather condition text
@@ -366,6 +367,8 @@ python3 almanac.py $1 "${LOCATION}"</string>
 	- `%h` humidity
 	- 🌬️`%w` wind
 	- `%m` moon phase
+- Temperature can be shown in °F or °C (set **Temperature unit** in the configuration)
+- The weather source can be switched from `wttr.in` to OpenWeather (set **Weather Info Source** and provide your own API key)
 - The almanac section will output:
 	- local date and time
 	- Current week of the year
@@ -374,9 +377,15 @@ python3 almanac.py $1 "${LOCATION}"</string>
 	- days from and to the special day
 
 - Enter (↩️) will copy to the clipboard and past to the frontmost application
-- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in`
+- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in` or OpenWeather, depending on your selected weather source
 - CTRL-enter (⌃↩️) will show the almanac string in large font
-- Option (⌥) will show the local date/time and timezone</string>
+- Option (⌥) will show the local date/time and timezone
+
+## Additional settings:
+- `Add weekly plan` will add a link to the current week's plan file. On Fridays, also to the following week's plan, carrying over unchecked tasks
+- `line-a-day?`: for users of the [line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow: will quote previous line-a-day items (from 1 or more years earlier)
+- `Show journal 'on this day'?` will append links to journal-tagged notes from this day in previous years
+- `Add report to Obsidian daily page?` will append the almanac output to today's Obsidian daily note when you press Enter</string>
 	<key>uidata</key>
 	<dict>
 		<key>08E34930-04EB-4AE1-9FC5-85F2E8003448</key>
