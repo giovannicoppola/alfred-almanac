@@ -1,6 +1,6 @@
 # alfred-almanac
 
-### Start your day with weather and a daily almanac — plus optional weekly planning, a calendar agenda, and a journal lookback
+### Start your day with weather and a daily almanac — plus optional weekly planning and a journal lookback
 
 
 ![](images/alfred-almanac.gif)
@@ -85,12 +85,6 @@ Enable **Add weekly plan** to append a link to the current week's plan file. On 
 
 See [`source/WEEKLY_PLAN_FORMATS.md`](source/WEEKLY_PLAN_FORMATS.md) for the full list of formats.
 
-### Daily agenda
-Enable **Add today's agenda** to append today's calendar events (time, title, location), sorted chronologically.
-
-- **Calendar source:** **Apple Calendar** (default — also covers iCloud/Google/Exchange accounts synced into Calendar) or **Microsoft Outlook**.
-- On first use, macOS will ask for permission to control the chosen app. Reading Apple Calendar can be slow, which is why this feature is opt-in.
-
 ### Line-a-day lookback
 Enable **Quote previous line-a-day items?** to append, for each past year, the journal entry closest to *this day* in that year (a "on this day" lookback). Point **line-a-day file** at a Markdown file whose entries look like `- **YYYY-MM-DD** ...`. Pairs nicely with the companion [alfred-line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow.
 
@@ -108,7 +102,7 @@ Enable **Quote previous line-a-day items?** to append, for each past year, the j
 
 - 2026-07-21: version 1.6.1, added an optional journal 'on this day' feature (index built on launch, cached in the workflow data folder)
 
-- 06-30-2026: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, daily agenda (Apple Calendar / Outlook), and line-a-day lookback
+- 06-30-2026: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, and line-a-day lookback
 - 11-30-2022: version 1.5 removed OneUpdater (for Alfred Gallery) 
 - 11-01-2022: version 1.4 added timezones
 - 09-29-2022: version 1.3 added OneUpdater, quicklookurl preview, keyword configurable (thanks @vitorgalvao!)

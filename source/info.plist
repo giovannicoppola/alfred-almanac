@@ -631,51 +631,6 @@ python3 almanac.py $1 "${LOCATION}"</string>
 				<string></string>
 			</dict>
 			<key>description</key>
-			<string>🗓️ Append today's calendar events to the output (may be slow on first run)</string>
-			<key>label</key>
-			<string>Add today's agenda</string>
-			<key>type</key>
-			<string>checkbox</string>
-			<key>variable</key>
-			<string>AGENDA</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<string>apple</string>
-				<key>pairs</key>
-				<array>
-					<array>
-						<string>Apple Calendar</string>
-						<string>apple</string>
-					</array>
-					<array>
-						<string>Microsoft Outlook</string>
-						<string>outlook</string>
-					</array>
-				</array>
-			</dict>
-			<key>description</key>
-			<string>Which app to read today's events from</string>
-			<key>label</key>
-			<string>Calendar source</string>
-			<key>type</key>
-			<string>popupbutton</string>
-			<key>variable</key>
-			<string>CALENDAR_SOURCE</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>default</key>
-				<false/>
-				<key>required</key>
-				<false/>
-				<key>text</key>
-				<string></string>
-			</dict>
-			<key>description</key>
 			<string>📖 Quote entries from this day in previous years (line-a-day journal)</string>
 			<key>label</key>
 			<string>Quote previous line-a-day items?</string>
