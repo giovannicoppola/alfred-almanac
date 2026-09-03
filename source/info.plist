@@ -109,7 +109,7 @@
 	<key>createdby</key>
 	<string>giovanni</string>
 	<key>description</key>
-	<string>Daily almanac with weather (wttr.in or OpenWeather), optional weekly plan, line-a-day, and Obsidian daily note</string>
+	<string>weather etc.</string>
 	<key>disabled</key>
 	<true/>
 	<key>name</key>
