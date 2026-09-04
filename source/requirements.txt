@@ -1,3 +1,5 @@
 # Python 3.9+ compatible versions
 requests==2.31.0
 urllib3<2.0
+# Required by the Outlook Graph API path (auth.py); pulls in PyJWT + cryptography.
+msal==1.38.0

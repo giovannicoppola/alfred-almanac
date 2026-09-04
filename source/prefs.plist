@@ -2,14 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CALENDAR_SOURCE</key>
+	<string>outlook</string>
 	<key>EMAILSTROM_SCRIPT</key>
 	<string>~/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/MyScripts/myGitHubRepos/email-sweeper/source/alfred-mailstrom.sh</string>
 	<key>LINEADAY</key>
 	<true/>
 	<key>LINEADAYFILE</key>
 	<string>~/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/GiovanniNotes/line-a-day.md</string>
+	<key>LINK_STYLE</key>
+	<string>wikilink</string>
 	<key>LOCATION</key>
 	<string>tarrytown, chappaqua, malibu</string>
+	<key>NOTES_FOLDER</key>
+	<string>~/Library/CloudStorage/OneDrive-RegeneronPharmaceuticals,Inc/GiovanniNotes</string>
 	<key>OBSIDIAN_AGENDA</key>
 	<true/>
 	<key>OBSIDIAN_CHECK</key>
