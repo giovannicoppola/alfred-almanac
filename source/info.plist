@@ -219,7 +219,7 @@
 				<key>script</key>
 				<string>export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH
 export PYTHONPATH="$PWD/lib"
-python3 almanac.py $1 "${LOCATION}"</string>
+/usr/bin/python3 almanac.py $1 "${LOCATION}"</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
