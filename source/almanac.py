@@ -319,17 +319,29 @@ def read_markdown_file(file_path):
     return lines
 
 
-# Extract (date, line) pairs from "- **YYYY-MM-DD** ..." entries
+# Matches any YYYY-MM-DD date inside an entry
+DATE_PATTERN = re.compile(r'\d{4}-\d{2}-\d{2}')
+
+
+# Stamp the weekday onto every copy of the date: 2025-09-14 -> 2025-09-14-Sun
+def add_weekday(line, date_str, date_obj):
+    return line.replace(date_str, date_str + '-' + date_obj.strftime('%a'))
+
+
+# Extract (date, line) pairs from "- **...YYYY-MM-DD...** ..." entries
 def extract_dates_and_lines(lines):
     date_lines = []
     for line in lines:
         if line.startswith('- **'):
-            try:
-                date_str = line.split('**')[1].split(' ')[0]
-                date_obj = datetime.strptime(date_str, '%Y-%m-%d')
-            except (IndexError, ValueError):
+            match = DATE_PATTERN.search(line)
+            if not match:
                 continue  # skip malformed entries
-            date_lines.append((date_obj, line.strip()))
+            date_str = match.group(0)
+            try:
+                date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+            except ValueError:
+                continue  # skip impossible dates (e.g. 2025-02-30)
+            date_lines.append((date_obj, add_weekday(line.strip(), date_str, date_obj)))
     return date_lines
 
 
