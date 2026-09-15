@@ -22,10 +22,12 @@ today's agenda" checkbox in the workflow configuration); it is not run
 unless enabled.
 """
 
+import calendar
 import os
 import re
 import subprocess
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -499,6 +501,98 @@ def _get_to_discuss_items(attendees_str):
     return ""
 
 
+def _relative_delta(past_date, today):
+    """Human-readable calendar delta between two dates, e.g. "1m 18d ago"."""
+    years = today.year - past_date.year
+    months = today.month - past_date.month
+    days = today.day - past_date.day
+    if days < 0:
+        months -= 1
+        prev_month = today.month - 1
+        prev_year = today.year
+        if prev_month == 0:
+            prev_month = 12
+            prev_year -= 1
+        days += calendar.monthrange(prev_year, prev_month)[1]
+    if months < 0:
+        years -= 1
+        months += 12
+    total_months = years * 12 + months
+    parts = []
+    if total_months:
+        parts.append(f"{total_months}m")
+    parts.append(f"{days}d")
+    return " ".join(parts) + " ago"
+
+
+def _get_previous_meeting_block(attendees_str):
+    """For a one-on-one meeting, find the most recent daily note that logged a
+    "# Meeting with [[Person]]" entry and return a backlink to it plus the
+    time the vault scan took.
+
+    Returns a two-line string (previous-meeting backlink + grepTime), or "".
+    """
+    vault = config.VAULT_PATH
+    if not vault or not os.path.isdir(vault):
+        return ""
+
+    attendees = [a.strip() for a in attendees_str.split(',') if a.strip()]
+    if len(attendees) == 0 or len(attendees) > 2:
+        return ""
+
+    # Resolve each attendee to the person-note stem used in daily-note headers;
+    # fall back to the raw attendee name when there's no matching note.
+    candidates = []
+    for attendee in attendees:
+        person_file = _match_attendee_to_person_note(attendee, config.PEOPLE_FOLDER)
+        candidates.append(Path(person_file).stem if person_file else attendee)
+
+    start = time.perf_counter()
+    today = datetime.now().date()
+
+    dated_files = []
+    for filename in os.listdir(vault):
+        if not filename.endswith('.md'):
+            continue
+        m = re.match(r'(\d{4}-\d{2}-\d{2})', filename)
+        if not m:
+            continue
+        try:
+            note_date = datetime.strptime(m.group(1), '%Y-%m-%d').date()
+        except ValueError:
+            continue
+        if note_date >= today:
+            continue
+        dated_files.append((note_date, filename))
+
+    dated_files.sort(key=lambda x: x[0], reverse=True)
+
+    found = None
+    for note_date, filename in dated_files:
+        try:
+            with open(os.path.join(vault, filename), 'r', encoding='utf-8') as f:
+                content = f.read()
+        except (IOError, OSError):
+            continue
+        for person_name in candidates:
+            pattern = rf'#\s+Meeting\s+with\s+\[\[{re.escape(person_name)}\]\]'
+            if re.search(pattern, content, re.IGNORECASE):
+                found = (note_date, Path(filename).stem, person_name)
+                break
+        if found:
+            break
+
+    elapsed = time.perf_counter() - start
+
+    if not found:
+        return ""
+
+    note_date, stem, person_name = found
+    rel = _relative_delta(note_date, today)
+    line = f"Previous meeting ({rel}): [[{stem}#Meeting with {person_name}]]"
+    return f"{line}\ngrepTime: {elapsed:.3f} sec"
+
+
 def _clean_body(body_text):
     """Clean up event body text: fix links, remove Teams boilerplate."""
     body_text = re.sub(
@@ -540,6 +634,10 @@ def _format_outlook_agenda(events, weekday_name):
             to_discuss = _get_to_discuss_items(event['attendees'])
             if to_discuss:
                 markdown_output += f"{to_discuss}\n"
+
+            prev_meeting = _get_previous_meeting_block(event['attendees'])
+            if prev_meeting:
+                markdown_output += f"{prev_meeting}\n"
 
         if event['agenda'] and len(event['agenda']) > 10:
             agenda_clean = _clean_body(event['agenda'])
