@@ -501,6 +501,31 @@ def _get_to_discuss_items(attendees_str):
     return ""
 
 
+def _one_on_one_person(attendees_str):
+    """Return the person-note stem for a tagged one-on-one attendee, or None.
+
+    Drives the daily-note header format: rendering it as
+    "# Meeting with [[Person]]" (matching the MDsuite ZM convention) is what
+    lets the previous-meeting lookup and tag_one_on_ones.py find the entry
+    later — a plain "# <subject>" header would never match.
+    """
+    if not config.PEOPLE_FOLDER or not os.path.isdir(config.PEOPLE_FOLDER):
+        return None
+
+    attendees = [a.strip() for a in attendees_str.split(',') if a.strip()]
+    if len(attendees) == 0 or len(attendees) > 2:
+        return None
+
+    for attendee in attendees:
+        person_file = _match_attendee_to_person_note(attendee, config.PEOPLE_FOLDER)
+        if not person_file:
+            continue
+        if not _has_frontmatter_tag(person_file, config.ONE_ON_ONE_TAG):
+            continue
+        return Path(person_file).stem
+    return None
+
+
 def _relative_delta(past_date, today):
     """Human-readable calendar delta between two dates, e.g. "1m 18d ago"."""
     years = today.year - past_date.year
@@ -623,7 +648,11 @@ def _format_outlook_agenda(events, weekday_name):
 
     markdown_output = ""
     for event in events:
-        markdown_output += f"# {event['title']}\n"
+        person = _one_on_one_person(event['attendees']) if event['attendees'] else None
+        if person:
+            markdown_output += f"# Meeting with [[{person}]]\n"
+        else:
+            markdown_output += f"# {event['title']}\n"
         markdown_output += f"**Time:** {event['start_time']} - {event['end_time']}\n"
         if event['location']:
             markdown_output += f"**Location:** {event['location']}\n"
@@ -637,7 +666,7 @@ def _format_outlook_agenda(events, weekday_name):
 
             prev_meeting = _get_previous_meeting_block(event['attendees'])
             if prev_meeting:
-                markdown_output += f"{prev_meeting}\n"
+                markdown_output += f"\n{prev_meeting}\n"
 
         if event['agenda'] and len(event['agenda']) > 10:
             agenda_clean = _clean_body(event['agenda'])
