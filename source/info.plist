@@ -384,7 +384,8 @@ python3 almanac.py $1 "${LOCATION}"</string>
 ## Additional settings:
 - `Add weekly plan` will add a link to the current week's plan file. On Fridays, also to the following week's plan, carrying over unchecked tasks
 - `line-a-day?`: for users of the [line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow: will quote previous line-a-day items (from 1 or more years earlier)
-- `Add report to Obsidian daily page?` will append the almanac output to today's Obsidian daily note when you press Enter</string>
+- `Add report to Obsidian daily page?` will append the almanac output to today's Obsidian daily note when you press Enter
+- `Create daily note if it doesn't exist` will create today's daily note when missing (off by default)</string>
 	<key>uidata</key>
 	<dict>
 		<key>08E34930-04EB-4AE1-9FC5-85F2E8003448</key>
@@ -822,6 +823,25 @@ python3 almanac.py $1 "${LOCATION}"</string>
 			<string>textfield</string>
 			<key>variable</key>
 			<string>DAILY_FORMAT</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<false/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string>If today's daily note is missing, create it before appending. Off: skip if the file does not already exist</string>
+			<key>label</key>
+			<string>Create daily note if it doesn't exist</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>OBSIDIAN_CREATE</string>
 		</dict>
 	</array>
 	<key>version</key>

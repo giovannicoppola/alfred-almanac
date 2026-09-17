@@ -94,7 +94,7 @@ Enable **Add report to Obsidian daily page?** to append the almanac output to to
 
 - **Obsidian Vault:** path to your vault.
 - **Title format:** Python strftime pattern for the daily note filename (default `%Y-%m-%d-%a`).
-- The daily note file must already exist; this does not create it.
+- **Create daily note if it doesn't exist:** off by default. When off, today's daily note must already exist or the append is skipped. When on, a missing daily note is created before appending.
 
 
 <h1 id="known-issues">Known issues</h1>
@@ -108,6 +108,7 @@ Enable **Add report to Obsidian daily page?** to append the almanac output to to
 
 <h1 id="changelog">Changelog </h1>
 
+- 2026-09-17: optional creation of today's Obsidian daily note if it does not exist (`OBSIDIAN_CREATE`)
 - 2026-09-02: optional append of the almanac report to the Obsidian daily note (`OBSIDIAN_CHECK`)
 
 - 06-30-2026: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, and line-a-day lookback

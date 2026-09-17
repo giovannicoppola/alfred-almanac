@@ -26,5 +26,6 @@ LINEADAY_FILE = os.path.expanduser(os.getenv('LINEADAYFILE', ''))
 VAULT_PATH = os.path.expanduser(os.getenv('OBSIDIAN_VAULT', ''))
 OBSIDIAN_CHECK = os.path.expanduser(os.getenv('OBSIDIAN_CHECK', ''))
 OBSIDIAN_DAILY = os.path.expanduser(os.getenv('DAILY_FORMAT', '%Y-%m-%d-%a'))
+OBSIDIAN_CREATE = os.path.expanduser(os.getenv('OBSIDIAN_CREATE', ''))
 
 	
