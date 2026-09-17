@@ -1,8 +1,10 @@
 # Weekly Plan
 
-When **Add weekly plan** is enabled, the workflow appends a link to the current
-week's plan to its output. On **Fridays** it also creates next week's plan file
-and carries over any unchecked tasks (`- [ ]` lines) from this week into it.
+When **Add weekly plan** is enabled, the workflow appends a link to this week's
+plan *filename* (it does not create this week's file). On **Fridays** the output
+also includes next week's link; that file is created if missing, and any
+unchecked tasks (`- [ ]` at the start of a line) are copied from this week's
+file into it.
 
 This works with **any folder of Markdown (`.md`) files** — Obsidian, Logseq,
 VS Code, Typora, plain text, etc. Set the **Notes folder** in the workflow
@@ -16,7 +18,7 @@ The **Weekly Plan Link Style** setting controls how the link is written:
 | Style | Output | Renders as a link in |
 |-------|--------|----------------------|
 | `markdown` (default) | `[name](name.md)` | GitHub, VS Code, Typora, most editors |
-| `wikilink` | `![[name]]` | Obsidian, Logseq |
+| `wikilink` | `![[name]]` | Obsidian, Logseq (embed wikilink) |
 | `plain` | `name` | (just the bare filename) |
 
 ## Filename formats
