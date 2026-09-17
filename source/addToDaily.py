@@ -13,10 +13,10 @@ import subprocess
 import sys
 import time
 
-from config import EMAILSTROM_SCRIPT, OBSIDIAN_AGENDA, OBSIDIAN_DAILY, VAULT_PATH
+from config import EMAILSTROM_SCRIPT, OBSIDIAN_AGENDA, OBSIDIAN_CREATE, OBSIDIAN_DAILY, VAULT_PATH
 from fetchAgenda import fetch_today_agenda
 
-myAlmanacString = sys.argv[1]
+myAlmanacString = sys.argv[1] if len(sys.argv) > 1 else ""
 
 
 def log(s, *args):
@@ -27,14 +27,7 @@ def log(s, *args):
 
 
 def fetchDailyNoteName():
-    # Get today's date
-
-    current_time = time.localtime()
-
-    # Format today's date according to OBSIDIAN_DAILY
-    myDailyNote = time.strftime(OBSIDIAN_DAILY, current_time)
-    
-    return myDailyNote
+    return time.strftime(OBSIDIAN_DAILY or "%Y-%m-%d-%a", time.localtime())
 
 def fetchEmailSummary():
     """Run the emailstrom script and return its summary title string.
@@ -124,9 +117,20 @@ def fetchEmailSummary():
 
 
 def main():
-    myDailyNote = fetchDailyNoteName()
-    daily_note_path = f"{VAULT_PATH}/{myDailyNote}.md"
-    
+    if not VAULT_PATH:
+        log("OBSIDIAN_VAULT is not set, skipping daily note append")
+        return
+
+    daily_note_path = os.path.join(VAULT_PATH, f"{fetchDailyNoteName()}.md")
+    if not os.path.isfile(daily_note_path):
+        if OBSIDIAN_CREATE != "1":
+            log(f"Daily note not found: {daily_note_path}")
+            return
+        parent = os.path.dirname(daily_note_path)
+        if parent:
+            os.makedirs(parent, exist_ok=True)
+        log(f"Creating daily note: {daily_note_path}")
+
     # First, append the original content (one-line-a-day, weekly agenda, etc.)
     with open(daily_note_path, "a") as file:
         file.write(f"{myAlmanacString}")

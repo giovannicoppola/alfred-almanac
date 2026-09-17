@@ -1,6 +1,7 @@
 # alfred-almanac
 
-### Start your day with weather and a daily almanac — plus optional weekly planning, a calendar agenda, and a journal lookback
+### Start your day with weather and a daily almanac — plus optional weekly planning, a calendar agenda, a journal lookback, and an Obsidian daily note
+
 
 ![](images/alfred-almanac.gif)
 
@@ -30,19 +31,27 @@ src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubuserc
 ### Needed
 
 - Alfred with Powerpack license
-- Python3 (howto install [here](https://www.freecodecamp.org/news/python-version-on-mac-update/))
+- Python 3 (macOS `/usr/bin/python3` is enough). Howto install [here](https://www.freecodecamp.org/news/python-version-on-mac-update/) if you need a newer interpreter.
+- Third-party packages are **not** committed (`source/lib/` is gitignored). Install them once with:
+
+```
+pip install -r source/requirements.txt --target=source/lib \
+    --python-version 3.9 --only-binary=:all:
+```
+
+`msal` is required only if you use Outlook via Graph API.
 
 ### Setup
 
-1. Download the most recent release of `alfred-almanac` from Github and double-click to install
-2. _Optional:_ Click `Configure Workflow` in `alfred-almanac` preferences to change settings
+1. Download the most recent release of `alfred-almanac` from GitHub and double-click to install
+2. _Optional:_ Click `Configure Workflow` in `alfred-almanac` preferences to change settings (default keyword: `!w`)
 3. _Optional:_ Setup a hotkey to launch alfred-almanac
 
 <h1 id="basic-usage">Basic Usage</h1>
-![](images/complice-almanac.png)
+![](images/almanac.png)
 
-- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
-- ... or enter a location/ZIP code directly
+- Launch with the workflow keyword (`!w` by default) to retrieve weather and other almanac information from default locations ...
+- ... or enter a location/ZIP code directly. Comma-separated values (the default Location setting) produce one result per place.
 
 - The default weather string from `wttr.in` will output:
 	- `%C` weather condition text
@@ -52,52 +61,56 @@ src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubuserc
 	- `%h` humidity
 	- 🌬️`%w` wind
 	- `%m` moon phase
+- The default `wttr.in` format string is `%C %c 🌡️%t (feels %f, %h) 🌬️%w %m` (editable as **wttr.in format**). These format codes apply to `wttr.in` only.
 - Temperature can be shown in °F or °C (set **Temperature unit** in the configuration)
-- The weather source can be switched from `wttr.in` to [OpenWeather](https://openweathermap.org) (set **Weather Info Source** and provide your own API key)
+- The weather source can be switched from `wttr.in` to [OpenWeather](https://openweathermap.org) (set **Weather Info Source** and provide your own API key). OpenWeather uses a fixed summary (condition, temperature, feels-like, humidity, moon phase) and ignores the wttr.in format string.
 
 - The almanac section will output:
 
-  - local date and time
-  - current week of the year
+  - local date and time (in the weather location's timezone)
+  - current ISO week of the year
   - current quarter
-  - days from and to the end of the year
-  - days from and to the special day
+  - day of the year and days remaining until December 31
+  - days from and to the special day (**Special Day** in configuration, `MM-DD`)
 
-- Enter (↩️) will copy to the clipboard and past to the frontmost application
-- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in` or OpenWeather, depending on your selected weather source
+- Enter (↩️) will copy to the clipboard and paste to the frontmost application (unless Obsidian daily-note append is enabled — see below)
+- Shift-enter (⇧↩️) will open `wttr.in` for that location, or the city's OpenWeather page (from the API city id; search page if the lookup failed)
 - CTRL-enter (⌃↩️) will show the almanac string in large font
 - Option (⌥) will show the local date/time and timezone
 
 <h1 id="optional-features">Optional features</h1>
 
-All of these are **off by default** and can be enabled in `Configure Workflow`. They append extra lines to the almanac output (which you can copy with ↩️ or view in large text with ⌃↩️).
+**Weather Info Source** and **Temperature unit** are always available (defaults: `wttr.in`, °F). Weekly plan, calendar agenda, line-a-day, journal on-this-day, and Obsidian daily note are **off by default** and can be enabled in `Configure Workflow`. Weekly plan, agenda, line-a-day, and journal append extra lines to the almanac output.
 
 ### Weather source & units
 - **Weather Info Source:** `wttr.in` (default, no setup) or **OpenWeather**. For OpenWeather, get a free API key at [openweathermap.org](https://openweathermap.org/api) and paste it into **Open Weather API Key**.
 - **Temperature unit:** `°F` (default) or `°C`. Applies to both sources.
 
 ### Weekly plan + task carryover
-Enable **Add weekly plan** to append a link to the current week's plan file. On **Fridays** it also creates next week's plan file and carries over any unchecked tasks (`- [ ]` lines) from this week.
+Enable **Add weekly plan** to append a link to the *filename* of this week's plan. This week's file is not created. On **Fridays** the output also includes next week's link; that file is created if missing, and any unchecked tasks (`- [ ]` at the start of a line) that are not already in next week's file are copied into it.
 
-- **Notes folder:** any folder of Markdown (`.md`) files where the plans live — works with Obsidian, Logseq, VS Code, plain text, etc.
+- **Notes folder:** any folder of Markdown (`.md`) files where the plans live — works with Obsidian, Logseq, VS Code, plain text, etc. Journal on-this-day (below) also scans this folder.
 - **Weekly Plan Format:** pick the filename pattern (e.g. `Weekly plan (31) 2025-07-28 to 2025-08-01`).
-- **Weekly Plan Link Style:** how the link is written — standard Markdown `[name](name.md)` (default), Obsidian/Logseq wikilink `![[name]]`, or plain filename.
+- **Weekly Plan Link Style:** how the link is written — standard Markdown `[name](name.md)` (default), Obsidian/Logseq embed `![[name]]`, or plain filename.
 
 See [`source/WEEKLY_PLAN_FORMATS.md`](source/WEEKLY_PLAN_FORMATS.md) for the full list of formats.
 
 ### Daily agenda
-Enable **Add today's agenda** to append today's calendar events (time, title, location), sorted chronologically.
+Enable **Add today's agenda** to append today's calendar events to the *almanac output* (the Alfred result you copy or show as large text).
 
 - **Calendar source:** **Apple Calendar** (default — also covers iCloud/Google/Exchange accounts synced into Calendar) or **Microsoft Outlook**.
+- Apple Calendar output is a compact list (time, title, location). Outlook output is richer Markdown (see below).
 - On first use, macOS will ask for permission to control the chosen app. Reading Apple Calendar can be slow, which is why this feature is opt-in.
+
+A separate checkbox, **Add today's agenda to Obsidian daily page?**, fetches the agenda again when writing the daily note (it does not add the agenda to the Alfred result by itself).
 
 #### Outlook: Graph API + one-on-one meeting integration
 
-When **Calendar source** is **Microsoft Outlook**, the agenda tries the **Graph API** first (works with new Outlook), and falls back to **AppleScript** (legacy Outlook) if it's unavailable. It returns all accepted events for today (including recurring/overlapping ones), skips cancelled/declined events, and cleans up meeting body text (Office file-icon links, Teams join boilerplate, inline image references).
+When **Calendar source** is **Microsoft Outlook**, the agenda tries the **Graph API** first (works with new Outlook), and falls back to **AppleScript** (legacy Outlook) if it's unavailable. It returns today's events, skips cancelled/declined (and Tentative-in-subject, on the AppleScript path), and cleans up meeting body text (Office file-icon links, Teams join boilerplate, inline image references).
 
-For one-on-one meetings (exactly 2 attendees), it can also pull "to discuss" items from person notes and include them in the agenda:
+For meetings with **one or two attendees**, it can pull "to discuss" items from person notes:
 
-1. Create a Microsoft Entra (Azure AD) app registration for Graph API access at [portal.azure.com](https://portal.azure.com), then create a `config.json` in `source/`:
+1. Put a Microsoft Entra (Azure AD) `config.json` (and the generated `token_cache.json`) in the directory pointed to by **`GRAPH_CONFIG_DIR`**:
    ```json
    {
      "client_id": "YOUR_CLIENT_ID",
@@ -106,19 +119,34 @@ For one-on-one meetings (exactly 2 attendees), it can also pull "to discuss" ite
      "scopes": ["Calendars.Read", "Mail.Read"]
    }
    ```
-   On first run, a browser window opens for Microsoft login; subsequent runs use a cached token (`token_cache.json`, auto-generated next to `config.json`). Alternatively, set **`GRAPH_CONFIG_DIR`** to a directory holding both files, to share credentials across workflows.
-2. Set **`PEOPLE_FOLDER`** to your Obsidian people-notes folder (e.g. `_People`) — this is the only setting required to enable one-on-one matching.
+   Register the app at [portal.azure.com](https://portal.azure.com). On first run, a browser window opens for Microsoft login. `GRAPH_CONFIG_DIR` is an environment variable, not a Configure Workflow field; if it is unset, this branch currently falls back to a developer-specific path in `fetchAgenda.py`.
+2. Set **People Folder Path** (`PEOPLE_FOLDER`) to your Obsidian people-notes folder (e.g. `_People`) — this is the only Configure Workflow setting required to enable one-on-one matching.
 3. Tag the person notes you have regular one-on-ones with (`tags: [one-on-one]` in frontmatter — matches **`ONE_ON_ONE_TAG`**), and keep a section of items in each (default header `# Active Items` — matches **`DISCUSS_SECTION`**).
 
-When a one-on-one is detected, the attendee name is matched (case-insensitive, partial match) to a file in `PEOPLE_FOLDER`; if that note carries the tag, its discussion items are inserted under the meeting as `**To Discuss with [[PersonName]]:**`.
+When a matching one-on-one is found, the agenda uses `# Meeting with [[PersonName]]` as the event header (not the calendar subject), inserts `**To Discuss with [[PersonName]]:**` plus that note's section items, and may add a backlink to the previous daily note that logged the same heading.
 
-Graph API packages (`msal`, `requests`, `jwt`, `cryptography`, `cffi`, `pycparser`, `certifi`, `urllib3`, `idna`, `charset_normalizer`) are bundled in `source/lib/`; update with `pip install --target=source/lib msal requests`.
+Graph/API packages (`msal`, `requests`, and their dependencies) belong in `source/lib/`; install with the `pip` command in [Setting up](#setting-up).
 
 See [`CONFIGURATION.md`](CONFIGURATION.md) for the full variable reference.
 
 ### Line-a-day lookback
-Enable **Quote previous line-a-day items?** to append, for each past year, the journal entry closest to *this day* in that year (a "on this day" lookback). Point **line-a-day file** at a Markdown file whose entries look like `- **YYYY-MM-DD** ...`. Pairs nicely with the companion [alfred-line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow.
+Enable **Quote previous line-a-day items?** to append, for each complete year of history in the file, the journal entry whose date is closest to today minus that many years. Point **line-a-day file** at a Markdown file whose entries start with `- **` and contain a `YYYY-MM-DD` date. Pairs nicely with the companion [alfred-line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow.
 
+### Journal on-this-day
+Enable **Show journal 'on this day'?** to append Obsidian wikilinks to notes tagged `journal`. The index is (re)built on launch if it is missing or older than 12 hours, and stored in the Alfred workflow data folder (not the repo).
+
+- It scans **Notes folder** (the same folder as weekly plans), not **Obsidian Vault**.
+- For each previous year it picks at most one note whose date is in *this calendar month*, closest to today's day.
+- Output looks like `- **2019**: ![[relative/path|notetitle]]`.
+
+### Obsidian daily note
+Enable **Add report to Obsidian daily page?** to append the almanac output to today's daily note when you press Enter. Off by default. While this is on, Enter writes to the daily note and does **not** copy/paste to the frontmost app.
+
+- **Obsidian Vault:** folder that contains the daily note files (vault root, or a Daily Notes subfolder). The path written is `{folder}/{title format}.md`. Previous-meeting lookup also only scans Markdown files in that folder (not subfolders).
+- **Title format:** Python strftime pattern for the daily note filename (default `%Y-%m-%d-%a`). Include a subfolder here if notes are not directly in the folder you picked, e.g. `DailyNotes/%Y-%m-%d-%a`.
+- **Create daily note if it doesn't exist:** **on by default** on this branch (it previously always created the file). When off, today's daily note must already exist or the append is skipped. When on, a missing daily note is created (including parent folders from the title format) and the report is written into it. This does not run Obsidian's Daily Notes template.
+- **Add today's agenda to Obsidian daily page?:** fetches the calendar agenda again and appends it to the daily note (independent of **Add today's agenda** in the Alfred result).
+- **Emailstrom script:** if set to an executable script, its summary is appended to the daily note after the almanac report.
 
 <h1 id="known-issues">Known issues</h1>
 - Not tested extensively for international locations
@@ -130,6 +158,7 @@ Enable **Quote previous line-a-day items?** to append, for each past year, the j
 
 <h1 id="changelog">Changelog </h1>
 
+- 2026-09-17: this branch — optional creation of today's Obsidian daily note (`OBSIDIAN_CREATE`, on by default); Friday weekly carryover no longer duplicates tasks; OpenWeather Shift-enter opens the city's page via API id
 - 2026-08-26: version 1.6.1, added one-on-one meeting integration (matches Outlook attendees to Obsidian person notes and pulls "to discuss" items) and an optional email summary appended to the daily note (`EMAILSTROM_SCRIPT`)
 - 2026-07-21: version 1.6.1, added an optional journal 'on this day' feature (index built on launch, cached in the workflow data folder)
 - 06-30-2026: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, daily agenda (Apple Calendar / Outlook — with Graph API and one-on-one meeting integration for Outlook), Obsidian Daily Notes integration, and line-a-day lookback
@@ -142,4 +171,3 @@ Enable **Quote previous line-a-day items?** to append, for each past year, the j
 
 <h1 id="feedback">Feedback</h1>
 Feedback welcome! If you notice a bug, or have ideas for new features, please feel free to get in touch either here, or on the [Alfred](https://www.alfredforum.com) forum.
-
