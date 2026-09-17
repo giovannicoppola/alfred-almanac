@@ -377,12 +377,12 @@ python3 almanac.py $1 "${LOCATION}"</string>
 	- days from and to the special day (`MM-DD`)
 
 - Enter (↩️) will copy to the clipboard and paste to the frontmost application (unless Obsidian daily-note append is enabled)
-- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in` or OpenWeather, depending on your selected weather source
+- Shift-enter (⇧↩️) will open `wttr.in` for that location, or the city's OpenWeather page (API city id)
 - CTRL-enter (⌃↩️) will show the almanac string in large font
 - Option (⌥) will show the local date/time and timezone
 
 ## Additional settings:
-- `Add weekly plan` will add a link to this week's plan filename (the file is not created). On Fridays, also a link to next week; that file is created if missing, and unchecked `- [ ]` tasks are copied into it
+- `Add weekly plan` will add a link to this week's plan filename (the file is not created). On Fridays, also a link to next week; that file is created if missing, and unchecked `- [ ]` tasks not already in it are copied into it
 - `line-a-day?`: for users of the [line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow: will quote previous line-a-day items (from 1 or more years earlier). Entries must start with `- **` and contain a `YYYY-MM-DD` date
 - `Add report to Obsidian daily page?` will append the almanac output to today's Obsidian daily note when you press Enter (and will not copy/paste)
 - `Create daily note if it doesn't exist` will create today's daily note when missing (off by default; does not apply Obsidian's template)</string>

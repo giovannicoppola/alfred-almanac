@@ -70,7 +70,7 @@ src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubuserc
 	- days from and to the special day (**Special Day** in configuration, `MM-DD`)
 
 - Enter (↩️) will copy to the clipboard and paste to the frontmost application (unless Obsidian daily-note append is enabled — see below)
-- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in` or OpenWeather, depending on your selected weather source
+- Shift-enter (⇧↩️) will open `wttr.in` for that location, or the city's OpenWeather page (from the API city id; search page if the lookup failed)
 - CTRL-enter (⌃↩️) will show the almanac string in large font
 - Option (⌥) will show the local date/time and timezone
 
@@ -84,7 +84,7 @@ src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubuserc
 - **Temperature unit:** `°F` (default) or `°C`. Applies to both sources.
 
 ### Weekly plan + task carryover
-Enable **Add weekly plan** to append a link to the *filename* of this week's plan. This week's file is not created. On **Fridays** the output also includes next week's link; that file is created if missing, and any unchecked tasks (`- [ ]` at the start of a line) are copied from this week's file into it.
+Enable **Add weekly plan** to append a link to the *filename* of this week's plan. This week's file is not created. On **Fridays** the output also includes next week's link; that file is created if missing, and any unchecked tasks (`- [ ]` at the start of a line) that are not already in next week's file are copied into it.
 
 - **Notes folder:** any folder of Markdown (`.md`) files where the plans live — works with Obsidian, Logseq, VS Code, plain text, etc.
 - **Weekly Plan Format:** pick the filename pattern (e.g. `Weekly plan (31) 2025-07-28 to 2025-08-01`).
@@ -114,7 +114,7 @@ Enable **Add report to Obsidian daily page?** to append the almanac output to to
 
 <h1 id="changelog">Changelog </h1>
 
-- 2026-09-17: version 1.6.1, optional creation of today's Obsidian daily note if it does not exist (`OBSIDIAN_CREATE`)
+- 2026-09-17: version 1.6.1, optional creation of today's Obsidian daily note if it does not exist (`OBSIDIAN_CREATE`); Friday weekly carryover no longer duplicates tasks; OpenWeather Shift-enter opens the city's page via API id
 - 2026-09-02: version 1.6.1, optional append of the almanac report to the Obsidian daily note (`OBSIDIAN_CHECK`)
 
 - 06-30-2026: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, and line-a-day lookback

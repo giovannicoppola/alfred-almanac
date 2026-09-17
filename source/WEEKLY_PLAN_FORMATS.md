@@ -4,7 +4,8 @@ When **Add weekly plan** is enabled, the workflow appends a link to this week's
 plan *filename* (it does not create this week's file). On **Fridays** the output
 also includes next week's link; that file is created if missing, and any
 unchecked tasks (`- [ ]` at the start of a line) are copied from this week's
-file into it.
+file into it. Tasks already present in next week's file are skipped, so running
+the workflow more than once on Friday does not duplicate them.
 
 This works with **any folder of Markdown (`.md`) files** — Obsidian, Logseq,
 VS Code, Typora, plain text, etc. Set the **Notes folder** in the workflow
