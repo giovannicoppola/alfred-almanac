@@ -39,6 +39,7 @@ src="https://img.shields.io/github/downloads/giovannicoppola/alfred-almanac/tota
 
 
 <h1 id="basic-usage">Basic Usage</h1>
+
 ![](images/almanac.png)
 
 - Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
