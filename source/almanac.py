@@ -323,9 +323,14 @@ def read_markdown_file(file_path):
 DATE_PATTERN = re.compile(r'\d{4}-\d{2}-\d{2}')
 
 
-# Stamp the weekday onto every copy of the date: 2025-09-14 -> 2025-09-14-Sun
+# Stamp the weekday onto the date: 2025-09-14 -> 2025-09-14-Sun
+# But skip if weekday already follows the date in the original line
 def add_weekday(line, date_str, date_obj):
-    return line.replace(date_str, date_str + '-' + date_obj.strftime('%a'))
+    weekday = date_obj.strftime('%a')
+    # Check if weekday already appears right after the date (e.g., "2024-09-18 Wed")
+    if date_str + ' ' + weekday in line:
+        return line  # Already present, don't add it
+    return line.replace(date_str, date_str + '-' + weekday, 1)
 
 
 # Extract (date, line) pairs from "- **...YYYY-MM-DD...** ..." entries
