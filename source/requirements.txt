@@ -1,3 +1,6 @@
-# Python 3.9+ compatible versions
+# Python 3.9+ compatible versions (Alfred runs /usr/bin/python3, which is 3.9 on macOS)
+# Install with:
+#   pip install -r source/requirements.txt --target=source/lib \
+#       --python-version 3.9 --only-binary=:all:
 requests==2.31.0
 urllib3<2.0

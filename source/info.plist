@@ -357,9 +357,9 @@ export PYTHONPATH="$PWD/lib"
 	</array>
 	<key>readme</key>
 	<string># Almanac 🌞
-- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
-- ... or enter a location/ZIP code directly
-- The default weather string will output:
+- Launch with the workflow keyword (`!w` by default) to retrieve weather and other almanac information from default locations ...
+- ... or enter a location/ZIP code directly (comma-separated values produce one result each)
+- The default `wttr.in` format string is `%C %c 🌡️%t (feels %f, %h) 🌬️%w %m` (editable). Format codes apply to `wttr.in` only; OpenWeather uses a fixed summary
 	- `%C` weather condition text
 	- `%c` weather condition
 	- 🌡️`%t` actual temperature
@@ -370,21 +370,22 @@ export PYTHONPATH="$PWD/lib"
 - Temperature can be shown in °F or °C (set **Temperature unit** in the configuration)
 - The weather source can be switched from `wttr.in` to OpenWeather (set **Weather Info Source** and provide your own API key)
 - The almanac section will output:
-	- local date and time
-	- Current week of the year
+	- local date and time (weather location timezone)
+	- current ISO week of the year
 	- current quarter
-	- days from and to the end of the year
-	- days from and to the special day
+	- day of the year and days remaining until December 31
+	- days from and to the special day (`MM-DD`)
 
-- Enter (↩️) will copy to the clipboard and past to the frontmost application
-- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in` or OpenWeather, depending on your selected weather source
+- Enter (↩️) will copy to the clipboard and paste to the frontmost application (unless Obsidian daily-note append is enabled)
+- Shift-enter (⇧↩️) will open `wttr.in` for that location, or the city's OpenWeather page (API city id)
 - CTRL-enter (⌃↩️) will show the almanac string in large font
 - Option (⌥) will show the local date/time and timezone
 
 ## Additional settings:
-- `Add weekly plan` will add a link to the current week's plan file. On Fridays, also to the following week's plan, carrying over unchecked tasks
-- `line-a-day?`: for users of the [line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow: will quote previous line-a-day items (from 1 or more years earlier)
-- `Add report to Obsidian daily page?` will append the almanac output to today's Obsidian daily note when you press Enter</string>
+- `Add weekly plan` will add a link to this week's plan filename (the file is not created). On Fridays, also a link to next week; that file is created if missing, and unchecked `- [ ]` tasks not already in it are copied into it
+- `line-a-day?`: for users of the [line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow: will quote previous line-a-day items (from 1 or more years earlier). Entries must start with `- **` and contain a `YYYY-MM-DD` date
+- `Add report to Obsidian daily page?` will append the almanac output to today's Obsidian daily note when you press Enter (and will not copy/paste)
+- `Create daily note if it doesn't exist` will create today's daily note when missing (off by default; does not apply Obsidian's template)</string>
 	<key>uidata</key>
 	<dict>
 		<key>08E34930-04EB-4AE1-9FC5-85F2E8003448</key>
@@ -822,6 +823,25 @@ export PYTHONPATH="$PWD/lib"
 			<string>textfield</string>
 			<key>variable</key>
 			<string>DAILY_FORMAT</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<false/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string>If today's daily note is missing, create it before appending. Off: skip if the file does not already exist</string>
+			<key>label</key>
+			<string>Create daily note if it doesn't exist</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>OBSIDIAN_CREATE</string>
 		</dict>
 	</array>
 	<key>version</key>

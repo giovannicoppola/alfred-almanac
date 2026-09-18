@@ -7,7 +7,7 @@ import os
 import sys
 import time
 
-from config import OBSIDIAN_DAILY, VAULT_PATH
+from config import OBSIDIAN_CREATE, OBSIDIAN_DAILY, VAULT_PATH
 
 myAlmanacString = sys.argv[1] if len(sys.argv) > 1 else ""
 
@@ -29,8 +29,13 @@ def main():
 
     daily_note_path = os.path.join(VAULT_PATH, f"{fetchDailyNoteName()}.md")
     if not os.path.isfile(daily_note_path):
-        log(f"Daily note not found: {daily_note_path}")
-        return
+        if OBSIDIAN_CREATE != "1":
+            log(f"Daily note not found: {daily_note_path}")
+            return
+        parent = os.path.dirname(daily_note_path)
+        if parent:
+            os.makedirs(parent, exist_ok=True)
+        log(f"Creating daily note: {daily_note_path}")
 
     with open(daily_note_path, "a") as file:
         file.write(f"{myAlmanacString}")
