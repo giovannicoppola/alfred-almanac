@@ -1,6 +1,6 @@
 # alfred-almanac
 
-### Start your day with weather and a daily almanac — plus optional weekly planning, a journal lookback, and an Obsidian daily note
+### Start your day with weather and a daily almanac 
 
 
 ![](images/alfred-almanac.gif)
@@ -78,10 +78,6 @@ src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubuserc
 <h1 id="optional-features">Optional features</h1>
 
 **Weather Info Source** and **Temperature unit** are always available (defaults: `wttr.in`, °F). Weekly plan, line-a-day, and Obsidian daily note are **off by default** and can be enabled in `Configure Workflow`. Weekly plan and line-a-day append extra lines to the almanac output.
-
-### Weather source & units
-- **Weather Info Source:** `wttr.in` (default, no setup) or **OpenWeather**. For OpenWeather, get a free API key at [openweathermap.org](https://openweathermap.org/api) and paste it into **Open Weather API Key**.
-- **Temperature unit:** `°F` (default) or `°C`. Applies to both sources.
 
 ### Weekly plan + task carryover
 Enable **Add weekly plan** to append a link to the *filename* of this week's plan. This week's file is not created. On **Fridays** the output also includes next week's link; that file is created if missing, and any unchecked tasks (`- [ ]` at the start of a line) that are not already in next week's file are copied into it.
