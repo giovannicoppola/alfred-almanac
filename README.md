@@ -33,13 +33,13 @@ src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubuserc
 ### Needed
 
 - Alfred with Powerpack license
-- Python 3 (macOS `/usr/bin/python3` is enough; third-party packages are bundled). Howto install [here](https://www.freecodecamp.org/news/python-version-on-mac-update/) if you need a newer interpreter.
+- Python 3 (macOS `/usr/bin/python3` is enough; third-party packages are bundled). How to install [here](https://www.freecodecamp.org/news/python-version-on-mac-update/) if you need a newer interpreter.
 
 ### Setup
 
 1. Download the most recent release of `alfred-almanac` from GitHub and double-click to install
 2. _Optional:_ Click `Configure Workflow` in `alfred-almanac` preferences to change settings (default keyword: `!w`)
-3. _Optional:_ Setup a hotkey to launch alfred-almanac
+3. _Optional:_ Set up a hotkey to launch alfred-almanac
 
 
 <h1 id="basic-usage">Basic Usage</h1>
@@ -112,13 +112,13 @@ Enable **Add report to Obsidian daily page?** to append the almanac output to to
 
 - 2026-09-17: version 1.6.1, optional append of the almanac report to the Obsidian daily note (`OBSIDIAN_CHECK`), with optional creation of today's note if it does not exist (`OBSIDIAN_CREATE`); Friday weekly carryover no longer duplicates tasks; OpenWeather Shift-enter opens the city's page via API id
 
-- 06-30-2026: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, and line-a-day lookback
-- 11-30-2022: version 1.5 removed OneUpdater (for Alfred Gallery) 
-- 11-01-2022: version 1.4 added timezones
-- 09-29-2022: version 1.3 added OneUpdater, quicklookurl preview, keyword configurable (thanks @vitorgalvao!)
-- 08-07-2022: version 1.2 merging @vitorgalvao's changes to update Workflow Environment Variables to User Configuration
-- 03-30-2022: version 1.1 (switched to `requests` package for web request handling)
-- 03-22-2022: version 1.0
+- 2026-06-30: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, and line-a-day lookback
+- 2022-11-30: version 1.5 removed OneUpdater (for Alfred Gallery) 
+- 2022-11-01: version 1.4 added timezones
+- 2022-09-29: version 1.3 added OneUpdater, quicklookurl preview, keyword configurable (thanks @vitorgalvao!)
+- 2022-08-07: version 1.2 merging @vitorgalvao's changes to update Workflow Environment Variables to User Configuration
+- 2022-03-30: version 1.1 (switched to `requests` package for web request handling)
+- 2022-03-22: version 1.0
 
 <h1 id="feedback">Feedback</h1>
 Feedback welcome! If you notice a bug, or have ideas for new features, please feel free to get in touch either here, or on the [Alfred](https://www.alfredforum.com) forum.
