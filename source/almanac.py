@@ -428,11 +428,8 @@ def almanac ():
 
 
 result = {"items": []}
-mylocation = LOCATION
-if sys.argv[1] == '':
-    mylocation = LOCATION
-else:
-    mylocation = sys.argv[1]
+query = sys.argv[1] if len(sys.argv) > 1 else ''
+mylocation = query if query else LOCATION
 
 myAlmanac,myIcon = almanac()
 
