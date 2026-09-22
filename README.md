@@ -119,7 +119,7 @@ Enable **Add report to Obsidian daily page?** to append the almanac output to to
 
 <h1 id="changelog">Changelog </h1>
 
-- 2026-09-17: version 1.6.1, optional append of the almanac report to the Obsidian daily note (`OBSIDIAN_CHECK`), with optional creation of today's note if it does not exist (`OBSIDIAN_CREATE`); Friday weekly carryover no longer duplicates tasks; OpenWeather Shift-enter opens the city's page via API id
+- 2026-09-22: version 1.6.1, optional append of the almanac report to the Obsidian daily note (`OBSIDIAN_CHECK`), with optional creation of today's note if it does not exist (`OBSIDIAN_CREATE`); Friday weekly carryover no longer duplicates tasks; OpenWeather Shift-enter opens the city's page via API id
 
 - 2026-06-30: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, and line-a-day lookback
 - 2022-11-30: version 1.5 removed OneUpdater (for Alfred Gallery) 
