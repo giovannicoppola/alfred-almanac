@@ -89,7 +89,7 @@ pip install -r source/requirements.txt --target=source/lib \
 **Weather Info Source** and **Temperature unit** are always available (defaults: `wttr.in`, °F). Weekly plan, line-a-day, and Obsidian daily note are **off by default** and can be enabled in `Configure Workflow`. Weekly plan and line-a-day append extra lines to the almanac output.
 
 ### Weekly plan + task carryover
-Enable **Add weekly plan** to append a link to the *filename* of this week's plan. This week's file is not created. On **Fridays** the output also includes next week's link; that file is created if missing, and any unchecked tasks (`- [ ]` at the start of a line) that are not already in next week's file are copied into it.
+Enable **Add weekly plan** to append a link to the *filename* of this week's plan. This week's file is not created. On **Fridays** the output also includes next week's link; that file is created if missing, and this week's unchecked tasks (`- [ ]` at the start of a line) are copied into it.
 
 - **Notes folder:** any folder of Markdown (`.md`) files where the plans live — works with Obsidian, Logseq, VS Code, plain text, etc.
 - **Weekly Plan Format:** pick the filename pattern (e.g. `Weekly plan (31) 2025-07-28 to 2025-08-01`).
@@ -121,7 +121,7 @@ Enable **Add report to Obsidian daily page?** to append the almanac output to to
 
 <h1 id="changelog">Changelog </h1>
 
-- 2026-09-22: version 1.6.1, optional append of the almanac report to the Obsidian daily note (`OBSIDIAN_CHECK`), with optional creation of today's note if it does not exist (`OBSIDIAN_CREATE`); Friday weekly carryover no longer duplicates tasks; OpenWeather Shift-enter opens the city's page via API id
+- 2026-09-22: version 1.6.1, optional append of the almanac report to the Obsidian daily note (`OBSIDIAN_CHECK`), with optional creation of today's note if it does not exist (`OBSIDIAN_CREATE`); OpenWeather Shift-enter opens the city's page via API id
 
 - 2026-06-30: version 1.6 added optional features: OpenWeather source + °F/°C unit, weekly plan with Friday task carryover, and line-a-day lookback
 - 2022-11-30: version 1.5 removed OneUpdater (for Alfred Gallery) 
