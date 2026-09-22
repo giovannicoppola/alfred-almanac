@@ -41,6 +41,15 @@ src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubuserc
 2. _Optional:_ Click `Configure Workflow` in `alfred-almanac` preferences to change settings (default keyword: `!w`)
 3. _Optional:_ Set up a hotkey to launch alfred-almanac
 
+### Building from source
+
+The bundled third-party packages in `source/lib/` are not tracked in this repo. After cloning, install them for the Python that Alfred runs (`/usr/bin/python3`, which is 3.9 on macOS):
+
+```sh
+pip install -r source/requirements.txt --target=source/lib \
+    --python-version 3.9 --only-binary=:all:
+```
+
 
 <h1 id="basic-usage">Basic Usage</h1>
 
