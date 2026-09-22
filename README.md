@@ -109,10 +109,12 @@ Enable **Add report to Obsidian daily page?** to append the almanac output to to
 
 
 <h1 id="known-issues">Known issues</h1>
+
 - Not tested extensively for international locations
 
 
 <h1 id="acknowledgments">Acknowledgments </h1>
+
 - [Igor Chubin](https://twitter.com/igor_chubin) for developing the amazing `wttr.in`
 - [@vitorgalvao](https://github.com/vitorgalvao) for suggestions and great additions
 - The [Alfred forum](https://www.alfredforum.com) community.
@@ -130,4 +132,5 @@ Enable **Add report to Obsidian daily page?** to append the almanac output to to
 - 2022-03-22: version 1.0
 
 <h1 id="feedback">Feedback</h1>
+
 Feedback welcome! If you notice a bug, or have ideas for new features, please feel free to get in touch either here, or on the [Alfred](https://www.alfredforum.com) forum.
