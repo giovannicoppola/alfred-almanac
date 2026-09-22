@@ -844,6 +844,8 @@ export PYTHONPATH="$PWD/lib"
 			<string>OBSIDIAN_CREATE</string>
 		</dict>
 	</array>
+	<key>variablesdontexport</key>
+	<array/>
 	<key>version</key>
 	<string>1.6.1</string>
 	<key>webaddress</key>

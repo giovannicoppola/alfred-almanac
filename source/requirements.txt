@@ -2,5 +2,7 @@
 # Install with:
 #   pip install -r source/requirements.txt --target=source/lib \
 #       --python-version 3.9 --only-binary=:all:
-requests==2.31.0
+# Do not go above these: requests 2.33.0 dropped Python 3.9, and urllib3 2.x
+# needs OpenSSL 1.1.1+, which macOS system Python (LibreSSL) does not provide.
+requests==2.32.5
 urllib3<2.0
