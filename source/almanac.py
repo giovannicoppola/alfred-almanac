@@ -11,6 +11,7 @@ import requests
 from datetime import datetime, timedelta
 import datetime as date2
 import re, os, time
+from urllib.parse import quote
 
 
 from config import LOCATION, FORMATSTRING, SPECIAL_DAY, WEATHER_SOURCE, OPENWEATHER_KEY, TEMPERATURE_UNIT, WEEKLY, NOTES_FOLDER, WEEKLY_PLAN_FORMAT, LINK_STYLE, AGENDA, LINEADAY, LINEADAY_FILE, JOURNAL
@@ -76,8 +77,8 @@ def get_weather(location):
     myLocalTime=time.asctime()
     log (myLocalTime)
 
-
-    return (myWeatherString,myLocalTime, myTimeZone)
+    page_url = f"https://wttr.in/{location}"
+    return (myWeatherString, myLocalTime, myTimeZone, page_url)
 
 
 def julian_day(date):
@@ -114,12 +115,24 @@ def get_lunar_phase(julian_day):
         return "🌘"  # Waning Crescent
 
 
+def openweather_page_url(location, city_id=None):
+    """Shift-enter / quicklook URL for OpenWeather.
+
+    `/city/{id}` is the real city page. `/city/{name}` 404s, so fall back
+    to the search page when the API did not return an id.
+    """
+    if city_id:
+        return f"https://openweathermap.org/city/{city_id}"
+    return f"https://openweathermap.org/find?q={quote(location)}"
+
+
 def get_weather_openweather(location):
     """Get weather data from OpenWeatherMap API"""
-    if not OPENWEATHER_KEY:
-        return "OpenWeather API key not configured", "", ""
-
     location = location.strip()
+    find_url = openweather_page_url(location)
+
+    if not OPENWEATHER_KEY:
+        return "OpenWeather API key not configured", "", "", find_url
 
     # Get current weather
     url = f"http://api.openweathermap.org/data/2.5/weather"
@@ -181,14 +194,15 @@ def get_weather_openweather(location):
 
         log(f"OpenWeather data: {weather_string}")
 
-        return (weather_string, local_time_str, tz_string)
+        page_url = openweather_page_url(location, data.get("id"))
+        return (weather_string, local_time_str, tz_string, page_url)
 
     except requests.exceptions.RequestException as e:
         log(f"Error fetching OpenWeather data: {e}")
-        return f"Error fetching weather for {location}", "", ""
+        return f"Error fetching weather for {location}", "", "", find_url
     except KeyError as e:
         log(f"Error parsing OpenWeather data: {e}")
-        return f"Error parsing weather data for {location}", "", ""
+        return f"Error parsing weather data for {location}", "", "", find_url
 
 
 def get_weather_data(location):
@@ -288,26 +302,39 @@ def createNextWeeklyPlan(this_week_filename):
 
     file_path_next = f"{NOTES_FOLDER}/{next_week_filename}.md"
     file_path_this = f"{NOTES_FOLDER}/{this_week_filename}.md"
+    carry_over_unchecked_tasks(file_path_this, file_path_next)
 
-    # Create next week's file if it does not exist yet
+    return next_week_filename
+
+
+def carry_over_unchecked_tasks(file_path_this, file_path_next):
+    """Create next week's file if needed and append this week's unchecked
+    tasks that are not already present, so a second Friday run does not
+    duplicate them.
+    """
     if not os.path.exists(file_path_next):
-        with open(file_path_next, 'w') as file:
-            pass  # Just create the file
+        with open(file_path_next, 'w') as dest:
+            pass
 
-    # Collect unchecked tasks ("- [ ]") from this week's file, if it exists
-    undone_tasks = []
+    existing = set()
+    with open(file_path_next, 'r') as dest:
+        existing = {line.rstrip('\n') for line in dest}
+
+    new_tasks = []
     if os.path.exists(file_path_this):
         with open(file_path_this, 'r') as src:
             for line in src:
-                if line.startswith('- [ ]'):
-                    undone_tasks.append(line)
+                if not line.startswith('- [ ]'):
+                    continue
+                key = line.rstrip('\n')
+                if key in existing:
+                    continue
+                new_tasks.append(line if line.endswith('\n') else line + '\n')
+                existing.add(key)
 
-    # Carry them over into next week's file
-    with open(file_path_next, 'a') as tgt:
-        for task in undone_tasks:
-            tgt.write(task)
-
-    return next_week_filename
+    if new_tasks:
+        with open(file_path_next, 'a') as tgt:
+            tgt.writelines(new_tasks)
 
 
 # Read a markdown file and return its lines (empty list if missing)
@@ -472,17 +499,9 @@ else:
 
 locations = mylocation.split(",")
 for loc in locations:
-    myOutput,myLocalTime, myTimeZone= get_weather_data(loc)
+    myOutput, myLocalTime, myTimeZone, page_url = get_weather_data(loc)
     myFinalString = myOutput + " " + myLocalTime + myAlmanac + previousLines + weeklyPlan + nextWeeklyPlan + agendaString + journalString
     myTZstring = f"Current date/time: {myLocalTime} ({myTimeZone})"
-
-    # Set quicklook URL based on weather source
-    if WEATHER_SOURCE.lower() == 'openweather':
-        quicklook_url = f"https://openweathermap.org/city/{loc}"
-        arg_url = f"https://openweathermap.org/city/{loc}"
-    else:
-        quicklook_url = f"https://wttr.in/{loc}"
-        arg_url = f"http://wttr.in/{loc}"
 
     result["items"].append({
             "title": myFinalString,
@@ -500,8 +519,8 @@ for loc in locations:
                     
                 }
             },
-            'quicklookurl': quicklook_url,
-            'arg': (myFinalString + ";;;" + arg_url)
+            'quicklookurl': page_url,
+            'arg': (myFinalString + ";;;" + page_url)
                 })    
 
 print (json.dumps(result))

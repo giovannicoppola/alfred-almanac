@@ -11,8 +11,8 @@ Access via: **Alfred Preferences → Workflows → alfred-almanac → Configure 
 | Variable | Type | Default | Description |
 |----------|------|---------|-------------|
 | `LOCATION` | Text | _(empty)_ | Default weather location (city name or ZIP code) |
-| `FORMATSTRING` | Text | `%C %c 🌡️%t %f %h 🌬️%w %m` | Weather string format ([wttr.in format codes](https://github.com/chubin/wttr.in#one-line-output)) |
-| `SPECIAL_DAY` | Text | _(empty)_ | A special date to count down to (YYYY-MM-DD) |
+| `FORMATSTRING` | Text | `%C %c 🌡️%t (feels %f, %h) 🌬️%w %m` | Weather string format for **wttr.in only** ([wttr.in format codes](https://github.com/chubin/wttr.in#one-line-output)) |
+| `SPECIAL_DAY` | Text | `03-14` | A special date to count days from and to (`MM-DD`) |
 | `WEATHER_SOURCE` | Dropdown | `wttr` | Weather data source: `wttr` (wttr.in) or `openweather` (OpenWeather API) |
 | `OPENWEATHER_KEY` | Text | _(empty)_ | API key for OpenWeather (required if using `openweather` source) |
 | `TEMPERATURE_UNIT` | Dropdown | `fahrenheit` | Temperature unit: `fahrenheit` or `celsius` |
@@ -22,13 +22,18 @@ Access via: **Alfred Preferences → Workflows → alfred-almanac → Configure 
 | Variable | Type | Default | Description |
 |----------|------|---------|-------------|
 | `OBSIDIAN_VAULT` | Folder | _(empty)_ | Full path to your Obsidian vault |
-| `OBSIDIAN_CHECK` | Checkbox | unchecked | Enable Obsidian daily note integration |
-| `DAILY_FORMAT` | Text | `%Y-%m-%d-%a` | Daily note filename format (Python strftime) |
-| `OBSIDIAN_AGENDA` | Checkbox | unchecked | Fetch and append calendar agenda to daily note |
+| `OBSIDIAN_CHECK` | Checkbox | unchecked | Enable Obsidian daily note integration (Enter writes to the daily note instead of copying) |
+| `DAILY_FORMAT` | Text | `%Y-%m-%d-%a` | Daily note filename format (Python strftime). Path is `{OBSIDIAN_VAULT}/{format}.md` |
+| `OBSIDIAN_CREATE` | Checkbox | **checked** (this branch) | Create today's daily note if it is missing. Uncheck to skip instead |
+| `OBSIDIAN_AGENDA` | Checkbox | unchecked | Fetch and append calendar agenda to the daily note (separate from `AGENDA` in the Alfred result) |
+| `AGENDA` | Checkbox | unchecked | Append today's calendar events to the Alfred/almanac output |
+| `CALENDAR_SOURCE` | Dropdown | `apple` | `apple` (Calendar.app) or `outlook` |
+| `JOURNAL` | Checkbox | unchecked | Journal on-this-day links (scans `NOTES_FOLDER` for `journal`-tagged notes) |
 | `LINEADAY` | Checkbox | unchecked | Enable line-a-day integration |
 | `LINEADAYFILE` | File | _(empty)_ | Path to line-a-day file |
 | `WEEKLY` | Checkbox | unchecked | Enable weekly plan integration |
 | `WEEKLY_PLAN_FORMAT` | Dropdown | `format1` | Weekly plan filename format |
+| `LINK_STYLE` | Dropdown | `markdown` | Weekly plan link style (`markdown` / `wikilink` / `plain`) |
 
 ### Calendar & One-on-One Integration
 
@@ -37,7 +42,7 @@ Access via: **Alfred Preferences → Workflows → alfred-almanac → Configure 
 | `PEOPLE_FOLDER` | Folder | _(empty)_ | **Yes** | Full path to folder containing person notes (e.g., `/path/to/vault/_People`) |
 | `DISCUSS_SECTION` | Text | `# Active Items` | No | Section header in person notes containing discussion items |
 | `ONE_ON_ONE_TAG` | Text | `one-on-one` | No | Frontmatter tag to identify person notes with regular one-on-ones |
-| `GRAPH_CONFIG_DIR` | Folder | _(empty)_ | No | Shared location for Graph API credentials (optional, defaults to workflow source folder) |
+| `GRAPH_CONFIG_DIR` | Env var | _(unset)_ | No | Directory holding Graph API `config.json` / `token_cache.json`. Not a Configure Workflow field. If unset, this branch currently uses a developer-specific fallback in `fetchAgenda.py` |
 
 ### Email Integration
 
@@ -140,8 +145,8 @@ tags: one-on-one, meetings
    - Use Alfred's debugger to see matching attempts
 
 5. **Meeting Detection:**
-   - Feature only works for one-on-ones (exactly 2 attendees)
-   - Both attendees must be present in the calendar event
+   - Feature matches Outlook events with **one or two** attendees
+   - The attendee is matched to a tagged person note; the event is then headed `# Meeting with [[Person]]`
 
 ### Checking Alfred Debugger
 

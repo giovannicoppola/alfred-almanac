@@ -356,9 +356,9 @@
 	</array>
 	<key>readme</key>
 	<string># Almanac 🌞
-- Launch `alfred-almanac` to retrieve weather and other almanac information from default locations ...
-- ... or enter a location/ZIP code directly
-- The default weather string will output:
+- Launch with the workflow keyword (`!w` by default) to retrieve weather and other almanac information from default locations ...
+- ... or enter a location/ZIP code directly (comma-separated values produce one result each)
+- The default `wttr.in` format string is `%C %c 🌡️%t (feels %f, %h) 🌬️%w %m` (editable). Format codes apply to `wttr.in` only; OpenWeather uses a fixed summary
 	- `%C` weather condition text
 	- `%c` weather condition
 	- 🌡️`%t` actual temperature
@@ -369,26 +369,27 @@
 - Temperature can be shown in °F or °C (set **Temperature unit**)
 - The weather source can be switched from `wttr.in` to OpenWeather (set **Weather Info Source** and provide an API key)
 - The almanac section will output:
-	- local date and time
-	- Current week of the year
+	- local date and time (weather location timezone)
+	- current ISO week of the year
 	- current quarter
-	- days from and to the end of the year
-	- days from and to the special day
+	- day of the year and days remaining until December 31
+	- days from and to the special day (`MM-DD`)
 
-- Enter (↩️) will copy to the clipboard and past to the frontmost application
-- Shift-enter (⇧↩️) will open the corresponding page on `wttr.in` or OpenWeather, depending on your selected weather source
+- Enter (↩️) will copy to the clipboard and paste to the frontmost application (unless Obsidian daily-note append is enabled)
+- Shift-enter (⇧↩️) will open `wttr.in` for that location, or the city's OpenWeather page (API city id)
 - CTRL-enter (⌃↩️) will show the almanac string in large font
 - Option (⌥) will show the local date/time and timezone
 
 ## Additional settings:
-- `Add weekly plan` will add a link to this week's plan file. On Fridays, also to next week's plan, carrying over unchecked tasks
-- `Add today's agenda` will append today's calendar events (Apple Calendar or Outlook)
-- `line-a-day?`: for users of the [line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow: will quote previous line-a-day items (from 1 or more years earlier)
-- `Show journal 'on this day'?` will append links to journal-tagged notes from this day in previous years
-- `Add report to Obsidian daily page?` will append the almanac output to today's Obsidian daily note when you press Enter
+- `Add weekly plan` will add a link to this week's plan filename (the file is not created). On Fridays, also a link to next week; that file is created if missing, and unchecked `- [ ]` tasks not already in it are copied into it
+- `Add today's agenda` will append today's calendar events to the Alfred result (Apple Calendar or Outlook)
+- `line-a-day?`: for users of the [line-a-day](https://github.com/giovannicoppola/alfred-line-a-day) workflow: will quote previous line-a-day items (from 1 or more years earlier). Entries must start with `- **` and contain a `YYYY-MM-DD` date
+- `Show journal 'on this day'?` will append links to `journal`-tagged notes in **Notes folder** from this month in previous years (index cached in the workflow data folder)
+- `Add report to Obsidian daily page?` will append the almanac output to today's Obsidian daily note when you press Enter (and will not copy/paste)
+- `Create daily note if it doesn't exist` will create today's daily note when missing (on by default on this branch; does not apply Obsidian's template)
 - `Add today's agenda to Obsidian daily page?` will also append today's calendar events to that daily note
 - `Emailstrom script` will append an email summary to the daily note
-- `People Folder Path` (with the one-on-one tag) will pull "to discuss" items from person notes for Outlook one-on-ones</string>
+- `People Folder Path` (with the one-on-one tag) will pull "to discuss" items from person notes for Outlook meetings with one or two attendees (`# Meeting with [[Person]]`)</string>
 	<key>uidata</key>
 	<dict>
 		<key>08E34930-04EB-4AE1-9FC5-85F2E8003448</key>
@@ -915,6 +916,25 @@
 			<string>textfield</string>
 			<key>variable</key>
 			<string>DAILY_FORMAT</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<true/>
+				<key>required</key>
+				<false/>
+				<key>text</key>
+				<string></string>
+			</dict>
+			<key>description</key>
+			<string>If today's daily note is missing, create it before appending. Off: skip if the file does not already exist</string>
+			<key>label</key>
+			<string>Create daily note if it doesn't exist</string>
+			<key>type</key>
+			<string>checkbox</string>
+			<key>variable</key>
+			<string>OBSIDIAN_CREATE</string>
 		</dict>
 		<dict>
 			<key>config</key>
